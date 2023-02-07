@@ -9,60 +9,81 @@
 </head>
 <body>
     <header>
-        <!-- Este div es para el titulo -->
-        <div class="titulo">
-            <a href="../index.html" class="titulo"><h1>Sneaky Sneakers</h1></a>
-        </div>
-        <!-- Este div es para la sessiones de las zapatillas -->
-        <div class="secciones">
-            <a href="./hombre.html" class="secciones"><h2 class="secciones">Hombre</h2></a>
-            <a href="./mujer.html" class="secciones"><h2 class="secciones">Mujer</h2></a>
-            <a href="./ninios.html" class="secciones"><h2 class="secciones">Niños</h2></a>
-            <a href="./new.html" class="secciones"><h2 class="secciones">New Arrivals</h2></a>
-            <a href="./sale.html" class="secciones"><h2 class="secciones">SALE</h2></a>
-        </div>
-        <!-- Este div es para el logo de la pagina -->
-        <div class="fotologo">
-            <img src="../assets/img/LeBron/lebron-james-with-black-and-white-background-and-lakers-jersey-wallpaper-1920x1080_48.jpg" alt="LeBrom James fOTO LARGA" class="fotologo">
+        <div class="container">
+            <a href="../index.html"><p class="logo">Sneaky Sneakers</p></a>
+            <nav>
+                <a href="#"></a>
+                <a href="#"></a>
+            </nav>
         </div>
     </header>
-    <section>
-        <!-- Este nav es para el titulo del jugador -->
-        <nav class="titulolb"> 
-            <h2 class="titulolb"> LeBron James </h2>
-        </nav>
-        <!-- Este nav es para las fotos de perfil, la firma y sus zapatillas personalizadas -->
-        <nav class="fotolb">
-            <img src="../assets/img/LeBron/LeBron_James_crop.jpg" alt="foto perfil lb" class="fotolb">
-            <img src="../assets/img/LeBron/Firma LeBron.webp" alt=" firma lb" class="firmalb">
-            <img src="../assets/img/LeBron/LeBron XX Stocking Stuffer.webp" alt="zapa lb 2" class="zapaslb">
-            <img src="../assets/img/LeBron/Nike LeBrom 2 Maccabi.webp" alt="zapa lb 3" class="zapaslb">
-            <img src="../assets/img/LeBron/Nike LeBron 9 Low.webp" alt="zapa lb 4" class="zapaslb">
-            <img src="../assets/img/LeBron/Nike LeBron IX.webp" alt="zapa lb 5" class="zapaslb">
-            <img src="../assets/img/LeBron/Nike Zoom LeBron 2.webp" alt="zapa lb 6" class="zapaslb">
-        </nav>
+        <section id="secciones">
+            <div class="container">
+            <nav>
+                <a href="./hombre.html" ><h2">Hombre</h2></a>
+                <a href="./mujer.html" ><h2">Mujer</h2></a>
+                <a href="./ninios.html" ><h2">Niños</h2></a>
+                <a href="./new.html" ><h2">New Arrivals</h2></a>
+                <a href="./sale.html" ><h2">SALE</h2></a>
+            </nav>
+            </div>
+        </section>
+
+        <section class="banner-jugadores-lebron">
+            <h1> Lebron James </h1>
+        </section>
+
+    <section id="titulosecciones">
+        <div class="container">
+            <h2 > Lebron James </h2>
+        </div>
     </section>
-    <footer>
-        <!-- Este nav es para el formilario de ingrese mail y boton enciar, y a su vez tambien el texto de suscribite -->
-        <nav class="fondosus">
-            <h3 class="suscribite">SUSCRIBITE AL NEWSLETTER</h3>
-            <form class="formulario">
-                <input type="text" placeholder="Ingrese su E-mail" class="formulario">
-                <input type="submit" value="Suscribirse">
-            </form>
-        </nav>
-        <!-- PIe de pagina para difenretes secciones relacionada con la compra o preguntas sobre la misma -->
+
+    <section id="foto-perfil-jugadores">
+        <div class="container">
+            <img src="../assets/img/LeBron/LeBron_James_crop.jpg" alt="foto_perfil_lebron">
+        </div>
+    </section>
+
+    <section id="datos-jugadores">
+        <ul>
+            <li>Uno de los mejores jugadores de la NBA de su generación</li>
+            <li>Draft de la NBA: 1ª ronda (1), 2003 por Cleveland Cavaliers</li>
+            <li>Posición: Base/Alero</li>
+            <li>Padres: Gloria Marie James y Anthony McClelland</li>
+            <li>Cónyuge: Savannah Brinson (m. 2013)</li>
+            <li>Hijos: Zhuri James, Bryce Maximus James, LeBron James Jr.</li>
+            <li>Nombre: LeBron Raymone James</li>
+            <li>Altura: 2,03 m</li>
+        </ul>
+    </section>
+
+    <section id="zapatillas">
+        <div class="container-zapatillas">
+            <img src="../assets/img/LeBron/LeBron XX.webp" alt="lebron_01">
+            <img src="../assets/img/LeBron/Nike LeBron 9 Low.webp" alt="lebron_02">
+            <img src="../assets/img/LeBron/Nike LeBron IX.webp" alt="lebron_03">
+            <img src="../assets/img/LeBron/Nike Zoom LeBron 2.webp" alt="lebron_04">
+        </div>
+    </section>
+
+    <section id="listaspie">
+        <div class="container"> 
         <ul class="pie1">
-            <a href="./quienesomos.html" class="pie1"><li class="pie1">Quienes somos</li></a>
-            <a href="./preguntasf.html" class="pie1"><li class="pie1">Preguntas Frecuentes</li></a>
-            <a href="./politicac.html" class="pie1"><li class="pie1">Politica de cambios</li></a>
-        </ul>
-        <!-- A igual que el otro pie de pagina, ademas contiene la pagina de denfesa al consumidor-->
-        <ul class="pie2">
+            <a href="./Pages/quienesomos.html" class="pie1"><li class="pie1">Quienes somos</li></a>
+            <a href="./Pages/preguntasf.html" class="pie1"><li class="pie1">Preguntas Frecuentes</li></a>
+            <a href="./Pages/politicac.html" class="pie1"><li class="pie1">Politica de cambios</li></a>
             <a href="https://autogestion.produccion.gob.ar/consumidores" class="pie1"><li class="pie1">Defensa del consumidor</li></a>
-            <a href="./politicae.html" class="pie1"><li class="pie1">Politica de envios</li></a>
-            <a href="./formasp.html" class="pie1"><li class="pie1">Formas de pago</li></a>
+            <a href="./Pages/politicae.html" class="pie1"><li class="pie1">Politica de envios</li></a>
+            <a href="./Pages/formasp.html" class="pie1"><li class="pie1">Formas de pago</li></a>
         </ul>
-    </footer>
+    </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; Sneaky Sneakers</p>
+        </div>
+</footer>
 </body>
 </html>
