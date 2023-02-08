@@ -4,57 +4,73 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../style.css">
     <title>Quienes Somos</title>
 </head>
 <body>
     <header>
-        <!-- Este div es para el titulo -->
-        <div class="titulo">
-            <a href="../index.html" class="titulo"><h1>Sneaky Sneakers</h1></a>
-        </div>
-        <!-- Este div es para la sessiones de las zapatillas -->
-        <div class="secciones">
-            <a href="./hombre.html" class="secciones"><h2 class="secciones">Hombre</h2></a>
-            <a href="./mujer.html" class="secciones"><h2 class="secciones">Mujer</h2></a>
-            <a href="./ninios.html" class="secciones"><h2 class="secciones">Niños</h2></a>
-            <a href="./new.html" class="secciones"><h2 class="secciones">New Arrivals</h2></a>
-            <a href="./sale.html" class="secciones"><h2 class="secciones">SALE</h2></a>
-        </div>
-        <!-- Este div es para el logo de la pagina -->
-        <div class="fotologo">
-            <img src="../assets/img/Mesa de trabajo 1.png" alt="Logo para el Head" class="fotologo">
+        <div class="container">
+            <a href="../index.html"><p class="logo">Sneaky Sneakers</p></a>
+            <nav>
+                <a href="./iniciosesion.html"><i class="bi bi-heart-fill"></i></a>
+                <a href="./iniciosesion.html"><i class="bi bi-person-fill"></i></a>
+            </nav>
         </div>
     </header>
-    <section>
-        <nav class="titulospreg">
-            <h2 class="titulospreg"> Quienes Somos </h2>
+    
+    <section id="secciones">
+        <div class="container">
+        <nav>
+            <a href="./hombre.html" ><h2">Hombre</h2></a>
+            <a href="./mujer.html" ><h2">Mujer</h2></a>
+            <a href="./ninios.html" ><h2">Niños</h2></a>
+            <a href="./new.html" ><h2">New Arrivals</h2></a>
+            <a href="./sale.html" ><h2">SALE</h2></a>
         </nav>
-        <nav class="textospreg">
-            <h3 class="textospreg"> Somos una empresa que se dedica a la venta de zapatillas, comercializando una amplia varierdad de productos de marcas de primera linea. Sneaky nace como una idea de generar un espacio de moda inspirada en el deporte para nuestros clientes, brindandoles una varierdad de ofertas de las mejores marcas de deportes y de moda, todo en un mismo lugar. Sneaky es una marca viva, que se adapta al ritmo de la cuidad, por eso cambiamos constantemente de colores y texturas en nuestro logo, porque somos dinamicos, diversos, transgresores y nos gusta estarr en sintonia con la tendencia del momento, igual que nuestros clientes!. Comprendemos que cada persona tiene un circulo propio y unico, donde interctua, se relaciona, se complementa con los demas, con su entorno. Este elemento tan imporntante nos interesa. Tu circulo nos interesa.</h3>
-        </nav>
+        </div>
     </section>
-    <footer>
-        <!-- Este nav es para el formilario de ingrese mail y boton enciar, y a su vez tambien el texto de suscribite -->
-        <nav class="fondosus">
+
+        <section class="banner">
+            <h1> Sneaky Sneakers </h1>
+        </section>
+
+    <section id="quienes-somos">
+        <div class="container">
+            <h2> Quienes Somos </h2>
+            <p> Somos una empresa que se dedica a la venta de zapatillas, comercializando una amplia varierdad de productos de marcas de primera linea. Sneaky nace como una idea de generar un espacio de moda inspirada en el deporte para nuestros clientes, brindandoles una varierdad de ofertas de las mejores marcas de deportes y de moda, todo en un mismo lugar. Sneaky es una marca viva, que se adapta al ritmo de la cuidad, por eso cambiamos constantemente de colores y texturas en nuestro logo, porque somos dinamicos, diversos, transgresores y nos gusta estarr en sintonia con la tendencia del momento, igual que nuestros clientes!. Comprendemos que cada persona tiene un circulo propio y unico, donde interctua, se relaciona, se complementa con los demas, con su entorno. Este elemento tan imporntante nos interesa. Tu circulo nos interesa.</p>
+        </div>
+    </section>
+    
+    <section id="newspapper">
+        <div class="container">
             <h3 class="suscribite">SUSCRIBITE AL NEWSLETTER</h3>
             <form class="formulario">
                 <input type="text" placeholder="Ingrese su E-mail" class="formulario">
                 <input type="submit" value="Suscribirse">
             </form>
-        </nav>
-        <!-- PIe de pagina para difenretes secciones relacionada con la compra o preguntas sobre la misma -->
+        </div>
+    </section>
+
+    <section id="listaspie">
+        <div class="container"> 
         <ul class="pie1">
             <a href="./quienesomos.html" class="pie1"><li class="pie1">Quienes somos</li></a>
             <a href="./preguntasf.html" class="pie1"><li class="pie1">Preguntas Frecuentes</li></a>
             <a href="./politicac.html" class="pie1"><li class="pie1">Politica de cambios</li></a>
-        </ul>
-        <!-- A igual que el otro pie de pagina, ademas contiene la pagina de denfesa al consumidor-->
-        <ul class="pie2">
             <a href="https://autogestion.produccion.gob.ar/consumidores" class="pie1"><li class="pie1">Defensa del consumidor</li></a>
             <a href="./politicae.html" class="pie1"><li class="pie1">Politica de envios</li></a>
             <a href="./formasp.html" class="pie1"><li class="pie1">Formas de pago</li></a>
         </ul>
-    </footer>
+    </div>
+    </section>
+
+<footer>
+    <div class="container">
+        <p>&copy; Sneaky Sneakers</p>
+    </div>
+</footer>
 </body>
 </html>

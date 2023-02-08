@@ -78,7 +78,7 @@ header a:hover{
 
 #secciones a{
     text-align: center;
-    margin-left: 15px;
+    margin-left: 14px;
 }
 
 #secciones a:hover{
@@ -446,12 +446,67 @@ footer .container{
     display: none;
 }
 
+.form-register {
+    width: 400px;
+    background: rgb(22, 22, 22);
+    padding: 30px;
+    margin: auto;
+    margin-top: 100px;
+    border-radius: 4px;
+    color: rgb(255, 255, 255);
+    box-shadow: 7px 13px 37px #000;
+    margin-bottom: 100px;
+}
 
+.form-register h4 {
+    font-size: 22px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: darkcyan;
+}
 
+.controls {
+    width: 100%;
+    background: #232e39;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    border: 1px solid #ffffff;
+    font-size: 15px;
+    color: rgba(0, 139, 139, 0.515);
+}
 
+.form-register p {
+    height: 40px;
+    text-align: center;
+    font-size: 15px;
+    line-height: 40px;
+}
 
+.form-register a {
+    color: darkcyan;
+    text-decoration: none;
+}
 
+.form-register a:hover {
+    color: darkcyan;
+    text-decoration: underline;
+}
 
+.form-register .botons {
+    width: 100%;
+    background: #232e39;
+    border: none;
+    padding: 12px;
+    color: white;
+    margin: 16px 0;
+    font-size: 16px;
+}
+
+#quienes-somos .container{
+    text-align: center;
+    padding: 200px 12px;
+}
 
 @media (min-width: 720px){
     header .container{
@@ -468,18 +523,5 @@ footer .container{
     .banner{
         font-size: 3em;
     }
-    #type-shoe .carta-zapatillas{
-        display: flex;
-        flex-wrap: wrap;
-        flex-direction: column-reverse;
-        align-content: center;
-    }
-    #type-shoe .carta{
-        padding: 1000Px;
-        margin: 20px;
-        border-radius: 20px;
-        background-position: center center;
-        background-size: cover;
-    } 
 
 }

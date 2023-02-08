@@ -21,11 +21,11 @@
         <section id="secciones">
             <div class="container">
             <nav>
-                <a href="./Pages/hombre.html" ><h2">Hombre</h2></a>
-                <a href="./Pages/mujer.html" ><h2">Mujer</h2></a>
-                <a href="./Pages/ninios.html" ><h2">Niños</h2></a>
-                <a href="./Pages/new.html" ><h2">New Arrivals</h2></a>
-                <a href="./Pages/sale.html" ><h2">SALE</h2></a>
+                <a href="./hombre.html" ><h2">Hombre</h2></a>
+                <a href="./mujer.html" ><h2">Mujer</h2></a>
+                <a href="./ninios.html" ><h2">Niños</h2></a>
+                <a href="./new.html" ><h2">New Arrivals</h2></a>
+                <a href="./sale.html" ><h2">SALE</h2></a>
             </nav>
             </div>
         </section>
@@ -34,25 +34,44 @@
             <h1> Sneaky Sneakers </h1>
         </section>
 
-        <section>
-            <div class="formualrio">
-                <h1>Inicio de Sesion</h1>
-                <form>
-                    <div class="username">
-                        <input type="text" required>
-                        <label>Nombre de usuario</label>
-                    </div>
-                    <div class="contrasenia">
-                        <input type="password" required>
-                        <label>Contrasña</label>
-                    </div>
-                    <div class="recordar"> ¿Olvido su contraseña?</div>
-                    <input type="sumbit" value="Iniciar">
-                    <div class="registrarse">
-                        Quiero hacer el <a href="#">registro</a>
-                    </div>
+        <section class="form-register">
+            <h4>Formulario Registro</h4>
+            <input class="controls" type="text" name="nombres" id="nombres" placeholder="Ingrese su Nombre">
+            <input class="controls" type="text" name="apellidos" id="apellidos" placeholder="Ingrese su Apellido">
+            <input class="controls" type="email" name="correo" id="correo" placeholder="Ingrese su Correo">
+            <input class="controls" type="password" name="correo" id="correo" placeholder="Ingrese su Contraseña">
+            <p>Estoy de acuerdo con <a href="#">Terminos y Condiciones</a></p>
+            <input class="botons" type="submit" value="Registrar">
+            <p><a href="#">¿Ya tienes Cuenta?</a></p>
+        </section>
+
+        <section id="newspapper">
+            <div class="container">
+                <h3 class="suscribite">SUSCRIBITE AL NEWSLETTER</h3>
+                <form class="formulario">
+                    <input type="text" placeholder="Ingrese su E-mail" class="formulario">
+                    <input type="submit" value="Suscribirse">
                 </form>
             </div>
         </section>
+
+        <section id="listaspie">
+            <div class="container"> 
+            <ul class="pie1">
+                <a href="./quienesomos.html" class="pie1"><li class="pie1">Quienes somos</li></a>
+                <a href="./preguntasf.html" class="pie1"><li class="pie1">Preguntas Frecuentes</li></a>
+                <a href="./politicac.html" class="pie1"><li class="pie1">Politica de cambios</li></a>
+                <a href="https://autogestion.produccion.gob.ar/consumidores" class="pie1"><li class="pie1">Defensa del consumidor</li></a>
+                <a href="./politicae.html" class="pie1"><li class="pie1">Politica de envios</li></a>
+                <a href="./formasp.html" class="pie1"><li class="pie1">Formas de pago</li></a>
+            </ul>
+        </div>
+        </section>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; Sneaky Sneakers</p>
+        </div>
+    </footer>
 </body>
 </html>

@@ -4,91 +4,120 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../style.css">
     <title>Politica de envios</title>
 </head>
 <body>
     <header>
-        <!-- Este div es para el titulo -->
-        <div class="titulo">
-            <a href="../index.html" class="titulo"><h1>Sneaky Sneakers</h1></a>
-        </div>
-        <!-- Este div es para la sessiones de las zapatillas -->
-        <div class="secciones">
-            <a href="./hombre.html" class="secciones"><h2 class="secciones">Hombre</h2></a>
-            <a href="./mujer.html" class="secciones"><h2 class="secciones">Mujer</h2></a>
-            <a href="./ninios.html" class="secciones"><h2 class="secciones">Niños</h2></a>
-            <a href="./new.html" class="secciones"><h2 class="secciones">New Arrivals</h2></a>
-            <a href="./sale.html" class="secciones"><h2 class="secciones">SALE</h2></a>
-        </div>
-        <!-- Este div es para el logo de la pagina -->
-        <div class="fotologo">
-            <img src="../assets/img/Mesa de trabajo 1.png" alt="Logo para el Head" class="fotologo">
+        <div class="container">
+            <a href="../index.html"><p class="logo">Sneaky Sneakers</p></a>
+            <nav>
+                <a href="./iniciosesion.html"><i class="bi bi-heart-fill"></i></a>
+                <a href="./iniciosesion.html"><i class="bi bi-person-fill"></i></a>
+            </nav>
         </div>
     </header>
-    <section>
-                <!-- Este nav es para los titulos de la pagina -->
-        <nav class="titulospreg">
-            <h2 class="titulospreg"> POLITICA DE ENVIOS</h2>
+    
+    <section id="secciones">
+        <div class="container">
+        <nav>
+            <a href="./hombre.html" ><h2">Hombre</h2></a>
+            <a href="./mujer.html" ><h2">Mujer</h2></a>
+            <a href="./ninios.html" ><h2">Niños</h2></a>
+            <a href="./new.html" ><h2">New Arrivals</h2></a>
+            <a href="./sale.html" ><h2">SALE</h2></a>
         </nav>
-        <!-- Este nav es para los textos de la pagina -->
-        <nav class="textospreg">
-            <h3 class="textospreg"> Hacemos envios a todo el pais bajo las siguientes modalidades</h3>
-        </nav>
-        <!-- Este nav es para los titulos de la pagina -->
-        <nav class="titulospreg"> 
-            <h2 class="titulospreg"> JIPINK </h2>
-        </nav>
-        <!-- Este nav es para los textos de la pagina -->
-        <nav class="textospreg">
-            <h3 class="textospreg"> Envíos de lunes a viernes en tus compras de domingo a viernes (hasta las 12hs). Entregas rápidas a domicilio en 24hs en AMBA. En caso de no poder ser entregado en la primer visita, realizarán en las siguientes 24hs un segundo intento de entrega.</h3>
-        </nav>
-        <!-- Este nav es para los titulos de la pagina -->
-        <nav class="titulospreg">
-            <h2 class="titulospreg"> ESTANDAR A DOMICILIO </h2>
-        </nav>
-        <!-- Este nav es para los textos de la pagina -->
-        <nav class="textospreg">
-            <h3 class="textospreg"> Válido todos los días. El tiempo de entrega depende de la aprobación del medio de pago. Los días que se indiquen son estimativos, y corren siempre a partir del momento en que el pedido se despacha.</h3>
-        </nav>
-        <!-- Este nav es para los titulos de la pagina -->
-        <nav class="titulospreg">
-            <h2 class="titulospreg"> ANDREANI 24HS </h2>
-        </nav>
-        <!-- Este nav es para los textos de la pagina -->
-        <nav class="textospreg">
-            <h3 class="textospreg"> Válido de Domingos a Jueves en zona de AMBA. Si el pedido se realiza antes de las 10 hs, llegará el mismo día. En caso de no poder concretar la entrega, se realiza un segunda visita al día siguiente. Horarios de entrega hasta las 21 hs</h3>
-        </nav>
-        <!-- Este nav es para los titulos de la pagina -->
-        <nav class="titulospreg">   
-            <h2 class="titulospreg"> RETIRO EXPRESS TIENDAS </h2>
-        </nav>
-        <!-- Este nav es para los textos de la pagina -->
-        <nav class="textospreg">
-            <h3 class="textospreg"> Valido todos los días en sucursales seleccionadas. La entrega se realiza en 24 hs HÁBILES, y corren siempre a partir del momento en que el pedido es facturado.</h3>
-        </nav>
+        </div>
     </section>
-    <footer>
-        <!-- Este nav es para el formilario de ingrese mail y boton enciar, y a su vez tambien el texto de suscribite -->
-        <nav class="fondosus">
+
+        <section class="banner">
+            <h1> Sneaky Sneakers </h1>
+        </section>
+
+    <section>
+
+            <h2 id="titulosecciones"> POLITICA DE ENVIOS</h2>
+            <div class="accordion" id="accordionExample">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            JIPINK
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            Envíos de lunes a viernes en tus compras de domingo a viernes (hasta las 12hs). Entregas rápidas a domicilio en 24hs en AMBA. En caso de no poder ser entregado en la primer visita, realizarán en las siguientes 24hs un segundo intento de entrega.
+                        </div>
+                    </div>
+                    </div>
+                    <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        ESTANDAR A DOMICILIO
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                        Válido todos los días. El tiempo de entrega depende de la aprobación del medio de pago. Los días que se indiquen son estimativos, y corren siempre a partir del momento en que el pedido se despacha..
+                        </div>
+                    </div>
+                    </div>
+                    <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingThree">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        ANDREANI 24HS
+                        </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            Válido de Domingos a Jueves en zona de AMBA. Si el pedido se realiza antes de las 10 hs, llegará el mismo día. En caso de no poder concretar la entrega, se realiza un segunda visita al día siguiente. Horarios de entrega hasta las 21 hs.
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsefour" aria-expanded="false" aria-controls="collapsefour">
+                                RETIRO EXPRESS TIENDAS 
+                            </button>
+                        </h2>
+                        <div id="collapsefour" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                Valido todos los días en sucursales seleccionadas. La entrega se realiza en 24 hs HÁBILES, y corren siempre a partir del momento en que el pedido es facturado.
+                            </div>
+                        </div>
+                </div>
+            </div>
+    </section>
+
+    <section id="newspapper">
+        <div class="container">
             <h3 class="suscribite">SUSCRIBITE AL NEWSLETTER</h3>
             <form class="formulario">
                 <input type="text" placeholder="Ingrese su E-mail" class="formulario">
                 <input type="submit" value="Suscribirse">
             </form>
-        </nav>
-        <!-- PIe de pagina para difenretes secciones relacionada con la compra o preguntas sobre la misma -->
+        </div>
+    </section>
+
+    <section id="listaspie">
+        <div class="container"> 
         <ul class="pie1">
             <a href="./quienesomos.html" class="pie1"><li class="pie1">Quienes somos</li></a>
             <a href="./preguntasf.html" class="pie1"><li class="pie1">Preguntas Frecuentes</li></a>
             <a href="./politicac.html" class="pie1"><li class="pie1">Politica de cambios</li></a>
-        </ul>
-        <!-- A igual que el otro pie de pagina, ademas contiene la pagina de denfesa al consumidor-->
-        <ul class="pie2">
             <a href="https://autogestion.produccion.gob.ar/consumidores" class="pie1"><li class="pie1">Defensa del consumidor</li></a>
             <a href="./politicae.html" class="pie1"><li class="pie1">Politica de envios</li></a>
             <a href="./formasp.html" class="pie1"><li class="pie1">Formas de pago</li></a>
         </ul>
-    </footer>
+    </div>
+    </section>
+
+<footer>
+    <div class="container">
+        <p>&copy; Sneaky Sneakers</p>
+    </div>
+</footer>
 </body>
 </html>
