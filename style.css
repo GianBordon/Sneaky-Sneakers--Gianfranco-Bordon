@@ -521,7 +521,151 @@ footer .container{
     }
 
     .banner{
-        font-size: 3em;
+        font-size: 5em;
     }
 
+    #type-shoe .cartas-jugadores{
+        display: flex;
+        justify-content: center;
+    }
+
+    #shoes-select {
+        width: 40%;
+        margin-left: 30%;
+    }
+
+    #jugadores .cartas-jugadores{
+        display: flex;
+        margin-left: 11%;
+    }
+
+    #jugadores .container{
+        margin: 0%;
+    }
+
+
+    #newspapper .container{
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    #newspapper .formulario{
+        flex-direction: row ;
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+    #newspapper input{
+        margin-top: 10px;
+        margin-left: 10px
+    }
+
+    #listaspie ul{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+
+    #listaspie li{
+        color: white;
+        margin: 50px 20px;
+    }
+    
+
+    footer .container{
+        justify-content: flex-end;
+    }
+
+    #foto-perfil-jugadores{
+        display: none;
+    }
+
+    #datos-jugadores .container{
+        display: flex;
+        justify-content: center;
+    }
+
+    #titulossecciones h2{
+        font-size: medium;
+    }
+
+    #datos-jugadores .texto{
+        width: 40%;
+        text-align: initial;
+        padding: 0px 30px;
+        margin-top: 100px;
+    }
+
+    #datos-jugadores .img-container-paul{
+        background-image: linear-gradient(
+            0deg,
+            rgba(0,0,0,0.5),
+            rgba(0,0,0,0.5)
+        ),  url("assets/img/PG/paul-george-perfil.jpg");
+        background-size: cover;
+        background-position: center center;
+        height: 600px;
+        width: 600px;
+    }
+
+    #datos-jugadores .img-container-harden{
+        background-image: linear-gradient(
+            0deg,
+            rgba(0,0,0,0.5),
+            rgba(0,0,0,0.5)
+        ),  url("assets/img/Harden/foto-perfil-harden.jpg");
+        background-size: cover;
+        background-position: center center;
+        height: 600px;
+        width: 600px;
+    }
+
+    #datos-jugadores .img-container-lebron{
+        background-image: linear-gradient(
+            0deg,
+            rgba(0,0,0,0.5),
+            rgba(0,0,0,0.5)
+        ),  url("assets/img/LeBron/LeBron_James_crop.jpg");
+        background-size: cover;
+        background-position: center center;
+        height: 800px;
+        width: 800px;
+    }
+
+    #datos-jugadores .img-container-kd{
+        background-image: linear-gradient(
+            0deg,
+            rgba(0,0,0,0.5),
+            rgba(0,0,0,0.5)
+        ),  url("assets/img/KD/kevin-durant\ foto\ perfil.jpg");
+        background-size: cover;
+        background-position: top center;
+        height: 600px;
+        width: 600px;
+    }
+
+    #datos-jugadores .img-container-giannis{
+        background-image: linear-gradient(
+            0deg,
+            rgba(0,0,0,0.5),
+            rgba(0,0,0,0.5)
+        ),  url("assets/img/Giannis/foto\ perfil\ giannis.jfif");
+        background-size: cover;
+        background-position: top center;
+        height: 800px;
+        width: 600px;
+    }
+
+
+    #zapatillas .container-zapatillas{
+        display: flex;
+        width: 100%;
+        flex-wrap: wrap;
+        margin: 150px 350px;
+    }
+
+    #zapatillas img{
+        margin: 0 50px;
+    }
 }
