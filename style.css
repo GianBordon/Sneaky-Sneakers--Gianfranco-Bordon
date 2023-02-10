@@ -273,6 +273,9 @@ header a:hover{
     align-items: center;
     padding-bottom: 25px;
 }
+#newspapper {
+    border: 2px solid black;
+}
 
 /* Estilizo la lista de preguntas */
 
