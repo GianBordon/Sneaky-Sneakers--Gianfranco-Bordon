@@ -8,12 +8,12 @@
 
 /* Algunos valores predeterminados que quier que tenga mi pagina */
 
-h1{ font-size: 3.5em;}
-h2{ font-size: 2.7em;}
-h3{ font-size: 2em;}
-p{ font-size: 1.3em;}
+h1{ font-size: 3.5rem;}
+h2{ font-size: 2.7rem;}
+h3{ font-size: 2rem;}
+p{ font-size: 1.3rem;}
 ul{ list-style: none;}
-li{ font-size: 1.25em;}
+li{ font-size: 1.25rem;}
 a{ 
     text-decoration: none;
     color: rgb(0, 0, 0) ;
@@ -60,18 +60,19 @@ header .logo{
     margin: 0;
     padding:  25px 30px;
     font-weight: bold;
-    font-size: 2em;
+    font-size: 2.4rem;
 }
 header .container{
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-bottom: 15px;
 }
 header nav{
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-bottom: 25px;
+    font-size: 1.7rem;
 }
 header i{
     padding: 5px 12px;
@@ -85,11 +86,13 @@ header a:hover{
 
 /* Estilizo las secciones de la pagina */
 
-#secciones a{
-    text-align: center;
-    margin-left: 14px;
+.container nav{
+    display: flex;
+    justify-content: space-between;
+    padding: 4.5px 10px;
+    font-size: 1.1rem;
 }
-#secciones a:hover{
+.secciones a:hover{
     color: rgb(0, 255, 255);
 }
 
@@ -112,40 +115,56 @@ header a:hover{
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
+    position: relative;
 }
-
+.banner h1{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 5rem;
+    margin: 0;
+}
 /* Estilizo las carta de las marcas de la pagina y le agrego una imagen de la marca */
 
-#type-shoe{
+.type-shoe{
     background-color: rgba(30,30,30);
-    color: white;
     text-align: center;
 } 
-#type-shoe h2{
+.type-shoe h2{
     color: darkcyan;
+    padding-bottom: 20px;
 }
-#type-shoe .container{
-    padding: 100px 0;
+.type-shoe {
+    padding: 30px 0;
 }
-#type-shoe .carta{
+.type-shoe .carta{
     padding: 120px;
     margin: 20px;
     border-radius: 20px;
     background-position: center center;
     background-size: cover;
 } 
-#type-shoe h3{
+.type-shoe h3{
     color: white;
+    position: absolute;
+    margin: 0;
+    font-size: 3rem;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
-#type-shoe h3:hover{
+.type-shoe h3:hover{
     color:darkcyan;
 }
-#type-shoe .carta-zapatillas{
+.carta-zapatillas{
     padding: 150px;
     margin: 20px;
     border-radius: 20px;
     background-position: center center;
     background-size: cover;
+    position: relative;
+    box-shadow: 0 0 6px #49A5C1;
 }
 .carta-zapatillas:first-child{
     background-image: linear-gradient( 
@@ -178,44 +197,54 @@ header a:hover{
 
 
 /* Estiizo el texto del carrusel ded zapatillas destacadas */
-
-#shoes-select {
+.container.shoes-select{
+    background-color: #EFFBFA;
+    padding: 10px ;
+}
+.shoes-select h2{
     color: black;
     text-align: center;
+    margin: 0;
 }
 
 /* Estilizo las cartas de los jugadores con sus fotos  */
 
-#jugadores{
+.jugadores{
     background-color: rgba(30,30,30);
     color: rgb(255, 255, 255);
     text-align: center;
 }
-#jugadores .container{
-    padding: 100px 0;
+.jugadores{
+    padding: 10px 10px;
 }
-#jugadores h2{
+.jugadores h2{
     color:  darkcyan;
+    margin: 0;
 }
-#jugadores h3:hover{
+.jugadores h3{
+    color: white;
+    position: absolute;
+    margin: 0;
+    font-size: 2rem;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.jugadores h3:hover{
     color: darkcyan;
 }
-#jugadores p{
+.jugadores button{
     display: none;
 }
-#jugadores button{
-    display: none;
-}
-#jugadores .carta{
-    padding: 120px;
+.jugadores .carta{
+    padding: 140px;
     margin: 20px;
     border-radius: 20px;
     background-position: top center;
     background-size: cover;
+    position: relative;
+    box-shadow: 0 0 4px #49A5C1;
 } 
-#jugadores h3{
-    color: white;
-}
 .carta:first-child{
     background-image: linear-gradient( 
         0deg, 
@@ -254,7 +283,11 @@ header a:hover{
 
 /* Estilizo y ubico el form del NewSpapper */
 
-#newspapper h3{
+.newspapper{
+    background-color: #EFFBFA;
+    padding: 10px ;
+}
+.newspapper h3{
     color: rgb(0, 0, 0);
     margin: 0;
     padding:  25px 30px;
@@ -262,39 +295,36 @@ header a:hover{
     font-size: 2em;
     text-align: center;
 }
-#newspapper .container{
+.newspapper {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-#newspapper form{
+.newspapper form{
     display: flex;
-    flex-direction: column;
     align-items: center;
     padding-bottom: 25px;
 }
-#newspapper {
+.newspapper {
     border: 2px solid black;
 }
 
 /* Estilizo la lista de preguntas */
 
-#listaspie {
+.listaspie {
     background-color: rgba(30,30,30);
     color: white;
     text-align: center;
-}
-#listaspie .container{
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-#listaspie ul{
+.listaspie ul{
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-#listaspie ul:hover{
+.listaspie ul:hover{
     color: darkcyan;
 }
 
@@ -314,42 +344,49 @@ footer .container{
 
 /* Estilizo los titulos de las paginas de las secciones */
 
-#titulosecciones{
+.titulosecciones{
     color: rgb(0, 0, 0);
     text-align: center;
+    margin: 20px;
 } 
 
 /* Estilizo las fotos de las zapatillas */
 
-#zapatillas .container-zapatillas{
-    width: 75vw;
-    max-width: 1000px;
-    min-width: 320px;
-    margin: auto;
+
+.zapatillas{
+    padding: 10px;
 }
-#zapatillas img{
+.zapatillas img{
     width: 100%;
-    border-radius: 15px;
-    box-shadow: 0px 3px 5px rgba(15,15,15,);
+    border: 5 solid blue;
+    margin: 10px 0;
+
+}
+.carta{
+    border: #000 2px solid;
+    border-radius: 20px;
 }
 
 /* Estilizo las cartas de los jugadores destacados */
 
-#foto-perfil-jugadores {
+.foto-perfil-jugadores {
     width: 75vw;
     max-width: 1000px;
-    min-width: 320px;
+    min-width: 390px;
     margin: auto;
 }
-#foto-perfil-jugadores img{
+.foto-perfil-jugadores img{
     width: 100%;
     border-radius: 15px;
     box-shadow: 0px 3px 5px rgba(15,15,15,);
 }
-#datos-jugadores ul{
+.datos-jugadores ul{
     display: flex;
     flex-direction: column;
     align-items: center center;
+    margin: 20px 20px;
+}
+.texto{
     margin: 20px 20px;
 }
 .banner-jugadores-giannis{
@@ -513,15 +550,24 @@ footer .container{
 
 /* Estilizo y ubico el texto de quienes somos */
 
-#quienes-somos .container{
+.quienes-somos h2{  
     text-align: center;
-    padding: 200px 12px;
+    color: black;
+    margin: 20px 0;
+}   
+.quienes-somos p{
+    text-align: center center;
+    color: #000;
 }
 
 /* Comiezo a modificar la pagina para cuando estemos desde una pantalla Web GRANDE */
 
 @media (min-width: 720px){
 
+    .container{
+        max-width:100%;
+        margin: auto;
+    }
     /* Estilizo el Header */
 
     header .container{
@@ -530,63 +576,83 @@ footer .container{
     }
     header nav{
         flex-direction: row;
-        padding-bottom: 0;
-        padding-right: 20px;
     }
+    header a{
+        font-size: 2rem;
+    }
+    header .logo{
+        font-size: 3.5rem;
+    }
+    /* Estilizo las secciones */
 
+    .secciones nav{
+        font-size: 1.5rem;
+        display: inline;
+        margin: 0 70px;
+    }
+    .secciones a{
+        margin: 0 10px;
+    }
     /* Estilizo el Banner */
 
-    .banner{
-        font-size: 5em;
+    .banner h1{
+        font-size: 10rem;
+        width: 100%;
     }
+    /* Estilizo los titulso de todas las paginas */
 
+    .titulosecciones h2{
+        font-size: 4rem;
+    }
     /* Estilizo las cartas de las zapatillas (marcas) */
-
-    #type-shoe .cartas-jugadores{
+    .cartas-jugadores{
         display: flex;
         justify-content: center;
     }
-
+    .type-shoe{
+        padding: 100px 0;
+    }
+    .type-shoe h2{
+        font-size: 3rem;
+    }
+    .carta-zapatillas{
+        width: 100%;
+    }
     /* Estilizo el carrucel de zapas de boostrap */
 
-    #shoes-select {
+    .shoes-select {
         width: 40%;
-        margin-left: 30%;
+        display: block;
+        justify-content: center;
     }
-
+    .shoes-select h2{
+        text-align: center;
+        font-size: 3rem;
+    }
+    body {
+        background-color: #EFFBFA;
+    }
     /*  Estilizo las cartas de los jugadores */
-    #jugadores .cartas-jugadores{
+
+    .cartas-jugadores{
         display: flex;
-        margin-left: 11%;
     }
-    #jugadores .container{
-        margin: 0%;
+    .jugadores h2{
+        font-size: 3rem;
+        text-align: center;
     }
-
-    /* Estilizo el NewSpapper */
-
-    #newspapper .container{
-        flex-direction: row;
-        justify-content: center;
+    /* Estilizo el newspapper */
+    .newspapper{
+        background-color: #ffffff;
     }
-    #newspapper .formulario{
-        flex-direction: row ;
-        justify-content: center;
-        margin-top: 10px;
-    }
-    #newspapper input{
-        margin-top: 10px;
-        margin-left: 10px
-    }
-
     /* Estilizo las listas de pie de pagina */
 
-    #listaspie ul{
+    .listaspie ul{
         display: flex;
         flex-direction: row;
         align-items: center;
     }
-    #listaspie li{
+    .listaspie li{
         color: white;
         margin: 50px 20px;
     }
@@ -600,87 +666,79 @@ footer .container{
 
     /* Estilizo las cartas de los jugadores destacados en sus paginas  */
 
-    #foto-perfil-jugadores{
+    .foto-perfil-jugadores{
         display: none;
     }
-    #datos-jugadores .container{
+    .datos-jugadores{
         display: flex;
         justify-content: center;
+        padding: 20px 0;
     }
-    #titulossecciones h2{
-        font-size: medium;
+    .texto{
+        width: 50%;
+        text-align: initial;
+        padding: 0 30px;
+
     }
-    #datos-jugadores .texto{
+    .titulosecciones h2{
+        font-size: 3rem;
+    }
+    .datos-jugadores .texto{
         width: 40%;
         text-align: initial;
-        padding: 0px 30px;
-        margin-top: 100px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
-    #datos-jugadores .img-container-paul{
-        background-image: linear-gradient(
-            0deg,
-            rgba(0,0,0,0.5),
-            rgba(0,0,0,0.5)
-        ),  url("assets/img/PG/paul-george-perfil.jpg");
+    .img-container-paul{
+        background-image:url("assets/img/PG/paul.webp");
         background-size: cover;
         background-position: center center;
-        height: 600px;
+        height: 500px;
+        width: 500px;
+    }
+    .img-container-harden{
+        background-image: url("assets/img/Harden/hardem.webp");
+        background-size: cover;
+        background-position: center center;
+        height: 500px;
+        width: 500px;
+    }
+    .img-container-lebron{
+        background-image: url("assets/img/LeBron/lebron_james.webp");
+        background-size: cover;
+        background-position: center center;
+        height: 700px;
         width: 600px;
     }
-    #datos-jugadores .img-container-harden{
-        background-image: linear-gradient(
-            0deg,
-            rgba(0,0,0,0.5),
-            rgba(0,0,0,0.5)
-        ),  url("assets/img/Harden/foto-perfil-harden.jpg");
-        background-size: cover;
-        background-position: center center;
-        height: 600px;
-        width: 600px;
-    }
-    #datos-jugadores .img-container-lebron{
-        background-image: linear-gradient(
-            0deg,
-            rgba(0,0,0,0.5),
-            rgba(0,0,0,0.5)
-        ),  url("assets/img/LeBron/LeBron_James_crop.jpg");
-        background-size: cover;
-        background-position: center center;
-        height: 800px;
-        width: 800px;
-    }
-    #datos-jugadores .img-container-kd{
-        background-image: linear-gradient(
-            0deg,
-            rgba(0,0,0,0.5),
-            rgba(0,0,0,0.5)
-        ),  url("assets/img/KD/kevin-durant\ foto\ perfil.jpg");
+    .img-container-kd{
+        background-image:url("assets/img/KD/kevin-durant\ foto\ perfil.jpg");
         background-size: cover;
         background-position: top center;
         height: 600px;
         width: 600px;
     }
-    #datos-jugadores .img-container-giannis{
-        background-image: linear-gradient(
-            0deg,
-            rgba(0,0,0,0.5),
-            rgba(0,0,0,0.5)
-        ),  url("assets/img/Giannis/foto\ perfil\ giannis.jfif");
+    .img-container-giannis{
+        background-image:url("assets/img/Giannis/giannis.webp");
         background-size: cover;
         background-position: top center;
-        height: 800px;
-        width: 600px;
+        height: 500px;
+        width: 500px;
     }
 
     /* Estilizo las Imagenes de las zapatillas de las paginas*/
 
-    #zapatillas .container-zapatillas{
+    .zapatillas {
         display: flex;
-        width: 100%;
         flex-wrap: wrap;
-        margin: 150px 350px;
+        justify-content: space-between;
+        padding: 0;
     }
-    #zapatillas img{
-        margin: 0 50px;
+    .zapatillas img{
+        margin: 20px 20px;
+        width: 20%;
+        border-radius: 15px;
+        box-shadow: 0px 3px 5px rgba(15,15,15,);
     }
 }
+
