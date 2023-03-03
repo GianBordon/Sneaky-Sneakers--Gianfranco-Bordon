@@ -1,0 +1,174 @@
+/* Comiezo a modificar la pagina para cuando estemos desde una pantalla Web GRANDE */
+
+@media (min-width: 720px){
+
+    .container{
+        max-width:100%;
+        margin: auto;
+    }
+    /* Estilizo el Header */
+
+    header .container{
+        flex-direction: row;
+        justify-content: space-between;
+    nav{
+        flex-direction: row;
+    a{
+        font-size: 2rem;
+    }}}
+    header .logo{
+        font-size: 3.5rem;
+    }
+    /* Estilizo las secciones */
+
+    .secciones nav{
+        font-size: 1.5rem;
+        display: inline;
+        margin: 0 70px;
+    a{
+        margin: 0 10px;
+    }}
+    /* Estilizo el Banner */
+
+    .banner h1{
+        font-size: 10rem;
+        width: 100%;
+    }
+    /* Estilizo los titulso de todas las paginas */
+
+    .titulosecciones h2{
+        font-size: 4rem;
+    }
+    /* Estilizo las cartas de las zapatillas (marcas) */
+    .cartas-jugadores{
+        display: flex;
+        justify-content: center;
+    }
+    .type-shoe{
+        padding: 100px 0;
+    h2{
+        font-size: 3rem;
+    }}
+    .carta-zapatillas{
+        width: 100%;
+    }
+    /* Estilizo el carrucel de zapas de boostrap */
+
+    .shoes-select {
+        width: 40%;
+        display: block;
+        justify-content: center;
+    h2{
+        text-align: center;
+        font-size: 3rem;
+    }}
+    body {
+        background-color: $color_07;
+    }
+    /*  Estilizo las cartas de los jugadores */
+
+    .cartas-jugadores{
+        display: flex;
+    }
+    .jugadores h2{
+        font-size: 3rem;
+        text-align: center;
+    }
+    /* Estilizo el newspapper */
+    .newspapper{
+        background-color: $color_10;
+    }
+    /* Estilizo las listas de pie de pagina */
+
+    .listaspie ul{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    li{
+        color: $color_02;
+        margin: 50px 20px;
+    }}
+    
+
+    /* Estilizo el footer */
+
+    footer .container{
+        justify-content: flex-end;
+    }
+
+    /* Estilizo las cartas de los jugadores destacados en sus paginas  */
+
+    .foto-perfil-jugadores{
+        display: none;
+    }
+    .datos-jugadores{
+        display: flex;
+        justify-content: center;
+        padding: 20px 0;
+    }
+    .texto{
+        width: 50%;
+        text-align: initial;
+        padding: 0 30px;
+
+    }
+    .titulosecciones h2{
+        font-size: 3rem;
+    }
+    .datos-jugadores .texto{
+        width: 40%;
+        text-align: initial;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .img-container-paul{
+        background-image:url("../assets/img/PG/paul.webp");
+        background-size: cover;
+        background-position: center center;
+        height: 500px;
+        width: 500px;
+    }
+    .img-container-harden{
+        background-image: url("../assets/img/Harden/hardem.webp");
+        background-size: cover;
+        background-position: center center;
+        height: 500px;
+        width: 500px;
+    }
+    .img-container-lebron{
+        background-image: url("../assets/img/LeBron/lebron_james.webp");
+        background-size: cover;
+        background-position: center center;
+        height: 700px;
+        width: 600px;
+    }
+    .img-container-kd{
+        background-image:url("../assets/img/KD/kevin-durant\ foto\ perfil.jpg");
+        background-size: cover;
+        background-position: top center;
+        height: 600px;
+        width: 600px;
+    }
+    .img-container-giannis{
+        background-image:url("../assets/img/Giannis/giannis.webp");
+        background-size: cover;
+        background-position: top center;
+        height: 500px;
+        width: 500px;
+    }
+
+    /* Estilizo las Imagenes de las zapatillas de las paginas*/
+
+    .zapatillas {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding: 0;
+    img{
+        margin: 20px 20px;
+        width: 20%;
+        border-radius: -15px + 30;
+        box-shadow: 0px 3px 5px $color_11;
+    }}
+}
