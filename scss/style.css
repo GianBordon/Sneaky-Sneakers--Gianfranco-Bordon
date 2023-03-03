@@ -7,19 +7,15 @@
 
 /* Algunos valores predeterminados que quier que tenga mi pagina */
 h1 {
-  font-size: 3.5rem;
-}
-
-h2 {
-  font-size: 2.7rem;
-}
-
-h3 {
   font-size: 2rem;
 }
 
-p {
-  font-size: 1.3rem;
+h2 {
+  font-size: 3rem;
+}
+
+h3 {
+  font-size: 4rem;
 }
 
 ul {
@@ -108,7 +104,7 @@ header a:hover {
   font-size: 1.1rem;
 }
 .container nav a:hover {
-  color: rgb(255, 255, 255);
+  color: #49A5C1;
 }
 
 /* Pongo el Banner de la pagina y lo estilizo */
@@ -365,7 +361,7 @@ footer .container {
   margin: 20px 20px;
 }
 
-.banner-jugadores-giannis {
+.banner-gral, .banner-jugadores-lebron, .banner-jugadores-pg, .banner-jugadores-kd, .banner-jugadores-harden, .banner-jugadores-giannis {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -374,81 +370,41 @@ footer .container {
   height: 90vh;
   color: darkcyan;
   font-size: 1em;
-  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../assets/img/Giannis/fondo-de-patalla-gianis.webp");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
+}
+
+.banner-jugadores-giannis {
+  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../assets/img/Giannis/fondo-de-patalla-gianis.webp");
 }
 .banner-jugadores-giannis h1 {
   display: none;
 }
 
 .banner-jugadores-harden {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  flex-direction: column;
-  height: 90vh;
-  color: darkcyan;
-  font-size: 1em;
   background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../assets/img/Harden/foto-logo-harden.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center center;
 }
 .banner-jugadores-harden h1 {
   display: none;
 }
 
 .banner-jugadores-kd {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  flex-direction: column;
-  height: 90vh;
-  color: darkcyan;
-  font-size: 1em;
   background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../assets/img/KD/Foto-Larga-KD.webp");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center center;
 }
 .banner-jugadores-kd h1 {
   display: none;
 }
 
 .banner-jugadores-pg {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  flex-direction: column;
-  height: 90vh;
-  color: darkcyan;
-  font-size: 1em;
   background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../assets/img/PG/paul-george-fotologo.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center center;
 }
 .banner-jugadores-pg h1 {
   display: none;
 }
 
 .banner-jugadores-lebron {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  flex-direction: column;
-  height: 90vh;
-  color: darkcyan;
-  font-size: 1em;
   background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../assets/img/LeBron/lebron-james-with-black-and-white-background-and-lakers-jersey-wallpaper-1920x1080_48.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
   background-position: right;
 }
 .banner-jugadores-lebron h1 {
