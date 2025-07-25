@@ -1,0 +1,197 @@
+//Mis Variables de Colores
+$color_01: darkcyan;
+$color_02: white;
+$color_03: black;
+$color_04: cyan;
+$color_05: rgb(255, 255, 255);
+$color_06: #49A5C1;
+$color_07: #EFFBFA;
+$color_08: rgb(100, 100, 100);
+$color_09: #232e39;
+$color_10: #ffffff;
+$color_11: rgb(15, 15, 15);
+$color_12: rgba(30,30,30);
+
+$parametros: (
+    alineacion: center,
+    horizontal: row,
+    bloque: block,
+    display: flex,
+    envolver: cover
+);
+
+/* Comiezo a modificar la pagina para cuando estemos desde una pantalla Web GRANDE */
+
+@media (min-width: 720px){
+
+    .container{
+        max-width:100%;
+        margin: auto;
+    }
+    /* Estilizo el Header */
+
+    header .container{
+        flex-direction: map-get($map:$parametros, $key:horizontal );
+        justify-content: space-between;
+    nav{
+        flex-direction: map-get($map:$parametros, $key:horizontal );
+    a{
+        font-size: 2rem;
+    }}}
+    header .logo{
+        font-size: 3.5rem;
+    }
+    /* Estilizo las secciones */
+
+    .secciones nav{
+        font-size: 1.5rem;
+        display: inline;
+        margin: 0 70px;
+    a{
+        margin: 0 10px;
+    }}
+    /* Estilizo el Banner */
+
+    .banner h1{
+        font-size: 10rem;
+        width: 100%;
+    }
+    /* Estilizo los titulso de todas las paginas */
+
+    .titulosecciones h2{
+        font-size: 4rem;
+    }
+    /* Estilizo las cartas de las zapatillas (marcas) */
+    .cartas-jugadores{
+        display: map-get($map:$parametros, $key:display);
+        justify-content: map-get($map:$parametros, $key:alineacion);
+    }
+    .type-shoe{
+        padding: 100px 0;
+    h2{
+        font-size: 3rem;
+    }}
+    .carta-zapatillas{
+        width: 100%;
+    }
+    /* Estilizo el carrucel de zapas de boostrap */
+
+    .shoes-select {
+        width: 40%;
+        display: map-get($map:$parametros, $key:bloque);
+        justify-content: map-get($map:$parametros, $key:alineacion);
+    h2{
+        text-align: map-get($map:$parametros, $key:alineacion);
+        font-size: 3rem;
+    }}
+
+    body {
+        background-color: $color_07;
+    }
+    /*  Estilizo las cartas de los jugadores */
+
+    .cartas-jugadores{
+        display: map-get($map:$parametros, $key:display);
+    }
+    .jugadores h2{
+        font-size: 3rem;
+        text-align: map-get($map:$parametros, $key:alineacion);
+    }
+    /* Estilizo el newspapper */
+    .newspapper{
+        background-color: $color_10;
+    }
+    /* Estilizo las listas de pie de pagina */
+
+    .listaspie ul{
+        display: map-get($map:$parametros, $key:display);
+        flex-direction: map-get($map:$parametros, $key:horizontal );
+        align-items: map-get($map:$parametros, $key:alineacion);
+    li{
+        color: $color_02;
+        margin: 50px 20px;
+    }}
+    
+
+    /* Estilizo el footer */
+
+    footer .container{
+        justify-content: flex-end;
+    }
+
+    /* Estilizo las cartas de los jugadores destacados en sus paginas  */
+
+    .foto-perfil-jugadores{
+        display: none;
+    }
+    .datos-jugadores{
+        display: map-get($map:$parametros, $key:display);
+        justify-content: map-get($map:$parametros, $key:alineacion);
+        padding: 20px 0;
+    }
+    .texto{
+        width: 50%;
+        text-align: initial;
+        padding: 0 30px;
+
+    }
+    .titulosecciones h2{
+        font-size: 3rem;
+    }
+    .datos-jugadores .texto{
+        width: 40%;
+        text-align: initial;
+        display: map-get($map:$parametros, $key:display);
+        flex-direction: column;
+        justify-content: map-get($map:$parametros, $key:alineacion);
+    }
+    .img-container-paul{
+        background-image:url("../assets/img/PG/paul.webp");
+        background-size: map-get($map:$parametros, $key:envolver);
+        background-position: map-get($map:$parametros, $key:alineacion) map-get($map:$parametros, $key:alineacion);
+        height: 500px;
+        width: 500px;
+    }
+    .img-container-harden{
+        background-image: url("../assets/img/Harden/hardem.webp");
+        background-size: map-get($map:$parametros, $key:envolver);
+        background-position: map-get($map:$parametros, $key:alineacion) map-get($map:$parametros, $key:alineacion);
+        height: 500px;
+        width: 500px;
+    }
+    .img-container-lebron{
+        background-image: url("../assets/img/LeBron/lebron_james.webp");
+        background-size: map-get($map:$parametros, $key:envolver);
+        background-position: map-get($map:$parametros, $key:alineacion) map-get($map:$parametros, $key:alineacion);
+        height: 700px;
+        width: 600px;
+    }
+    .img-container-kd{
+        background-image:url("../assets/img/KD/kevin-durant\ foto\ perfil.jpg");
+        background-size: map-get($map:$parametros, $key:envolver);
+        background-position: top map-get($map:$parametros, $key:alineacion);
+        height: 600px;
+        width: 600px;
+    }
+    .img-container-giannis{
+        background-image:url("../assets/img/Giannis/giannis.webp");
+        background-size: map-get($map:$parametros, $key:envolver);
+        background-position: top map-get($map:$parametros, $key:alineacion);
+        height: 500px;
+        width: 500px;
+    }
+
+    /* Estilizo las Imagenes de las zapatillas de las paginas*/
+
+    .zapatillas {
+        display: map-get($map:$parametros, $key:display);
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding: 0;
+    img{
+        margin: 20px 20px;
+        width: 20%;
+        border-radius: -15px + 30;
+        box-shadow: 0px 3px 5px $color_11;
+    }}
+}
