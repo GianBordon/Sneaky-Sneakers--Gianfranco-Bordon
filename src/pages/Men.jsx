@@ -1,11 +1,15 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 const menShoes = [
-  "Nike SB/102.webp", "Nike SB/186.webp", "Nike SB/189.webp", "Nike SB/19.webp", "Nike SB/190.webp", "Nike SB/197.webp", "Nike SB/198.webp", "Nike SB/22.webp",
-  "Jordan/116.webp", "Jordan/149.webp", "Jordan/15.webp", "Jordan/150.webp", "Jordan/156.webp", "Jordan/164.webp", "Jordan/168.webp", "Jordan/183.webp",
-  "NIKE/11.webp", "NIKE/118.webp", "NIKE/122.webp", "NIKE/125.webp", "NIKE/132.webp", "NIKE/140.webp", "NIKE/145.webp"
+  { id: 1, name: "Nike Air Max", price: "$120", image: "/src/assets/img/NIKE/10.webp" },
+  { id: 2, name: "Adidas Ultraboost", price: "$180", image: "/src/assets/img/NIKE/11.webp" },
+  { id: 3, name: "Jordan Retro", price: "$200", image: "/src/assets/img/Jordan/15.webp" },
+  { id: 4, name: "Nike SB Dunk", price: "$90", image: "/src/assets/img/Nike SB/102.webp" },
+  { id: 5, name: "LeBron James", price: "$150", image: "/src/assets/img/LeBron/LeBron XX.webp" },
+  { id: 6, name: "Kevin Durant", price: "$130", image: "/src/assets/img/KD/KD 8.webp" },
 ];
 
 const Men = () => (
@@ -14,13 +18,13 @@ const Men = () => (
 
     {/* Section navigation */}
     <section className="bg-gray-100 py-2">
-      <div className="container mx-auto flex justify-center">
-        <nav className="flex gap-6">
-          <a href="/men" className="text-lg font-semibold hover:text-blue-600">Men</a>
-          <a href="/women" className="text-lg font-semibold hover:text-pink-600">Women</a>
-          <a href="/kids" className="text-lg font-semibold hover:text-green-600">Kids</a>
-          <a href="/new" className="text-lg font-semibold hover:text-yellow-600">New Arrivals</a>
-          <a href="/sale" className="text-lg font-semibold hover:text-red-600">SALE</a>
+      <div className="container mx-auto">
+        <nav className="flex justify-center space-x-8">
+          <Link to="/men" className="text-gray-700 hover:text-gray-900 font-semibold">Hombre</Link>
+          <Link to="/women" className="text-gray-700 hover:text-gray-900 font-semibold">Mujer</Link>
+          <Link to="/kids" className="text-gray-700 hover:text-gray-900 font-semibold">Niños</Link>
+          <Link to="/new-arrivals" className="text-gray-700 hover:text-gray-900 font-semibold">New Arrivals</Link>
+          <Link to="/sale" className="text-gray-700 hover:text-gray-900 font-semibold">SALE</Link>
         </nav>
       </div>
     </section>
@@ -30,35 +34,58 @@ const Men = () => (
       <h1 className="text-4xl font-bold">Sneaky Sneakers</h1>
     </section>
 
-    {/* Section title */}
+    {/* Products Grid */}
     <section className="py-8">
-      <div className="container mx-auto max-w-3xl text-center">
-        <h2 className="text-2xl font-bold mb-4">Men</h2>
+      <div className="container mx-auto px-4">
+        <h2 className="text-3xl font-bold text-center mb-8">Men's Collection</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {menShoes.map((shoe) => (
+            <div key={shoe.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+              <img src={shoe.image} alt={shoe.name} className="w-full h-64 object-cover" />
+              <div className="p-4">
+                <h3 className="text-lg font-semibold mb-2">{shoe.name}</h3>
+                <p className="text-gray-600 mb-4">{shoe.price}</p>
+                <button className="w-full bg-black text-white py-2 rounded hover:bg-gray-800 transition-colors">
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
 
-    {/* Shoes grid */}
-    <section className="py-8">
-      <div className="container mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-        {menShoes.map((img, idx) => (
-          <img
-            key={idx}
-            src={`/src/assets/img/${img}`}
-            alt={img.split("/")[1]}
-            className="rounded-lg shadow object-cover w-full h-32 sm:h-40 md:h-48 lg:h-56"
-          />
-        ))}
-      </div>
-    </section>
-
-    {/* Newsletter form */}
+    {/* Newsletter Section */}
     <section className="bg-gray-100 py-8">
-      <div className="container mx-auto max-w-md text-center">
-        <h3 className="text-xl font-semibold mb-4">SUBSCRIBE TO THE NEWSLETTER</h3>
-        <form className="flex flex-col gap-4 items-center">
-          <input type="text" placeholder="Enter your E-mail" className="border rounded px-4 py-2 w-full" />
-          <input type="submit" value="Subscribe" className="bg-black text-white px-6 py-2 rounded cursor-pointer hover:bg-gray-800" />
+      <div className="container mx-auto px-4 text-center">
+        <h3 className="text-2xl font-bold mb-4">SUSCRIBITE AL NEWSLETTER</h3>
+        <form className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-md mx-auto">
+          <input
+            type="email"
+            placeholder="Ingrese su E-mail"
+            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <button
+            type="submit"
+            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Suscribirse
+          </button>
         </form>
+      </div>
+    </section>
+
+    {/* Footer Links */}
+    <section className="bg-gray-200 py-6">
+      <div className="container mx-auto px-4">
+        <ul className="flex flex-wrap justify-center gap-6 text-sm">
+          <li><Link to="/about-us" className="text-gray-700 hover:text-gray-900">Quienes somos</Link></li>
+          <li><Link to="/faq" className="text-gray-700 hover:text-gray-900">Preguntas Frecuentes</Link></li>
+          <li><Link to="/exchange-policy" className="text-gray-700 hover:text-gray-900">Politica de cambios</Link></li>
+          <li><a href="https://autogestion.produccion.gob.ar/consumidores" className="text-gray-700 hover:text-gray-900">Defensa del consumidor</a></li>
+          <li><Link to="/shipping-policy" className="text-gray-700 hover:text-gray-900">Politica de envios</Link></li>
+          <li><Link to="/payment-methods" className="text-gray-700 hover:text-gray-900">Formas de pago</Link></li>
+        </ul>
       </div>
     </section>
 

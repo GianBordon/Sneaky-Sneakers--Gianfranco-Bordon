@@ -1,35 +1,67 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+// Importar todas las páginas
+import Home from './pages/Home';
+import Men from './pages/Men';
+import Women from './pages/Women';
+import Kids from './pages/Kids';
+import NewArrivals from './pages/NewArrivals';
+import Sale from './pages/Sale';
+import AllProducts from './pages/AllProducts';
+import AboutUs from './pages/AboutUs';
+import PaymentMethods from './pages/PaymentMethods';
+import FAQ from './pages/FAQ';
+import ShippingPolicy from './pages/ShippingPolicy';
+import ExchangePolicy from './pages/ExchangePolicy';
+import LoginPage from './pages/LoginPage';
+
+// Importar páginas de jugadores
+import PaulGeorge from './pages/PaulGeorge';
+import LeBronJames from './pages/LeBronJames';
+import KevinDurant from './pages/KevinDurant';
+import GiannisAntetokounmpo from './pages/GiannisAntetokounmpo';
+import JamesHarden from './pages/JamesHarden';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <Router>
+      <div className="App">
+        <Routes>
+          {/* Página principal */}
+          <Route path="/" element={<Home />} />
+          
+          {/* Páginas de categorías */}
+          <Route path="/men" element={<Men />} />
+          <Route path="/women" element={<Women />} />
+          <Route path="/kids" element={<Kids />} />
+          <Route path="/new-arrivals" element={<NewArrivals />} />
+          <Route path="/sale" element={<Sale />} />
+          <Route path="/all-products" element={<AllProducts />} />
+          
+          {/* Páginas informativas */}
+          <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/payment-methods" element={<PaymentMethods />} />
+          <Route path="/faq" element={<FAQ />} />
+          <Route path="/shipping-policy" element={<ShippingPolicy />} />
+          <Route path="/exchange-policy" element={<ExchangePolicy />} />
+          
+          {/* Página de autenticación */}
+          <Route path="/login" element={<LoginPage />} />
+          
+          {/* Páginas de jugadores */}
+          <Route path="/paul-george" element={<PaulGeorge />} />
+          <Route path="/lebron-james" element={<LeBronJames />} />
+          <Route path="/kevin-durant" element={<KevinDurant />} />
+          <Route path="/giannis-antetokounmpo" element={<GiannisAntetokounmpo />} />
+          <Route path="/james-harden" element={<JamesHarden />} />
+          
+          {/* Ruta por defecto - redirige a Home */}
+          <Route path="*" element={<Home />} />
+        </Routes>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </Router>
+  );
 }
 
-export default App
+export default App;
