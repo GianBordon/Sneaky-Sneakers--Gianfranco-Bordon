@@ -1,9 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ErrorBoundary from './components/ErrorBoundary';
 
 // Importar todas las páginas
 import Home from './pages/Home';
 import Men from './pages/Men';
+import MenSimple from './pages/MenSimple';
+import MenWithCart from './pages/MenWithCart';
 import Women from './pages/Women';
 import Kids from './pages/Kids';
 import NewArrivals from './pages/NewArrivals';
@@ -23,44 +26,54 @@ import KevinDurant from './pages/KevinDurant';
 import GiannisAntetokounmpo from './pages/GiannisAntetokounmpo';
 import JamesHarden from './pages/JamesHarden';
 
+// Página de prueba
+import TestPage from './pages/TestPage';
+
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <Routes>
-          {/* Página principal */}
-          <Route path="/" element={<Home />} />
-          
-          {/* Páginas de categorías */}
-          <Route path="/men" element={<Men />} />
-          <Route path="/women" element={<Women />} />
-          <Route path="/kids" element={<Kids />} />
-          <Route path="/new-arrivals" element={<NewArrivals />} />
-          <Route path="/sale" element={<Sale />} />
-          <Route path="/all-products" element={<AllProducts />} />
-          
-          {/* Páginas informativas */}
-          <Route path="/about-us" element={<AboutUs />} />
-          <Route path="/payment-methods" element={<PaymentMethods />} />
-          <Route path="/faq" element={<FAQ />} />
-          <Route path="/shipping-policy" element={<ShippingPolicy />} />
-          <Route path="/exchange-policy" element={<ExchangePolicy />} />
-          
-          {/* Página de autenticación */}
-          <Route path="/login" element={<LoginPage />} />
-          
-          {/* Páginas de jugadores */}
-          <Route path="/paul-george" element={<PaulGeorge />} />
-          <Route path="/lebron-james" element={<LeBronJames />} />
-          <Route path="/kevin-durant" element={<KevinDurant />} />
-          <Route path="/giannis-antetokounmpo" element={<GiannisAntetokounmpo />} />
-          <Route path="/james-harden" element={<JamesHarden />} />
-          
-          {/* Ruta por defecto - redirige a Home */}
-          <Route path="*" element={<Home />} />
-        </Routes>
-      </div>
-    </Router>
+    <ErrorBoundary>
+      <Router>
+        <div className="App">
+          <Routes>
+            {/* Página principal */}
+            <Route path="/" element={<Home />} />
+            
+            {/* Página de prueba */}
+            <Route path="/test" element={<TestPage />} />
+            
+            {/* Páginas de categorías */}
+            <Route path="/men" element={<Men />} />
+            <Route path="/men-simple" element={<MenSimple />} />
+            <Route path="/men-with-cart" element={<MenWithCart />} />
+            <Route path="/women" element={<Women />} />
+            <Route path="/kids" element={<Kids />} />
+            <Route path="/new-arrivals" element={<NewArrivals />} />
+            <Route path="/sale" element={<Sale />} />
+            <Route path="/all-products" element={<AllProducts />} />
+            
+            {/* Páginas informativas */}
+            <Route path="/about-us" element={<AboutUs />} />
+            <Route path="/payment-methods" element={<PaymentMethods />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/shipping-policy" element={<ShippingPolicy />} />
+            <Route path="/exchange-policy" element={<ExchangePolicy />} />
+            
+            {/* Página de autenticación */}
+            <Route path="/login" element={<LoginPage />} />
+            
+            {/* Páginas de jugadores */}
+            <Route path="/paul-george" element={<PaulGeorge />} />
+            <Route path="/lebron-james" element={<LeBronJames />} />
+            <Route path="/kevin-durant" element={<KevinDurant />} />
+            <Route path="/giannis-antetokounmpo" element={<GiannisAntetokounmpo />} />
+            <Route path="/james-harden" element={<JamesHarden />} />
+            
+            {/* Ruta por defecto - redirige a Home */}
+            <Route path="*" element={<Home />} />
+          </Routes>
+        </div>
+      </Router>
+    </ErrorBoundary>
   );
 }
 

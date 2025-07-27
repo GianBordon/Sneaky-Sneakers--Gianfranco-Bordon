@@ -1,8 +1,18 @@
 import React, { useState } from "react";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import { 
+  SectionNavigation, 
+  PageBanner, 
+  FormInput,
+  Navbar,
+  Footer 
+} from "../components";
+import { useAuth } from "../hooks";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
+  const { register, loading, error, clearError } = useAuth();
+  const navigate = useNavigate();
+  
   const [formData, setFormData] = useState({
     nombres: "",
     apellidos: "",
@@ -10,40 +20,53 @@ const LoginPage = () => {
     password: ""
   });
 
+  const [errors, setErrors] = useState({});
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
+    // Clear error when user starts typing
+    if (errors[e.target.name]) {
+      setErrors({
+        ...errors,
+        [e.target.name]: ""
+      });
+    }
+    clearError();
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Aquí iría la lógica de registro
-    console.log("Datos del formulario:", formData);
+    
+    // Basic validation
+    const newErrors = {};
+    if (!formData.nombres.trim()) newErrors.nombres = "El nombre es requerido";
+    if (!formData.apellidos.trim()) newErrors.apellidos = "El apellido es requerido";
+    if (!formData.correo.trim()) newErrors.correo = "El correo es requerido";
+    if (!formData.password.trim()) newErrors.password = "La contraseña es requerida";
+    
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    // Registrar usuario
+    const result = await register(formData);
+    if (result.success) {
+      console.log("Usuario registrado exitosamente");
+      navigate('/'); // Redirigir a home después del registro
+    } else {
+      console.error("Error en el registro:", result.error);
+    }
   };
 
   return (
     <>
       <Navbar />
-      
-      {/* Section navigation */}
-      <section className="bg-gray-100 py-2">
-        <div className="container mx-auto">
-          <nav className="flex justify-center space-x-8">
-            <a href="/men" className="text-gray-700 hover:text-gray-900 font-semibold">Hombre</a>
-            <a href="/women" className="text-gray-700 hover:text-gray-900 font-semibold">Mujer</a>
-            <a href="/kids" className="text-gray-700 hover:text-gray-900 font-semibold">Niños</a>
-            <a href="/new-arrivals" className="text-gray-700 hover:text-gray-900 font-semibold">New Arrivals</a>
-            <a href="/sale" className="text-gray-700 hover:text-gray-900 font-semibold">SALE</a>
-          </nav>
-        </div>
-      </section>
-
-      {/* Banner */}
-      <section className="banner bg-black text-white py-8 text-center">
-        <h1 className="text-4xl font-bold">Sneaky Sneakers</h1>
-      </section>
+      <SectionNavigation />
+      <PageBanner title="Sneaky Sneakers" />
 
       {/* Login Form Section */}
       <section className="py-12 bg-gray-50">
@@ -53,106 +76,78 @@ const LoginPage = () => {
               <h4 className="text-2xl font-bold text-center mb-6">Formulario Registro</h4>
               
               <form onSubmit={handleSubmit} className="space-y-4">
-                <input
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                <FormInput
                   type="text"
                   name="nombres"
-                  id="nombres"
                   placeholder="Ingrese su Nombre"
                   value={formData.nombres}
                   onChange={handleChange}
                   required
+                  error={errors.nombres}
                 />
                 
-                <input
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                <FormInput
                   type="text"
                   name="apellidos"
-                  id="apellidos"
                   placeholder="Ingrese su Apellido"
                   value={formData.apellidos}
                   onChange={handleChange}
                   required
+                  error={errors.apellidos}
                 />
                 
-                <input
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                <FormInput
                   type="email"
                   name="correo"
-                  id="correo"
                   placeholder="Ingrese su Correo"
                   value={formData.correo}
                   onChange={handleChange}
                   required
+                  error={errors.correo}
                 />
                 
-                <input
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                <FormInput
                   type="password"
                   name="password"
-                  id="password"
                   placeholder="Ingrese su Contraseña"
                   value={formData.password}
                   onChange={handleChange}
                   required
+                  error={errors.password}
                 />
                 
                 <p className="text-sm text-gray-600">
-                  Estoy de acuerdo con{" "}
-                  <a href="#" className="text-blue-600 hover:text-blue-800 underline">
-                    Términos y Condiciones
-                  </a>
+                  Al registrarte, aceptas nuestros términos y condiciones de uso.
                 </p>
                 
                 <button
-                  className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors font-semibold"
                   type="submit"
+                  disabled={loading}
+                  className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors font-semibold disabled:bg-blue-400"
                 >
-                  Registrar
+                  {loading ? "Registrando..." : "Registrarse"}
                 </button>
                 
-                <p className="text-center text-sm text-gray-600">
-                  <a href="#" className="text-blue-600 hover:text-blue-800 underline">
-                    ¿Ya tienes Cuenta?
-                  </a>
-                </p>
+                {error && (
+                  <div className="text-red-600 text-sm text-center mt-2">
+                    {error}
+                  </div>
+                )}
               </form>
+              
+              <div className="mt-6 text-center">
+                <p className="text-gray-600 mb-4">O regístrate con:</p>
+                <div className="flex justify-center space-x-4">
+                  <button className="flex items-center justify-center w-12 h-12 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors">
+                    <i className="bi bi-facebook"></i>
+                  </button>
+                  <button className="flex items-center justify-center w-12 h-12 bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors">
+                    <i className="bi bi-google"></i>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Newsletter Section */}
-      <section className="bg-gray-100 py-8">
-        <div className="container mx-auto px-4 text-center">
-          <h3 className="text-2xl font-bold mb-4">SUSCRIBITE AL NEWSLETTER</h3>
-          <form className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-md mx-auto">
-            <input
-              type="email"
-              placeholder="Ingrese su E-mail"
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <button
-              type="submit"
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              Suscribirse
-            </button>
-          </form>
-        </div>
-      </section>
-
-      {/* Footer Links */}
-      <section className="bg-gray-200 py-6">
-        <div className="container mx-auto px-4">
-          <ul className="flex flex-wrap justify-center gap-6 text-sm">
-            <li><a href="/about-us" className="text-gray-700 hover:text-gray-900">Quienes somos</a></li>
-            <li><a href="/faq" className="text-gray-700 hover:text-gray-900">Preguntas Frecuentes</a></li>
-            <li><a href="/exchange-policy" className="text-gray-700 hover:text-gray-900">Politica de cambios</a></li>
-            <li><a href="https://autogestion.produccion.gob.ar/consumidores" className="text-gray-700 hover:text-gray-900">Defensa del consumidor</a></li>
-            <li><a href="/shipping-policy" className="text-gray-700 hover:text-gray-900">Politica de envios</a></li>
-            <li><a href="/payment-methods" className="text-gray-700 hover:text-gray-900">Formas de pago</a></li>
-          </ul>
         </div>
       </section>
 
