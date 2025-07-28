@@ -30,26 +30,128 @@ const Men = () => {
   };
 
   return (
-    <>
+    <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100">
       <Navbar />
       <SectionNavigation />
       <PageBanner title="Sneaky Sneakers" />
 
-      {/* Products Grid */}
-      <section className="py-8">
+      {/* Hero Section */}
+      <section className="relative py-16 bg-gradient-to-r from-primary-600 to-primary-700 overflow-hidden">
+        <div className="absolute inset-0 bg-black/20"></div>
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center animate-fade-in">
+            <h1 className="text-5xl md:text-6xl font-display font-bold text-white mb-4">
+              Men's Collection
+            </h1>
+            <p className="text-xl text-primary-100 max-w-2xl mx-auto">
+              Discover the latest trends in men's sneakers. From classic to contemporary, find your perfect style.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Filters Section */}
+      <section className="py-8 bg-white border-b border-neutral-200">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-8">Men's Collection</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {menShoes.map((shoe) => (
-              <ProductCard
+          <div className="flex flex-wrap items-center justify-between gap-4 animate-slide-down">
+            <div className="flex items-center space-x-4">
+              <span className="text-neutral-600 font-medium">Filter by:</span>
+              <button className="px-4 py-2 rounded-full bg-primary-100 text-primary-700 hover:bg-primary-200 transition-colors">
+                All
+              </button>
+              <button className="px-4 py-2 rounded-full bg-neutral-100 text-neutral-600 hover:bg-neutral-200 transition-colors">
+                Running
+              </button>
+              <button className="px-4 py-2 rounded-full bg-neutral-100 text-neutral-600 hover:bg-neutral-200 transition-colors">
+                Basketball
+              </button>
+              <button className="px-4 py-2 rounded-full bg-neutral-100 text-neutral-600 hover:bg-neutral-200 transition-colors">
+                Lifestyle
+              </button>
+            </div>
+            <div className="flex items-center space-x-2">
+              <span className="text-neutral-600">Sort by:</span>
+              <select className="px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                <option>Latest</option>
+                <option>Price: Low to High</option>
+                <option>Price: High to Low</option>
+                <option>Most Popular</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Products Grid */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12 animate-slide-up">
+            <h2 className="text-3xl font-display font-bold text-neutral-800 mb-4">
+              {menShoes.length} Products Available
+            </h2>
+            <p className="text-neutral-600">Handpicked selection of premium men's sneakers</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            {menShoes.map((shoe, index) => (
+              <div 
                 key={shoe.id}
-                id={shoe.id}
-                name={shoe.name}
-                price={`$${shoe.price}`}
-                image={shoe.image}
-                onAddToCart={handleAddToCart}
-              />
+                className="animate-scale-in group"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden">
+                  <ProductCard
+                    id={shoe.id}
+                    name={shoe.name}
+                    price={`$${shoe.price}`}
+                    image={shoe.image}
+                    onAddToCart={handleAddToCart}
+                  />
+                </div>
+              </div>
             ))}
+          </div>
+
+          {/* Load More Button */}
+          <div className="text-center mt-12 animate-fade-in">
+            <button className="bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg">
+              Load More Products
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-16 bg-gradient-to-r from-neutral-50 to-white">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center animate-slide-up">
+              <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold text-neutral-800 mb-2">Free Shipping</h3>
+              <p className="text-neutral-600">Free shipping on orders over $50</p>
+            </div>
+            <div className="text-center animate-slide-up" style={{ animationDelay: '200ms' }}>
+              <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold text-neutral-800 mb-2">Authentic Products</h3>
+              <p className="text-neutral-600">100% authentic sneakers guaranteed</p>
+            </div>
+            <div className="text-center animate-slide-up" style={{ animationDelay: '400ms' }}>
+              <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold text-neutral-800 mb-2">Easy Returns</h3>
+              <p className="text-neutral-600">30-day return policy for your peace of mind</p>
+            </div>
           </div>
         </div>
       </section>
@@ -57,7 +159,7 @@ const Men = () => {
       <NewsletterSection onSubmit={handleNewsletterSubmit} />
       <FooterLinks />
       <Footer />
-    </>
+    </div>
   );
 };
 

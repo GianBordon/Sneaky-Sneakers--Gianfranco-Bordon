@@ -85,7 +85,7 @@ export const players = [
     id: 4,
     name: 'Paul George',
     path: '/paul-george',
-    image: '/src/assets/img/jugadores/paul.webp',
+    image: '/src/assets/img/PG/paul.webp',
     profileImage: '/src/assets/img/PG/paul-george-perfil.jpg',
     bannerGradient: 'bg-gradient-to-r from-red-600 to-blue-500',
     achievements: [

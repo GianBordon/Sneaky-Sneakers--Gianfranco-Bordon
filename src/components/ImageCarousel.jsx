@@ -22,42 +22,44 @@ const ImageCarousel = ({
   }, [autoPlay, interval, images.length]);
 
   return (
-    <section className={`py-8 ${className}`}>
-      <div className="container mx-auto max-w-xl">
-        {title && <h2 className="text-2xl font-bold mb-4 text-center">{title}</h2>}
+    <section className={`py-4 md:py-8 ${className}`}>
+      <div className="container mx-auto max-w-5xl md:max-w-7xl">
+        {title && <h2 className="text-3xl md:text-5xl lg:text-6xl font-display font-bold mb-6 md:mb-12 text-center text-neutral-800">{title}</h2>}
         <div className="relative flex items-center justify-center">
           {showArrows && (
             <button 
               onClick={prevSlide} 
-              className="absolute left-0 z-10 bg-white bg-opacity-70 rounded-full p-2 shadow hover:bg-opacity-100 transition"
+              className="absolute left-2 md:left-6 z-10 bg-white rounded-full p-3 md:p-5 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 border border-neutral-200"
             >
-              <span className="text-2xl">&#8592;</span>
+              <span className="text-xl md:text-3xl text-neutral-800">&#8592;</span>
             </button>
           )}
           
-          <img
-            src={images[current]}
-            alt={`Slide ${current + 1}`}
-            className="rounded-lg w-full h-64 object-cover shadow-lg"
-          />
+          <div className="bg-white rounded-2xl md:rounded-3xl p-3 md:p-6 shadow-xl border border-neutral-200">
+            <img
+              src={images[current]}
+              alt={`Slide ${current + 1}`}
+              className="rounded-xl md:rounded-2xl w-full h-[300px] sm:h-[400px] md:h-[600px] lg:h-[700px] object-cover shadow-lg"
+            />
+          </div>
           
           {showArrows && (
             <button 
               onClick={nextSlide} 
-              className="absolute right-0 z-10 bg-white bg-opacity-70 rounded-full p-2 shadow hover:bg-opacity-100 transition"
+              className="absolute right-2 md:right-6 z-10 bg-white rounded-full p-3 md:p-5 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 border border-neutral-200"
             >
-              <span className="text-2xl">&#8594;</span>
+              <span className="text-xl md:text-3xl text-neutral-800">&#8594;</span>
             </button>
           )}
         </div>
         
         {showDots && (
-          <div className="flex justify-center gap-2 mt-2">
+          <div className="flex justify-center gap-3 md:gap-4 mt-6 md:mt-10">
             {images.map((_, idx) => (
               <button
                 key={idx}
                 onClick={() => setCurrent(idx)}
-                className={`w-3 h-3 rounded-full ${idx === current ? 'bg-black' : 'bg-gray-400'}`}
+                className={`w-3 h-3 md:w-5 md:h-5 rounded-full transition-all duration-300 ${idx === current ? 'bg-cyan-500 scale-125' : 'bg-neutral-300 hover:bg-neutral-400'}`}
               />
             ))}
           </div>
