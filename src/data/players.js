@@ -6,6 +6,7 @@ export const players = [
     path: '/lebron-james',
     image: '/src/assets/img/jugadores/lebrom.webp',
     profileImage: '/src/assets/img/LeBron/lebron_james.webp',
+    bannerImage: '/src/assets/img/LeBron/lebron-james-with-black-and-white-background-and-lakers-jersey-wallpaper-1920x1080_48.jpg',
     bannerGradient: 'bg-gradient-to-r from-purple-600 to-yellow-500',
     achievements: [
       "4 veces Jugador Más Valioso de la NBA (2009, 2010, 2012, 2013)",
@@ -36,6 +37,7 @@ export const players = [
     path: '/kevin-durant',
     image: '/src/assets/img/jugadores/KD.webp',
     profileImage: '/src/assets/img/KD/kevin-durant foto perfil.jpg',
+    bannerImage: '/src/assets/img/KD/Foto-Larga-KD.webp',
     bannerGradient: 'bg-gradient-to-r from-blue-600 to-orange-500',
     achievements: [
       "1 vez Jugador Más Valioso de la NBA (2014)",
@@ -61,6 +63,7 @@ export const players = [
     path: '/giannis-antetokounmpo',
     image: '/src/assets/img/jugadores/gianis.webp',
     profileImage: '/src/assets/img/Giannis/foto perfil giannis.jfif',
+    bannerImage: '/src/assets/img/Giannis/fondo-de-patalla-gianis.webp',
     bannerGradient: 'bg-gradient-to-r from-green-600 to-blue-500',
     achievements: [
       "2 veces Jugador Más Valioso de la NBA (2019, 2020)",
@@ -87,6 +90,7 @@ export const players = [
     path: '/paul-george',
     image: '/src/assets/img/PG/paul.webp',
     profileImage: '/src/assets/img/PG/paul-george-perfil.jpg',
+    bannerImage: '/src/assets/img/PG/paul-george-fotologo.jpg',
     bannerGradient: 'bg-gradient-to-r from-red-600 to-blue-500',
     achievements: [
       "8 veces Elegido para el All-Star de la NBA (2013, 2014, 2016, 2017, 2018, 2019, 2021, 2023)",
@@ -99,7 +103,7 @@ export const players = [
       "1 vez Mejor Equipo de Novatos de la NBA (2011)"
     ],
     shoes: [
-      { src: "/src/assets/img/PG/paul.webp", alt: "pg_01" },
+      { src: "/src/assets/img/PG/PG5.jfif", alt: "pg_01" },
       { src: "/src/assets/img/PG/PG 3.jpg", alt: "pg_02" },
       { src: "/src/assets/img/PG/PG2.jfif", alt: "pg_03" },
       { src: "/src/assets/img/PG/PG4.jfif", alt: "pg_04" }
@@ -111,6 +115,7 @@ export const players = [
     path: '/james-harden',
     image: '/src/assets/img/jugadores/jameshardem.webp',
     profileImage: '/src/assets/img/Harden/foto-perfil-harden.jpg',
+    bannerImage: '/src/assets/img/Harden/foto-logo-harden.jpg',
     bannerGradient: 'bg-gradient-to-r from-red-600 to-black',
     achievements: [
       "1 vez Jugador Más Valioso de la NBA (2018)",

@@ -22,6 +22,7 @@ const PaulGeorge = () => {
         playerName={player.name}
         bannerGradient={player.bannerGradient}
         profileImage={player.profileImage}
+        bannerImage={player.bannerImage}
         achievements={player.achievements}
         shoes={player.shoes}
       />
