@@ -32,17 +32,21 @@ const Kids = () => {
     <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100">
       <Navbar />
       <SectionNavigation />
-      <PageBanner title="Sneaky Sneakers" />
 
-      {/* Hero Section */}
-      <section className="relative py-16 bg-gradient-to-r from-yellow-400 to-orange-500 overflow-hidden">
-        <div className="absolute inset-0 bg-black/20"></div>
+      {/* Hero Section - Full Screen with Background Image */}
+      <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: "url('/src/assets/img/banners/banner-kids-page.jpg')" }}
+        ></div>
+        <div className="absolute inset-0 bg-neutral-900/70"></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center animate-fade-in">
-            <h1 className="text-5xl md:text-6xl font-display font-bold text-white mb-4">
-              Kids Collection
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-display font-bold text-white mb-4 md:mb-6">
+              Kids
+              <span className="block text-cyan-400 animate-float">Collection</span>
             </h1>
-            <p className="text-xl text-yellow-100 max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl text-neutral-200 max-w-2xl mx-auto mb-6 md:mb-8 leading-relaxed px-4">
               Fun, comfortable, and durable sneakers for the little ones. Let them explore the world in style!
             </p>
           </div>

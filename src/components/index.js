@@ -13,6 +13,7 @@ export { default as Accordion } from './Accordion';
 export { default as ContentSection } from './ContentSection';
 export { default as PlayerPage } from './PlayerPage';
 export { default as ErrorBoundary } from './ErrorBoundary';
+export { default as ScrollToTop } from './ScrollToTop';
 
 // Layout Components
 export { default as Navbar } from './Navbar';

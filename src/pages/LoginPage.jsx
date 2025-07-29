@@ -66,7 +66,6 @@ const LoginPage = () => {
     <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100">
       <Navbar />
       <SectionNavigation />
-      <PageBanner title="Sneaky Sneakers" />
 
       {/* Hero Section */}
       <section className="relative py-16 bg-gradient-to-r from-primary-600 to-primary-700 overflow-hidden">

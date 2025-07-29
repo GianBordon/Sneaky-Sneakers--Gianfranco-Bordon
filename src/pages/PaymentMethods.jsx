@@ -52,7 +52,6 @@ const PaymentMethods = () => {
     <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100">
       <Navbar />
       <SectionNavigation />
-      <PageBanner title="Sneaky Sneakers" />
 
       {/* Hero Section */}
       <section className="relative py-20 bg-gradient-to-r from-green-500 to-emerald-600 overflow-hidden">

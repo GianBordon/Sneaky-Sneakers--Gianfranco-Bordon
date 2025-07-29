@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   SectionNavigation,
   PageBanner,
@@ -12,8 +13,14 @@ import { getProductsByCategory } from "../data/products";
 import { useCart } from "../hooks";
 
 const NewArrivals = () => {
+  const navigate = useNavigate();
   const { addToCart } = useCart();
+  const [selectedFilter, setSelectedFilter] = useState('all');
+  const [sortBy, setSortBy] = useState('latest');
+  const [displayedProducts, setDisplayedProducts] = useState(8);
+  
   const newProducts = getProductsByCategory('new') || [];
+  const filteredProducts = newProducts.slice(0, displayedProducts);
 
   const handleAddToCart = async (product) => {
     const result = await addToCart(product.id, 1);
@@ -28,31 +35,61 @@ const NewArrivals = () => {
     console.log("Newsletter subscription:", email);
   };
 
+  const handleShopNew = () => {
+    document.getElementById('products-section')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleViewAll = () => {
+    navigate('/all-products');
+  };
+
+  const handleFilterChange = (filter) => {
+    setSelectedFilter(filter);
+  };
+
+  const handleSortChange = (event) => {
+    setSortBy(event.target.value);
+  };
+
+  const handleLoadMore = () => {
+    setDisplayedProducts(prev => Math.min(prev + 8, newProducts.length));
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100">
       <Navbar />
       <SectionNavigation />
-      <PageBanner title="Sneaky Sneakers" />
 
-      {/* Hero Section */}
-      <section className="relative py-16 bg-gradient-to-r from-indigo-500 to-purple-600 overflow-hidden">
-        <div className="absolute inset-0 bg-black/20"></div>
+      {/* Hero Section - Full Screen with Background Image */}
+      <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: "url('/src/assets/img/banners/banner-new_arrivals-page.jpg')" }}
+        ></div>
+        <div className="absolute inset-0 bg-neutral-900/70"></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center animate-fade-in">
             <div className="inline-block bg-white/20 backdrop-blur-sm rounded-full px-6 py-2 mb-6">
               <span className="text-white font-bold text-lg">🆕 JUST DROPPED</span>
             </div>
-            <h1 className="text-5xl md:text-7xl font-display font-bold text-white mb-6">
-              New Arrivals
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-display font-bold text-white mb-4 md:mb-6">
+              New
+              <span className="block text-cyan-400 animate-float">Arrivals</span>
             </h1>
-            <p className="text-xl text-indigo-100 max-w-2xl mx-auto mb-8">
+            <p className="text-base sm:text-lg md:text-xl text-neutral-200 max-w-2xl mx-auto mb-6 md:mb-8 leading-relaxed px-4">
               Be the first to discover the latest sneaker releases and exclusive drops
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-white text-indigo-600 hover:bg-indigo-50 px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
+              <button 
+                onClick={handleShopNew}
+                className="bg-cyan-500 hover:bg-cyan-600 text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl text-sm md:text-base"
+              >
                 Shop New
               </button>
-              <button className="border-2 border-white text-white hover:bg-white hover:text-indigo-600 px-8 py-4 rounded-full font-semibold transition-all duration-300">
+              <button 
+                onClick={handleViewAll}
+                className="border-2 border-cyan-500 text-cyan-500 hover:bg-cyan-500 hover:text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold transition-all duration-300 text-sm md:text-base"
+              >
                 View All
               </button>
             </div>
@@ -66,26 +103,58 @@ const NewArrivals = () => {
           <div className="flex flex-wrap items-center justify-between gap-4 animate-slide-down">
             <div className="flex items-center space-x-4">
               <span className="text-neutral-600 font-medium">Filter by:</span>
-              <button className="px-4 py-2 rounded-full bg-indigo-100 text-indigo-700 hover:bg-indigo-200 transition-colors">
+              <button 
+                onClick={() => handleFilterChange('all')}
+                className={`px-4 py-2 rounded-full transition-colors ${
+                  selectedFilter === 'all' 
+                    ? 'bg-indigo-100 text-indigo-700' 
+                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                }`}
+              >
                 All New
               </button>
-              <button className="px-4 py-2 rounded-full bg-neutral-100 text-neutral-600 hover:bg-neutral-200 transition-colors">
+              <button 
+                onClick={() => handleFilterChange('week')}
+                className={`px-4 py-2 rounded-full transition-colors ${
+                  selectedFilter === 'week' 
+                    ? 'bg-indigo-100 text-indigo-700' 
+                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                }`}
+              >
                 This Week
               </button>
-              <button className="px-4 py-2 rounded-full bg-neutral-100 text-neutral-600 hover:bg-neutral-200 transition-colors">
+              <button 
+                onClick={() => handleFilterChange('month')}
+                className={`px-4 py-2 rounded-full transition-colors ${
+                  selectedFilter === 'month' 
+                    ? 'bg-indigo-100 text-indigo-700' 
+                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                }`}
+              >
                 This Month
               </button>
-              <button className="px-4 py-2 rounded-full bg-neutral-100 text-neutral-600 hover:bg-neutral-200 transition-colors">
+              <button 
+                onClick={() => handleFilterChange('limited')}
+                className={`px-4 py-2 rounded-full transition-colors ${
+                  selectedFilter === 'limited' 
+                    ? 'bg-indigo-100 text-indigo-700' 
+                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                }`}
+              >
                 Limited Edition
               </button>
             </div>
             <div className="flex items-center space-x-2">
               <span className="text-neutral-600">Sort by:</span>
-              <select className="px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
-                <option>Latest First</option>
-                <option>Price: Low to High</option>
-                <option>Price: High to Low</option>
-                <option>Most Popular</option>
+              <select 
+                value={sortBy}
+                onChange={handleSortChange}
+                className="px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              >
+                <option value="latest">Latest First</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="popular">Most Popular</option>
               </select>
             </div>
           </div>
@@ -93,7 +162,7 @@ const NewArrivals = () => {
       </section>
 
       {/* Products Grid */}
-      <section className="py-16 bg-white">
+      <section id="products-section" className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 animate-slide-up">
             <h2 className="text-3xl font-display font-bold text-neutral-800 mb-4">
@@ -103,7 +172,7 @@ const NewArrivals = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {newProducts.map((product, index) => (
+            {filteredProducts.map((product, index) => (
               <div 
                 key={product.id}
                 className="animate-scale-in group"
@@ -130,9 +199,14 @@ const NewArrivals = () => {
 
           {/* Load More Button */}
           <div className="text-center mt-12 animate-fade-in">
-            <button className="bg-indigo-500 hover:bg-indigo-600 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg">
-              Load More Products
-            </button>
+            {displayedProducts < newProducts.length && (
+              <button 
+                onClick={handleLoadMore}
+                className="bg-indigo-500 hover:bg-indigo-600 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
+              >
+                Load More Products
+              </button>
+            )}
           </div>
         </div>
       </section>

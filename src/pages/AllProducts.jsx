@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   SectionNavigation,
   PageBanner,
@@ -12,8 +13,14 @@ import { getProductsByCategory } from "../data/products";
 import { useCart } from "../hooks";
 
 const AllProducts = () => {
+  const navigate = useNavigate();
   const { addToCart } = useCart();
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [sortBy, setSortBy] = useState('featured');
+  const [displayedProducts, setDisplayedProducts] = useState(8);
+  
   const allProducts = getProductsByCategory('all') || [];
+  const filteredProducts = allProducts.slice(0, displayedProducts);
 
   const handleAddToCart = async (product) => {
     const result = await addToCart(product.id, 1);
@@ -28,28 +35,67 @@ const AllProducts = () => {
     console.log("Newsletter subscription:", email);
   };
 
+  const handleBrowseAll = () => {
+    // Scroll to products section
+    document.getElementById('products-section')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleViewCategories = () => {
+    // Scroll to categories section
+    document.getElementById('categories-section')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleCategoryFilter = (category) => {
+    setSelectedCategory(category);
+    if (category !== 'all') {
+      navigate(`/${category}`);
+    }
+  };
+
+  const handleSortChange = (event) => {
+    setSortBy(event.target.value);
+  };
+
+  const handleLoadMore = () => {
+    setDisplayedProducts(prev => Math.min(prev + 8, allProducts.length));
+  };
+
+  const handleCategoryClick = (category) => {
+    navigate(`/${category}`);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100">
       <Navbar />
       <SectionNavigation />
-      <PageBanner title="Sneaky Sneakers" />
 
-      {/* Hero Section */}
-      <section className="relative py-16 bg-gradient-to-r from-emerald-500 to-teal-600 overflow-hidden">
-        <div className="absolute inset-0 bg-black/20"></div>
+      {/* Hero Section - Full Screen with Background Image */}
+      <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: "url('/src/assets/img/banners/banner-all_products-page.jpg')" }}
+        ></div>
+        <div className="absolute inset-0 bg-neutral-900/70"></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center animate-fade-in">
-            <h1 className="text-5xl md:text-7xl font-display font-bold text-white mb-6">
-              All Products
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-display font-bold text-white mb-4 md:mb-6">
+              All
+              <span className="block text-cyan-400 animate-float">Products</span>
             </h1>
-            <p className="text-xl text-emerald-100 max-w-2xl mx-auto mb-8">
+            <p className="text-base sm:text-lg md:text-xl text-neutral-200 max-w-2xl mx-auto mb-6 md:mb-8 leading-relaxed px-4">
               Explore our complete collection of premium sneakers from the world's top brands
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-white text-emerald-600 hover:bg-emerald-50 px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
+              <button 
+                onClick={handleBrowseAll}
+                className="bg-cyan-500 hover:bg-cyan-600 text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl text-sm md:text-base"
+              >
                 Browse All
               </button>
-              <button className="border-2 border-white text-white hover:bg-white hover:text-emerald-600 px-8 py-4 rounded-full font-semibold transition-all duration-300">
+              <button 
+                onClick={handleViewCategories}
+                className="border-2 border-cyan-500 text-cyan-500 hover:bg-cyan-500 hover:text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold transition-all duration-300 text-sm md:text-base"
+              >
                 View Categories
               </button>
             </div>
@@ -63,27 +109,59 @@ const AllProducts = () => {
           <div className="flex flex-wrap items-center justify-between gap-4 animate-slide-down">
             <div className="flex items-center space-x-4">
               <span className="text-neutral-600 font-medium">Filter by:</span>
-              <button className="px-4 py-2 rounded-full bg-emerald-100 text-emerald-700 hover:bg-emerald-200 transition-colors">
+              <button 
+                onClick={() => handleCategoryFilter('all')}
+                className={`px-4 py-2 rounded-full transition-colors ${
+                  selectedCategory === 'all' 
+                    ? 'bg-emerald-100 text-emerald-700' 
+                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                }`}
+              >
                 All
               </button>
-              <button className="px-4 py-2 rounded-full bg-neutral-100 text-neutral-600 hover:bg-neutral-200 transition-colors">
+              <button 
+                onClick={() => handleCategoryFilter('men')}
+                className={`px-4 py-2 rounded-full transition-colors ${
+                  selectedCategory === 'men' 
+                    ? 'bg-emerald-100 text-emerald-700' 
+                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                }`}
+              >
                 Men
               </button>
-              <button className="px-4 py-2 rounded-full bg-neutral-100 text-neutral-600 hover:bg-neutral-200 transition-colors">
+              <button 
+                onClick={() => handleCategoryFilter('women')}
+                className={`px-4 py-2 rounded-full transition-colors ${
+                  selectedCategory === 'women' 
+                    ? 'bg-emerald-100 text-emerald-700' 
+                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                }`}
+              >
                 Women
               </button>
-              <button className="px-4 py-2 rounded-full bg-neutral-100 text-neutral-600 hover:bg-neutral-200 transition-colors">
+              <button 
+                onClick={() => handleCategoryFilter('kids')}
+                className={`px-4 py-2 rounded-full transition-colors ${
+                  selectedCategory === 'kids' 
+                    ? 'bg-emerald-100 text-emerald-700' 
+                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                }`}
+              >
                 Kids
               </button>
             </div>
             <div className="flex items-center space-x-2">
               <span className="text-neutral-600">Sort by:</span>
-              <select className="px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
-                <option>Featured</option>
-                <option>Price: Low to High</option>
-                <option>Price: High to Low</option>
-                <option>Most Popular</option>
-                <option>Newest First</option>
+              <select 
+                value={sortBy}
+                onChange={handleSortChange}
+                className="px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+              >
+                <option value="featured">Featured</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="popular">Most Popular</option>
+                <option value="newest">Newest First</option>
               </select>
             </div>
           </div>
@@ -91,7 +169,7 @@ const AllProducts = () => {
       </section>
 
       {/* Products Grid */}
-      <section className="py-16 bg-white">
+      <section id="products-section" className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 animate-slide-up">
             <h2 className="text-3xl font-display font-bold text-neutral-800 mb-4">
@@ -101,7 +179,7 @@ const AllProducts = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {allProducts.map((product, index) => (
+            {filteredProducts.map((product, index) => (
               <div 
                 key={product.id}
                 className="animate-scale-in group"
@@ -122,9 +200,14 @@ const AllProducts = () => {
 
           {/* Load More Button */}
           <div className="text-center mt-12 animate-fade-in">
-            <button className="bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg">
-              Load More Products
-            </button>
+            {displayedProducts < allProducts.length && (
+              <button 
+                onClick={handleLoadMore}
+                className="bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
+              >
+                Load More Products
+              </button>
+            )}
           </div>
         </div>
       </section>
@@ -165,7 +248,7 @@ const AllProducts = () => {
       </section>
 
       {/* Categories Section */}
-      <section className="py-16 bg-white">
+      <section id="categories-section" className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 animate-slide-up">
             <h2 className="text-3xl font-display font-bold text-neutral-800 mb-4">Shop by Category</h2>
@@ -173,7 +256,10 @@ const AllProducts = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-2xl text-center animate-slide-up group cursor-pointer hover:shadow-lg transition-all duration-300">
+            <div 
+              onClick={() => handleCategoryClick('men')}
+              className="bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-2xl text-center animate-slide-up group cursor-pointer hover:shadow-lg transition-all duration-300"
+            >
               <div className="w-16 h-16 bg-blue-200 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
                 <span className="text-2xl">👨</span>
               </div>
@@ -181,7 +267,11 @@ const AllProducts = () => {
               <p className="text-neutral-600">Athletic & Lifestyle</p>
             </div>
             
-            <div className="bg-gradient-to-br from-pink-50 to-pink-100 p-8 rounded-2xl text-center animate-slide-up group cursor-pointer hover:shadow-lg transition-all duration-300" style={{ animationDelay: '100ms' }}>
+            <div 
+              onClick={() => handleCategoryClick('women')}
+              className="bg-gradient-to-br from-pink-50 to-pink-100 p-8 rounded-2xl text-center animate-slide-up group cursor-pointer hover:shadow-lg transition-all duration-300" 
+              style={{ animationDelay: '100ms' }}
+            >
               <div className="w-16 h-16 bg-pink-200 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
                 <span className="text-2xl">👩</span>
               </div>
@@ -189,7 +279,11 @@ const AllProducts = () => {
               <p className="text-neutral-600">Style & Performance</p>
             </div>
             
-            <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 p-8 rounded-2xl text-center animate-slide-up group cursor-pointer hover:shadow-lg transition-all duration-300" style={{ animationDelay: '200ms' }}>
+            <div 
+              onClick={() => handleCategoryClick('kids')}
+              className="bg-gradient-to-br from-yellow-50 to-yellow-100 p-8 rounded-2xl text-center animate-slide-up group cursor-pointer hover:shadow-lg transition-all duration-300" 
+              style={{ animationDelay: '200ms' }}
+            >
               <div className="w-16 h-16 bg-yellow-200 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
                 <span className="text-2xl">👶</span>
               </div>
@@ -197,7 +291,11 @@ const AllProducts = () => {
               <p className="text-neutral-600">Fun & Comfortable</p>
             </div>
             
-            <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-8 rounded-2xl text-center animate-slide-up group cursor-pointer hover:shadow-lg transition-all duration-300" style={{ animationDelay: '300ms' }}>
+            <div 
+              onClick={() => handleCategoryClick('sale')}
+              className="bg-gradient-to-br from-purple-50 to-purple-100 p-8 rounded-2xl text-center animate-slide-up group cursor-pointer hover:shadow-lg transition-all duration-300" 
+              style={{ animationDelay: '300ms' }}
+            >
               <div className="w-16 h-16 bg-purple-200 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
                 <span className="text-2xl">🔥</span>
               </div>

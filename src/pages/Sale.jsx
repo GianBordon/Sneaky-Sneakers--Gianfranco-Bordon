@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   SectionNavigation,
   PageBanner,
@@ -12,8 +13,38 @@ import { getProductsByCategory } from "../data/products";
 import { useCart } from "../hooks";
 
 const Sale = () => {
+  const navigate = useNavigate();
   const { addToCart } = useCart();
+  const [selectedFilter, setSelectedFilter] = useState('all');
+  const [sortBy, setSortBy] = useState('biggest-discount');
+  const [displayedProducts, setDisplayedProducts] = useState(8);
+  const [timeLeft, setTimeLeft] = useState({
+    hours: 24,
+    minutes: 12,
+    seconds: 45
+  });
+  
   const saleProducts = getProductsByCategory('sale') || [];
+  const filteredProducts = saleProducts.slice(0, displayedProducts);
+
+  // Countdown timer effect
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(prev => {
+        if (prev.seconds > 0) {
+          return { ...prev, seconds: prev.seconds - 1 };
+        } else if (prev.minutes > 0) {
+          return { ...prev, minutes: prev.minutes - 1, seconds: 59 };
+        } else if (prev.hours > 0) {
+          return { hours: prev.hours - 1, minutes: 59, seconds: 59 };
+        } else {
+          return { hours: 0, minutes: 0, seconds: 0 };
+        }
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
 
   const handleAddToCart = async (product) => {
     const result = await addToCart(product.id, 1);
@@ -28,31 +59,65 @@ const Sale = () => {
     console.log("Newsletter subscription:", email);
   };
 
+  const handleShopNow = () => {
+    document.getElementById('products-section')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleViewAllDeals = () => {
+    document.getElementById('products-section')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleFilterChange = (filter) => {
+    setSelectedFilter(filter);
+  };
+
+  const handleSortChange = (event) => {
+    setSortBy(event.target.value);
+  };
+
+  const handleLoadMore = () => {
+    setDisplayedProducts(prev => Math.min(prev + 8, saleProducts.length));
+  };
+
+  const handleShopSaleNow = () => {
+    document.getElementById('products-section')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100">
       <Navbar />
       <SectionNavigation />
-      <PageBanner title="Sneaky Sneakers" />
 
-      {/* Hero Section */}
-      <section className="relative py-16 bg-gradient-to-r from-red-500 to-pink-600 overflow-hidden">
-        <div className="absolute inset-0 bg-black/20"></div>
+      {/* Hero Section - Full Screen with Background Image */}
+      <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: "url('/src/assets/img/banners/banner-sale-page.jpg')" }}
+        ></div>
+        <div className="absolute inset-0 bg-neutral-900/70"></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center animate-fade-in">
             <div className="inline-block bg-white/20 backdrop-blur-sm rounded-full px-6 py-2 mb-6">
               <span className="text-white font-bold text-lg">🔥 LIMITED TIME OFFER</span>
             </div>
-            <h1 className="text-5xl md:text-7xl font-display font-bold text-white mb-6">
-              MEGA SALE
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-display font-bold text-white mb-4 md:mb-6">
+              MEGA
+              <span className="block text-cyan-400 animate-float">SALE</span>
             </h1>
-            <p className="text-xl text-red-100 max-w-2xl mx-auto mb-8">
+            <p className="text-base sm:text-lg md:text-xl text-neutral-200 max-w-2xl mx-auto mb-6 md:mb-8 leading-relaxed px-4">
               Up to 70% off on selected sneakers. Don't miss out on these incredible deals!
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-white text-red-600 hover:bg-red-50 px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
+              <button 
+                onClick={handleShopNow}
+                className="bg-cyan-500 hover:bg-cyan-600 text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl text-sm md:text-base"
+              >
                 Shop Now
               </button>
-              <button className="border-2 border-white text-white hover:bg-white hover:text-red-600 px-8 py-4 rounded-full font-semibold transition-all duration-300">
+              <button 
+                onClick={handleViewAllDeals}
+                className="border-2 border-cyan-500 text-cyan-500 hover:bg-cyan-500 hover:text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold transition-all duration-300 text-sm md:text-base"
+              >
                 View All Deals
               </button>
             </div>
@@ -67,15 +132,15 @@ const Sale = () => {
             <h2 className="text-2xl font-display font-bold text-neutral-800 mb-4">Sale Ends In</h2>
             <div className="flex justify-center space-x-4">
               <div className="bg-red-100 rounded-lg p-4 min-w-[80px]">
-                <div className="text-2xl font-bold text-red-600">24</div>
+                <div className="text-2xl font-bold text-red-600">{timeLeft.hours.toString().padStart(2, '0')}</div>
                 <div className="text-sm text-red-500">Hours</div>
               </div>
               <div className="bg-red-100 rounded-lg p-4 min-w-[80px]">
-                <div className="text-2xl font-bold text-red-600">12</div>
+                <div className="text-2xl font-bold text-red-600">{timeLeft.minutes.toString().padStart(2, '0')}</div>
                 <div className="text-sm text-red-500">Minutes</div>
               </div>
               <div className="bg-red-100 rounded-lg p-4 min-w-[80px]">
-                <div className="text-2xl font-bold text-red-600">45</div>
+                <div className="text-2xl font-bold text-red-600">{timeLeft.seconds.toString().padStart(2, '0')}</div>
                 <div className="text-sm text-red-500">Seconds</div>
               </div>
             </div>
@@ -89,26 +154,58 @@ const Sale = () => {
           <div className="flex flex-wrap items-center justify-between gap-4 animate-slide-down">
             <div className="flex items-center space-x-4">
               <span className="text-neutral-600 font-medium">Filter by:</span>
-              <button className="px-4 py-2 rounded-full bg-red-100 text-red-700 hover:bg-red-200 transition-colors">
+              <button 
+                onClick={() => handleFilterChange('all')}
+                className={`px-4 py-2 rounded-full transition-colors ${
+                  selectedFilter === 'all' 
+                    ? 'bg-red-100 text-red-700' 
+                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                }`}
+              >
                 All Deals
               </button>
-              <button className="px-4 py-2 rounded-full bg-neutral-100 text-neutral-600 hover:bg-neutral-200 transition-colors">
+              <button 
+                onClick={() => handleFilterChange('50-off')}
+                className={`px-4 py-2 rounded-full transition-colors ${
+                  selectedFilter === '50-off' 
+                    ? 'bg-red-100 text-red-700' 
+                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                }`}
+              >
                 50%+ Off
               </button>
-              <button className="px-4 py-2 rounded-full bg-neutral-100 text-neutral-600 hover:bg-neutral-200 transition-colors">
+              <button 
+                onClick={() => handleFilterChange('30-off')}
+                className={`px-4 py-2 rounded-full transition-colors ${
+                  selectedFilter === '30-off' 
+                    ? 'bg-red-100 text-red-700' 
+                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                }`}
+              >
                 30%+ Off
               </button>
-              <button className="px-4 py-2 rounded-full bg-neutral-100 text-neutral-600 hover:bg-neutral-200 transition-colors">
+              <button 
+                onClick={() => handleFilterChange('under-50')}
+                className={`px-4 py-2 rounded-full transition-colors ${
+                  selectedFilter === 'under-50' 
+                    ? 'bg-red-100 text-red-700' 
+                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                }`}
+              >
                 Under $50
               </button>
             </div>
             <div className="flex items-center space-x-2">
               <span className="text-neutral-600">Sort by:</span>
-              <select className="px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
-                <option>Biggest Discount</option>
-                <option>Price: Low to High</option>
-                <option>Price: High to Low</option>
-                <option>Most Popular</option>
+              <select 
+                value={sortBy}
+                onChange={handleSortChange}
+                className="px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+              >
+                <option value="biggest-discount">Biggest Discount</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="popular">Most Popular</option>
               </select>
             </div>
           </div>
@@ -116,7 +213,7 @@ const Sale = () => {
       </section>
 
       {/* Products Grid */}
-      <section className="py-16 bg-white">
+      <section id="products-section" className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 animate-slide-up">
             <h2 className="text-3xl font-display font-bold text-neutral-800 mb-4">
@@ -126,7 +223,7 @@ const Sale = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {saleProducts.map((product, index) => (
+            {filteredProducts.map((product, index) => (
               <div 
                 key={product.id}
                 className="animate-scale-in group"
@@ -153,9 +250,14 @@ const Sale = () => {
 
           {/* Load More Button */}
           <div className="text-center mt-12 animate-fade-in">
-            <button className="bg-red-500 hover:bg-red-600 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg">
-              Load More Deals
-            </button>
+            {displayedProducts < saleProducts.length && (
+              <button 
+                onClick={handleLoadMore}
+                className="bg-red-500 hover:bg-red-600 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
+              >
+                Load More Deals
+              </button>
+            )}
           </div>
         </div>
       </section>
@@ -205,7 +307,10 @@ const Sale = () => {
             <p className="text-xl text-red-100 mb-8 max-w-2xl mx-auto">
               Limited time offers on premium sneakers. Shop now before they're gone!
             </p>
-            <button className="bg-white text-red-600 hover:bg-red-50 px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg">
+            <button 
+              onClick={handleShopSaleNow}
+              className="bg-white text-red-600 hover:bg-red-50 px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
+            >
               Shop Sale Now
             </button>
           </div>
