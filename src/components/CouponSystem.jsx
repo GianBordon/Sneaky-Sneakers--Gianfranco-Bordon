@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useCart } from '../hooks';
 
 const CouponSystem = ({ onCouponApplied }) => {
-  const { cartItems } = useCart();
+  const { cartItemsWithProducts, cartSubtotal } = useCart();
   const [couponCode, setCouponCode] = useState('');
   const [appliedCoupon, setAppliedCoupon] = useState(null);
   const [isValidating, setIsValidating] = useState(false);
@@ -73,7 +73,7 @@ const CouponSystem = ({ onCouponApplied }) => {
       return { valid: false, error: 'Cupón expirado' };
     }
 
-    const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const subtotal = cartSubtotal;
     
     if (subtotal < coupon.minAmount) {
       return { 
@@ -154,7 +154,7 @@ const CouponSystem = ({ onCouponApplied }) => {
     return discount;
   };
 
-  const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      const subtotal = cartSubtotal;
   const discount = calculateDiscount(subtotal);
 
   return (

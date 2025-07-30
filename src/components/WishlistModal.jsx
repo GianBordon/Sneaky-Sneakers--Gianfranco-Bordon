@@ -1,12 +1,43 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useWishlist, useCart } from '../hooks';
-import { getProductById } from '../data/products';
+import { useSupabase } from '../hooks/useSupabase';
 
 const WishlistModal = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
   const { wishlist, removeFromWishlist, clearWishlist } = useWishlist();
   const { addToCart } = useCart();
+  const { getProductById } = useSupabase();
+  const [wishlistProducts, setWishlistProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Cargar productos de la wishlist desde Supabase
+  useEffect(() => {
+    const loadWishlistProducts = async () => {
+      if (!isOpen || wishlist.length === 0) {
+        setWishlistProducts([]);
+        return;
+      }
+
+      setIsLoading(true);
+      try {
+        const products = await Promise.all(
+          wishlist.map(async (productId) => {
+            const product = await getProductById(productId);
+            return product ? { ...product, wishlistId: productId } : null;
+          })
+        );
+        setWishlistProducts(products.filter(Boolean));
+      } catch (error) {
+        console.error('Error cargando productos de la wishlist:', error);
+        setWishlistProducts([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadWishlistProducts();
+  }, [isOpen, wishlist, getProductById]);
 
   const handleRemoveItem = (productId) => {
     removeFromWishlist(productId);
@@ -32,11 +63,7 @@ const WishlistModal = ({ isOpen, onClose }) => {
     }
   };
 
-  // Obtener productos completos de la wishlist
-  const wishlistProducts = wishlist.map(productId => {
-    const product = getProductById(productId);
-    return product ? { ...product, wishlistId: productId } : null;
-  }).filter(Boolean);
+
 
   if (!isOpen) return null;
 

@@ -9,38 +9,87 @@ import {
   Footer,
   LoadingSkeleton
 } from "../components";
-import { getProductsByCategory, getProductsByBrand } from "../data/products";
 import { useCart } from "../hooks";
+import { useSupabase } from "../hooks/useSupabase";
 
 const AllProducts = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const { addToCart } = useCart();
+  const { getProducts, isLoading: supabaseLoading, error } = useSupabase();
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedBrand, setSelectedBrand] = useState('all');
   const [sortBy, setSortBy] = useState('featured');
   const [displayedProducts, setDisplayedProducts] = useState(8);
   const [isLoading, setIsLoading] = useState(true);
+  const [allProducts, setAllProducts] = useState([]);
   
   // Obtener parámetros de la URL
   const brandFromUrl = searchParams.get('brand');
   
-  const allProducts = getProductsByCategory('all') || [];
-  
   // Filtrar productos por marca si se especifica en la URL
-  const filteredByBrand = brandFromUrl && brandFromUrl !== 'all' 
-    ? getProductsByBrand(brandFromUrl) || []
-    : allProducts;
+  const getFilteredProducts = () => {
+    let filtered = allProducts;
     
-  const filteredProducts = filteredByBrand.slice(0, displayedProducts);
+    // Aplicar filtros por categoría
+    if (selectedCategory !== 'all') {
+      filtered = filtered.filter(product => product.category === selectedCategory);
+    }
+    
+    // Aplicar filtros por marca
+    if (selectedBrand !== 'all') {
+      filtered = filtered.filter(product => 
+        product.brand.toLowerCase() === selectedBrand.toLowerCase()
+      );
+    }
+    
+    // Aplicar ordenamiento
+    switch (sortBy) {
+      case 'price-low':
+        filtered = [...filtered].sort((a, b) => a.price - b.price);
+        break;
+      case 'price-high':
+        filtered = [...filtered].sort((a, b) => b.price - a.price);
+        break;
+      case 'popular':
+        filtered = [...filtered].sort((a, b) => b.rating - a.rating);
+        break;
+      case 'newest':
+        // Mantener orden original (asumiendo que los últimos agregados están al final)
+        break;
+      case 'featured':
+      default:
+        // Mostrar productos destacados primero
+        filtered = [...filtered].sort((a, b) => {
+          if (a.featured && !b.featured) return -1;
+          if (!a.featured && b.featured) return 1;
+          return b.rating - a.rating;
+        });
+        break;
+    }
+    
+    return filtered;
+  };
+  
+  const filteredProducts = getFilteredProducts();
+  const displayedFilteredProducts = filteredProducts.slice(0, displayedProducts);
 
-  // Simular loading inicial
+  // Cargar productos desde Supabase
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, []);
+    const loadProducts = async () => {
+      try {
+        setIsLoading(true);
+        const products = await getProducts();
+        setAllProducts(products);
+      } catch (error) {
+        console.error("Error loading products:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadProducts();
+  }, [getProducts]);
 
   // Actualizar filtros cuando cambia la URL
   useEffect(() => {
@@ -58,6 +107,11 @@ const AllProducts = () => {
     }
   };
 
+  // Mostrar error si hay problema con Supabase
+  if (error) {
+    console.error("Supabase error:", error);
+  }
+
   const handleNewsletterSubmit = (email) => {
     console.log("Newsletter subscription:", email);
   };
@@ -74,6 +128,7 @@ const AllProducts = () => {
 
   const handleCategoryFilter = (category) => {
     setSelectedCategory(category);
+    setDisplayedProducts(8); // Reset displayed products when filter changes
     if (category !== 'all') {
       navigate(`/${category}`);
     }
@@ -81,6 +136,7 @@ const AllProducts = () => {
 
   const handleBrandFilter = (brand) => {
     setSelectedBrand(brand);
+    setDisplayedProducts(8); // Reset displayed products when filter changes
     if (brand === 'all') {
       setSearchParams({});
     } else {
@@ -90,10 +146,11 @@ const AllProducts = () => {
 
   const handleSortChange = (event) => {
     setSortBy(event.target.value);
+    setDisplayedProducts(8); // Reset displayed products when sort changes
   };
 
   const handleLoadMore = () => {
-    setDisplayedProducts(prev => Math.min(prev + 8, filteredByBrand.length));
+    setDisplayedProducts(prev => Math.min(prev + 8, filteredProducts.length));
   };
 
   const handleCategoryClick = (category) => {
@@ -264,21 +321,26 @@ const AllProducts = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 animate-slide-up">
             <h2 className="text-3xl font-display font-bold text-neutral-800 mb-4">
-              {filteredByBrand.length} Products Available
+              {filteredProducts.length} Products Available
             </h2>
             {brandFromUrl && brandFromUrl !== 'all' && (
               <p className="text-cyan-600 font-semibold mb-2">
                 Showing products from {brandFromUrl.charAt(0).toUpperCase() + brandFromUrl.slice(1)}
               </p>
             )}
+            {selectedCategory !== 'all' && (
+              <p className="text-emerald-600 font-semibold mb-2">
+                Showing {selectedCategory} products
+              </p>
+            )}
             <p className="text-neutral-600">Complete collection of premium sneakers</p>
           </div>
           
-          {isLoading ? (
+          {isLoading || supabaseLoading ? (
             <LoadingSkeleton type="product" count={8} />
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-              {filteredProducts.map((product, index) => (
+              {displayedFilteredProducts.map((product, index) => (
                 <div 
                   key={product.id}
                   className="animate-scale-in group"
@@ -300,7 +362,7 @@ const AllProducts = () => {
 
           {/* Load More Button */}
           <div className="text-center mt-12 animate-fade-in">
-            {displayedProducts < filteredByBrand.length && (
+            {displayedProducts < filteredProducts.length && (
               <button 
                 onClick={handleLoadMore}
                 className="bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"

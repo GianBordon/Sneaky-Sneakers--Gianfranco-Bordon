@@ -5,7 +5,7 @@ import { CartService } from '../services';
 
 const CartModal = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
-  const { cartItems, removeFromCart, updateQuantity, clearCart } = useCart();
+  const { cartItemsWithProducts, removeFromCart, updateQuantity, clearCart, cartSubtotal, cartCount } = useCart();
 
   const handleRemoveItem = (itemId) => {
     removeFromCart(itemId);
@@ -24,8 +24,7 @@ const CartModal = ({ isOpen, onClose }) => {
     navigate('/checkout');
   };
 
-  const subtotal = CartService.getCartSubtotal();
-  const itemCount = CartService.getCartItemCount();
+  const itemCount = cartCount;
 
   if (!isOpen) return null;
 
@@ -57,7 +56,7 @@ const CartModal = ({ isOpen, onClose }) => {
 
           {/* Cart Items */}
           <div className="flex-1 overflow-y-auto max-h-96">
-            {cartItems.length === 0 ? (
+            {cartItemsWithProducts.length === 0 ? (
               <div className="p-8 text-center">
                 <div className="w-16 h-16 bg-neutral-100 rounded-full flex items-center justify-center mx-auto mb-4">
                   <svg className="w-8 h-8 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -69,7 +68,7 @@ const CartModal = ({ isOpen, onClose }) => {
               </div>
             ) : (
               <div className="p-6 space-y-4">
-                {cartItems.map((item) => (
+                {cartItemsWithProducts.map((item) => (
                   <div key={item.id} className="flex items-center space-x-4 p-4 bg-neutral-50 rounded-xl">
                     {/* Product Image */}
                     <div className="flex-shrink-0">
@@ -132,12 +131,12 @@ const CartModal = ({ isOpen, onClose }) => {
           </div>
 
           {/* Footer */}
-          {cartItems.length > 0 && (
+          {cartItemsWithProducts.length > 0 && (
             <div className="border-t border-neutral-200 p-6">
               {/* Subtotal */}
               <div className="flex justify-between items-center mb-4">
                 <span className="text-lg font-semibold text-neutral-800">Subtotal:</span>
-                <span className="text-xl font-bold text-neutral-800">${subtotal.toFixed(2)}</span>
+                <span className="text-xl font-bold text-neutral-800">${cartSubtotal.toFixed(2)}</span>
               </div>
 
               {/* Action Buttons */}

@@ -9,7 +9,7 @@ import {
 
 const Checkout = () => {
   const navigate = useNavigate();
-  const { cartItems, clearCart } = useCart();
+  const { cartItemsWithProducts, clearCart, cartSubtotal } = useCart();
   
   const [formData, setFormData] = useState({
     // Shipping Info
@@ -35,10 +35,9 @@ const Checkout = () => {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
-  const subtotal = CartService.getCartSubtotal();
-  const shipping = subtotal > 50 ? 0 : 10;
-  const tax = subtotal * 0.21; // 21% IVA
-  const total = subtotal + shipping + tax;
+  const shipping = cartSubtotal > 50 ? 0 : 10;
+  const tax = cartSubtotal * 0.21; // 21% IVA
+  const total = cartSubtotal + shipping + tax;
 
   // Simular loading inicial
   useEffect(() => {
@@ -51,7 +50,7 @@ const Checkout = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100 flex items-center justify-center">
-        <LoadingSpinner size="xl" text="Cargando checkout..." />
+        <LoadingSpinner />
       </div>
     );
   }
@@ -119,7 +118,7 @@ const Checkout = () => {
       return;
     }
 
-    if (cartItems.length === 0) {
+    if (cartItemsWithProducts.length === 0) {
       alert('Tu carrito está vacío');
       return;
     }
@@ -132,7 +131,7 @@ const Checkout = () => {
       
       const order = {
         id: Date.now(),
-        items: cartItems,
+        items: cartItemsWithProducts,
         subtotal,
         shipping,
         tax,
@@ -167,7 +166,7 @@ const Checkout = () => {
     }
   };
 
-  if (cartItems.length === 0) {
+      if (cartItemsWithProducts.length === 0) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100 flex items-center justify-center">
         <div className="text-center animate-fade-in">
@@ -202,7 +201,7 @@ const Checkout = () => {
                   
                   {/* Cart Items */}
                   <div className="space-y-4 mb-6">
-                    {cartItems.map((item) => (
+                    {cartItemsWithProducts.map((item) => (
                       <div key={item.id} className="flex items-center space-x-4">
                         <img
                           src={item.product.image}

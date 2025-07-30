@@ -23,7 +23,7 @@ const AboutUs = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100 flex items-center justify-center">
-        <LoadingSpinner size="xl" text="Cargando..." />
+        <LoadingSpinner />
       </div>
     );
   }

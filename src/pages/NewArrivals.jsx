@@ -9,28 +9,78 @@ import {
   Footer,
   LoadingSkeleton
 } from "../components";
-import { getProductsByCategory } from "../data/products";
 import { useCart } from "../hooks";
+import { useSupabase } from "../hooks/useSupabase";
 
 const NewArrivals = () => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
+  const { getProductsByCategory, isLoading: supabaseLoading, error } = useSupabase();
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [sortBy, setSortBy] = useState('latest');
   const [displayedProducts, setDisplayedProducts] = useState(8);
   const [loading, setLoading] = useState(true);
+  const [allNewProducts, setAllNewProducts] = useState([]);
   
-  const newProducts = getProductsByCategory('new') || [];
-  const filteredProducts = newProducts.slice(0, displayedProducts);
+  // Filtrar productos según el filtro seleccionado
+  const getFilteredProducts = () => {
+    let filtered = allNewProducts;
+    
+    // Aplicar filtros por período (simulado basado en el precio y rating)
+    if (selectedFilter === 'week') {
+      // Productos más nuevos (precio más alto o rating más alto)
+      filtered = filtered.filter(product => 
+        product.price > 150 || product.rating > 4.5
+      );
+    } else if (selectedFilter === 'month') {
+      // Productos del mes (precio medio)
+      filtered = filtered.filter(product => 
+        product.price >= 100 && product.price <= 200
+      );
+    } else if (selectedFilter === 'limited') {
+      // Productos limitados (precio más alto)
+      filtered = filtered.filter(product => 
+        product.price > 200 || product.rating >= 4.8
+      );
+    }
+    
+    // Aplicar ordenamiento
+    switch (sortBy) {
+      case 'price-low':
+        filtered = [...filtered].sort((a, b) => a.price - b.price);
+        break;
+      case 'price-high':
+        filtered = [...filtered].sort((a, b) => b.price - a.price);
+        break;
+      case 'popular':
+        filtered = [...filtered].sort((a, b) => b.rating - a.rating);
+        break;
+      case 'latest':
+      default:
+        // Mantener orden original (asumiendo que los últimos agregados están al final)
+        break;
+    }
+    
+    return filtered;
+  };
+  
+  const filteredProducts = getFilteredProducts();
+  const displayedFilteredProducts = filteredProducts.slice(0, displayedProducts);
 
   useEffect(() => {
     const loadProducts = async () => {
-      setLoading(true);
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
-      setLoading(false);
+      try {
+        setLoading(true);
+        const products = await getProductsByCategory('new-arrivals');
+        setAllNewProducts(products || []);
+      } catch (error) {
+        console.error("Error loading products:", error);
+      } finally {
+        setLoading(false);
+      }
     };
     loadProducts();
-  }, []);
+  }, [getProductsByCategory]);
 
   const handleAddToCart = async (product) => {
     const result = await addToCart(product.id, 1);
@@ -55,14 +105,16 @@ const NewArrivals = () => {
 
   const handleFilterChange = (filter) => {
     setSelectedFilter(filter);
+    setDisplayedProducts(8); // Reset displayed products when filter changes
   };
 
   const handleSortChange = (event) => {
     setSortBy(event.target.value);
+    setDisplayedProducts(8); // Reset displayed products when sort changes
   };
 
   const handleLoadMore = () => {
-    setDisplayedProducts(prev => Math.min(prev + 8, newProducts.length));
+    setDisplayedProducts(prev => Math.min(prev + 8, filteredProducts.length));
   };
 
   return (
@@ -175,8 +227,13 @@ const NewArrivals = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 animate-slide-up">
             <h2 className="text-3xl font-display font-bold text-neutral-800 mb-4">
-              {newProducts.length} New Products
+              {filteredProducts.length} New Products
             </h2>
+            {selectedFilter !== 'all' && (
+              <p className="text-indigo-600 font-semibold mb-2">
+                Showing {selectedFilter} products
+              </p>
+            )}
             <p className="text-neutral-600">Fresh releases and exclusive drops</p>
           </div>
           
@@ -184,7 +241,7 @@ const NewArrivals = () => {
             <LoadingSkeleton />
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-              {filteredProducts.map((product, index) => (
+              {displayedFilteredProducts.map((product, index) => (
                 <div 
                   key={product.id}
                   className="animate-scale-in group"
@@ -212,7 +269,7 @@ const NewArrivals = () => {
 
           {/* Load More Button */}
           <div className="text-center mt-12 animate-fade-in">
-            {displayedProducts < newProducts.length && (
+            {displayedProducts < filteredProducts.length && (
               <button 
                 onClick={handleLoadMore}
                 className="bg-indigo-500 hover:bg-indigo-600 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"

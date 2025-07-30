@@ -1,29 +1,54 @@
 import { useState, useEffect, useCallback } from 'react';
 import { CartService } from '../services/cartService';
+import { useSupabase } from './useSupabase';
 
 // Hook personalizado para manejar el carrito
 export const useCart = () => {
   const [cartItems, setCartItems] = useState([]);
+  const [cartItemsWithProducts, setCartItemsWithProducts] = useState([]);
   const [cartCount, setCartCount] = useState(0);
   const [cartSubtotal, setCartSubtotal] = useState(0);
   const [cartTotal, setCartTotal] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { getProductById } = useSupabase();
 
   // Cargar carrito inicial
   useEffect(() => {
     loadCart();
   }, []);
 
-  // Cargar carrito
-  const loadCart = useCallback(() => {
+  // Cargar carrito con información de productos
+  const loadCart = useCallback(async () => {
     try {
+      setLoading(true);
       const items = CartService.getCartItems();
       const count = CartService.getCartItemCount();
-      const subtotal = CartService.getCartSubtotal();
-      const total = CartService.getCartTotal();
+      
+      // Obtener información de productos desde Supabase
+      const itemsWithProducts = await Promise.all(
+        items.map(async (item) => {
+          try {
+            const product = await getProductById(item.productId);
+            return {
+              ...item,
+              product: product || { name: 'Producto no encontrado', price: 0, image: '' }
+            };
+          } catch (error) {
+            console.error(`Error loading product ${item.productId}:`, error);
+            return {
+              ...item,
+              product: { name: 'Producto no encontrado', price: 0, image: '' }
+            };
+          }
+        })
+      );
+
+      const subtotal = CartService.getCartSubtotal(itemsWithProducts);
+      const total = CartService.getCartTotal(itemsWithProducts);
 
       setCartItems(items);
+      setCartItemsWithProducts(itemsWithProducts);
       setCartCount(count);
       setCartSubtotal(subtotal);
       setCartTotal(total);
@@ -31,8 +56,10 @@ export const useCart = () => {
     } catch (err) {
       setError('Error al cargar el carrito');
       console.error('Error loading cart:', err);
+    } finally {
+      setLoading(false);
     }
-  }, []);
+  }, [getProductById]);
 
   // Agregar producto al carrito
   const addToCart = useCallback(async (productId, quantity = 1, size = null, color = null) => {
@@ -41,15 +68,7 @@ export const useCart = () => {
     
     try {
       CartService.addToCart(productId, quantity, size, color);
-      const items = CartService.getCartItems();
-      const count = CartService.getCartItemCount();
-      const subtotal = CartService.getCartSubtotal();
-      const total = CartService.getCartTotal();
-
-      setCartItems(items);
-      setCartCount(count);
-      setCartSubtotal(subtotal);
-      setCartTotal(total);
+      await loadCart(); // Recargar carrito con productos
       
       return { success: true };
     } catch (err) {
@@ -58,7 +77,7 @@ export const useCart = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [loadCart]);
 
   // Remover producto del carrito
   const removeFromCart = useCallback((itemId) => {
@@ -112,8 +131,8 @@ export const useCart = () => {
 
   // Calcular descuento total
   const getCartDiscount = useCallback(() => {
-    return CartService.getCartDiscount();
-  }, []);
+    return CartService.getCartDiscount(cartItemsWithProducts);
+  }, [cartItemsWithProducts]);
 
   // Aplicar cupón
   const applyCoupon = useCallback((couponCode) => {
@@ -128,8 +147,8 @@ export const useCart = () => {
 
   // Verificar stock
   const checkStock = useCallback(() => {
-    return CartService.checkStock();
-  }, []);
+    return CartService.checkStock(cartItemsWithProducts);
+  }, [cartItemsWithProducts]);
 
   // Procesar checkout
   const processCheckout = useCallback(async (paymentInfo, shippingInfo) => {
@@ -137,11 +156,12 @@ export const useCart = () => {
     setError(null);
     
     try {
-      const result = await CartService.processCheckout(paymentInfo, shippingInfo);
+      const result = await CartService.processCheckout(cartItemsWithProducts, paymentInfo, shippingInfo);
       
       if (result.success) {
         // Limpiar carrito después del checkout exitoso
         setCartItems([]);
+        setCartItemsWithProducts([]);
         setCartCount(0);
         setCartSubtotal(0);
         setCartTotal(0);
@@ -154,11 +174,12 @@ export const useCart = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [cartItemsWithProducts]);
 
   return {
     // Estado
     cartItems,
+    cartItemsWithProducts,
     cartCount,
     cartSubtotal,
     cartTotal,

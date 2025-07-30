@@ -8,11 +8,12 @@ import {
   Footer,
   LoadingSkeleton
 } from "../components";
-import { getProductsByCategory } from "../data/products";
 import { useCart } from "../hooks";
+import { useSupabase } from "../hooks/useSupabase";
 
 const Sale = () => {
   const { addToCart } = useCart();
+  const { getProductsByCategory, isLoading: supabaseLoading, error } = useSupabase();
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [sortBy, setSortBy] = useState('biggest-discount');
   const [displayedProducts, setDisplayedProducts] = useState(8);
@@ -22,17 +23,74 @@ const Sale = () => {
     minutes: 12,
     seconds: 45
   });
+  const [allSaleProducts, setAllSaleProducts] = useState([]);
   
-  const saleProducts = getProductsByCategory('sale') || [];
-  const filteredProducts = saleProducts.slice(0, displayedProducts);
+  // Filtrar productos según el filtro seleccionado
+  const getFilteredProducts = () => {
+    let filtered = allSaleProducts;
+    
+    // Aplicar filtros por descuento
+    if (selectedFilter === '50-off') {
+      // Productos con 50% o más de descuento
+      filtered = filtered.filter(product => {
+        const discount = ((product.originalPrice - product.price) / product.originalPrice) * 100;
+        return discount >= 50;
+      });
+    } else if (selectedFilter === '30-off') {
+      // Productos con 30% o más de descuento
+      filtered = filtered.filter(product => {
+        const discount = ((product.originalPrice - product.price) / product.originalPrice) * 100;
+        return discount >= 30;
+      });
+    } else if (selectedFilter === 'under-50') {
+      // Productos bajo $50
+      filtered = filtered.filter(product => product.price < 50);
+    }
+    
+    // Aplicar ordenamiento
+    switch (sortBy) {
+      case 'biggest-discount':
+        filtered = [...filtered].sort((a, b) => {
+          const discountA = ((a.originalPrice - a.price) / a.originalPrice) * 100;
+          const discountB = ((b.originalPrice - b.price) / b.originalPrice) * 100;
+          return discountB - discountA;
+        });
+        break;
+      case 'price-low':
+        filtered = [...filtered].sort((a, b) => a.price - b.price);
+        break;
+      case 'price-high':
+        filtered = [...filtered].sort((a, b) => b.price - a.price);
+        break;
+      case 'popular':
+        filtered = [...filtered].sort((a, b) => b.rating - a.rating);
+        break;
+      default:
+        break;
+    }
+    
+    return filtered;
+  };
+  
+  const filteredProducts = getFilteredProducts();
+  const displayedFilteredProducts = filteredProducts.slice(0, displayedProducts);
 
-  // Simular loading inicial
+  // Cargar productos desde Supabase
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, []);
+    const loadProducts = async () => {
+      try {
+        setIsLoading(true);
+        const products = await getProductsByCategory('sale');
+        setAllSaleProducts(products || []);
+      } catch (error) {
+        console.error("Error loading products:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadProducts();
+  }, [getProductsByCategory]);
 
   // Countdown timer effect
   useEffect(() => {
@@ -76,14 +134,16 @@ const Sale = () => {
 
   const handleFilterChange = (filter) => {
     setSelectedFilter(filter);
+    setDisplayedProducts(8); // Reset displayed products when filter changes
   };
 
   const handleSortChange = (event) => {
     setSortBy(event.target.value);
+    setDisplayedProducts(8); // Reset displayed products when sort changes
   };
 
   const handleLoadMore = () => {
-    setDisplayedProducts(prev => Math.min(prev + 8, saleProducts.length));
+    setDisplayedProducts(prev => Math.min(prev + 8, filteredProducts.length));
   };
 
   const handleShopSaleNow = () => {
@@ -223,8 +283,13 @@ const Sale = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 animate-slide-up">
             <h2 className="text-3xl font-display font-bold text-neutral-800 mb-4">
-              {saleProducts.length} Products on Sale
+              {filteredProducts.length} Products on Sale
             </h2>
+            {selectedFilter !== 'all' && (
+              <p className="text-red-600 font-semibold mb-2">
+                Showing {selectedFilter} products
+              </p>
+            )}
             <p className="text-neutral-600">Hurry! These deals won't last long</p>
           </div>
           
@@ -232,7 +297,7 @@ const Sale = () => {
             <LoadingSkeleton type="product" count={8} />
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-              {filteredProducts.map((product, index) => (
+              {displayedFilteredProducts.map((product, index) => (
                 <div 
                   key={product.id}
                   className="animate-scale-in group"
@@ -260,7 +325,7 @@ const Sale = () => {
 
           {/* Load More Button */}
           <div className="text-center mt-12 animate-fade-in">
-            {displayedProducts < saleProducts.length && (
+            {displayedProducts < filteredProducts.length && (
               <button 
                 onClick={handleLoadMore}
                 className="bg-red-500 hover:bg-red-600 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"

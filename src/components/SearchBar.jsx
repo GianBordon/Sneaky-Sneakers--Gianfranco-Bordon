@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getAllProducts, getAllPlayers } from '../data';
+import { useSupabase } from '../hooks/useSupabase';
 
 const SearchBar = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
+  const { getProducts, getPlayers } = useSupabase();
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -13,11 +14,25 @@ const SearchBar = ({ isOpen, onClose }) => {
   const [players, setPlayers] = useState([]);
   const searchRef = useRef(null);
 
-  // Cargar datos una sola vez al montar el componente
+  // Cargar datos desde Supabase
   useEffect(() => {
-    setProducts(getAllProducts());
-    setPlayers(getAllPlayers());
-  }, []);
+    const loadData = async () => {
+      try {
+        const [productsData, playersData] = await Promise.all([
+          getProducts(),
+          getPlayers()
+        ]);
+        setProducts(productsData);
+        setPlayers(playersData);
+      } catch (error) {
+        console.error("Error loading search data:", error);
+      }
+    };
+
+    if (isOpen) {
+      loadData();
+    }
+  }, [isOpen, getProducts, getPlayers]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {

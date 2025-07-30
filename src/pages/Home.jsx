@@ -12,35 +12,61 @@ import {
 import { 
   getCarouselImages, 
   getCarouselConfig, 
-  getFeaturedBrands, 
-  getAllPlayers 
+  getFeaturedBrands
 } from "../data";
+import { useSupabase } from "../hooks/useSupabase";
 
 const Home = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const { getPlayers, isLoading: supabaseLoading, error } = useSupabase();
+  const [players, setPlayers] = useState([]);
   
   // Obtener datos desde los archivos centralizados
   const carouselImages = getCarouselImages('featured');
   const carouselConfig = getCarouselConfig('featured');
   const brands = getFeaturedBrands();
-  const players = getAllPlayers();
 
   useEffect(() => {
     const loadData = async () => {
       try {
         setLoading(true);
-        // Simulate data fetching
-        await new Promise(resolve => setTimeout(resolve, 1000)); 
+        console.log("Iniciando carga de jugadores...");
+        
+        // Cargar jugadores desde Supabase
+        const playersData = await getPlayers();
+        console.log("Jugadores cargados desde Supabase:", playersData);
+        
+        // Si no hay datos de Supabase, mostrar array vacío
+        if (!playersData || playersData.length === 0) {
+          console.log("No hay datos de Supabase disponibles");
+          setPlayers([]);
+        } else {
+          // Mapear datos de Supabase al formato esperado por PlayerCard
+          const mappedPlayers = playersData.map(player => ({
+            name: player.name,
+            path: `/player/${player.id}`, // Crear path basado en ID
+            image: player.image || '/src/assets/img/jugadores/default-player.webp',
+            team: player.team,
+            position: player.position,
+            description: player.description,
+            stats: player.stats,
+            featured: player.featured
+          }));
+          console.log("Jugadores mapeados:", mappedPlayers);
+          setPlayers(mappedPlayers);
+        }
       } catch (error) {
-        console.error("Error loading data:", error);
+        console.error("Error loading data from Supabase:", error);
+        console.log("Error al cargar datos, mostrando array vacío...");
+        setPlayers([]);
       } finally {
         setLoading(false);
       }
     };
 
     loadData();
-  }, []);
+  }, [getPlayers]);
 
   const handleShopNow = () => {
     navigate('/all-products');
@@ -54,12 +80,16 @@ const Home = () => {
     document.getElementById('about-section')?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  if (loading) {
+  if (loading || supabaseLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-neutral-50 to-neutral-100">
         <LoadingSpinner />
       </div>
     );
+  }
+
+  if (error) {
+    console.error("Supabase error:", error);
   }
 
   return (

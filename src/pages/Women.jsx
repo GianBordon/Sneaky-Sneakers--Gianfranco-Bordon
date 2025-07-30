@@ -8,21 +8,82 @@ import {
   Footer,
   LoadingSkeleton
 } from "../components";
-import { getProductsByCategory } from "../data/products";
 import { useCart } from "../hooks";
+import { useSupabase } from "../hooks/useSupabase";
 
 const Women = () => {
   const { addToCart } = useCart();
+  const { getProductsByCategory, isLoading: supabaseLoading, error } = useSupabase();
   const [isLoading, setIsLoading] = useState(true);
-  const womenShoes = getProductsByCategory('women');
+  const [displayedProducts, setDisplayedProducts] = useState(8);
+  const [selectedFilter, setSelectedFilter] = useState('all');
+  const [sortBy, setSortBy] = useState('latest');
+  const [allWomenShoes, setAllWomenShoes] = useState([]);
+  
+  // Filtrar productos según el filtro seleccionado
+  const getFilteredProducts = () => {
+    let filtered = allWomenShoes;
+    
+    // Aplicar filtros por tipo (simulado basado en el nombre del producto)
+    if (selectedFilter === 'running') {
+      filtered = filtered.filter(shoe => 
+        shoe.name.toLowerCase().includes('run') || 
+        shoe.name.toLowerCase().includes('zoom') ||
+        shoe.name.toLowerCase().includes('air max')
+      );
+    } else if (selectedFilter === 'training') {
+      filtered = filtered.filter(shoe => 
+        shoe.name.toLowerCase().includes('train') || 
+        shoe.name.toLowerCase().includes('workout') ||
+        shoe.name.toLowerCase().includes('fitness')
+      );
+    } else if (selectedFilter === 'lifestyle') {
+      filtered = filtered.filter(shoe => 
+        shoe.name.toLowerCase().includes('lifestyle') || 
+        shoe.name.toLowerCase().includes('casual') ||
+        shoe.name.toLowerCase().includes('air force')
+      );
+    }
+    
+    // Aplicar ordenamiento
+    switch (sortBy) {
+      case 'price-low':
+        filtered = [...filtered].sort((a, b) => a.price - b.price);
+        break;
+      case 'price-high':
+        filtered = [...filtered].sort((a, b) => b.price - a.price);
+        break;
+      case 'popular':
+        filtered = [...filtered].sort((a, b) => b.rating - a.rating);
+        break;
+      case 'latest':
+      default:
+        // Mantener orden original (asumiendo que los últimos agregados están al final)
+        break;
+    }
+    
+    return filtered;
+  };
+  
+  const filteredProducts = getFilteredProducts();
+  const displayedFilteredProducts = filteredProducts.slice(0, displayedProducts);
 
-  // Simular loading inicial
+  // Cargar productos desde Supabase
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 800);
-    return () => clearTimeout(timer);
-  }, []);
+    const loadProducts = async () => {
+      try {
+        setIsLoading(true);
+        const products = await getProductsByCategory('women');
+        setAllWomenShoes(products);
+      } catch (error) {
+        console.error("Error loading products:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadProducts();
+  }, [getProductsByCategory]);
 
   const handleAddToCart = async (product) => {
     const result = await addToCart(product.id, 1);
@@ -35,6 +96,20 @@ const Women = () => {
 
   const handleNewsletterSubmit = (email) => {
     console.log("Newsletter subscription:", email);
+  };
+
+  const handleLoadMore = () => {
+    setDisplayedProducts(prev => Math.min(prev + 8, filteredProducts.length));
+  };
+
+  const handleFilterChange = (filter) => {
+    setSelectedFilter(filter);
+    setDisplayedProducts(8); // Reset displayed products when filter changes
+  };
+
+  const handleSortChange = (event) => {
+    setSortBy(event.target.value);
+    setDisplayedProducts(8); // Reset displayed products when sort changes
   };
 
   return (
@@ -67,26 +142,58 @@ const Women = () => {
           <div className="flex flex-wrap items-center justify-between gap-4 animate-slide-down">
             <div className="flex items-center space-x-4">
               <span className="text-neutral-600 font-medium">Filter by:</span>
-              <button className="px-4 py-2 rounded-full bg-pink-100 text-pink-700 hover:bg-pink-200 transition-colors">
+              <button 
+                onClick={() => handleFilterChange('all')}
+                className={`px-4 py-2 rounded-full transition-colors ${
+                  selectedFilter === 'all' 
+                    ? 'bg-pink-100 text-pink-700' 
+                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                }`}
+              >
                 All
               </button>
-              <button className="px-4 py-2 rounded-full bg-neutral-100 text-neutral-600 hover:bg-neutral-200 transition-colors">
+              <button 
+                onClick={() => handleFilterChange('running')}
+                className={`px-4 py-2 rounded-full transition-colors ${
+                  selectedFilter === 'running' 
+                    ? 'bg-pink-100 text-pink-700' 
+                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                }`}
+              >
                 Running
               </button>
-              <button className="px-4 py-2 rounded-full bg-neutral-100 text-neutral-600 hover:bg-neutral-200 transition-colors">
+              <button 
+                onClick={() => handleFilterChange('training')}
+                className={`px-4 py-2 rounded-full transition-colors ${
+                  selectedFilter === 'training' 
+                    ? 'bg-pink-100 text-pink-700' 
+                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                }`}
+              >
                 Training
               </button>
-              <button className="px-4 py-2 rounded-full bg-neutral-100 text-neutral-600 hover:bg-neutral-200 transition-colors">
+              <button 
+                onClick={() => handleFilterChange('lifestyle')}
+                className={`px-4 py-2 rounded-full transition-colors ${
+                  selectedFilter === 'lifestyle' 
+                    ? 'bg-pink-100 text-pink-700' 
+                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                }`}
+              >
                 Lifestyle
               </button>
             </div>
             <div className="flex items-center space-x-2">
               <span className="text-neutral-600">Sort by:</span>
-              <select className="px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent">
-                <option>Latest</option>
-                <option>Price: Low to High</option>
-                <option>Price: High to Low</option>
-                <option>Most Popular</option>
+              <select 
+                value={sortBy}
+                onChange={handleSortChange}
+                className="px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+              >
+                <option value="latest">Latest</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="popular">Most Popular</option>
               </select>
             </div>
           </div>
@@ -98,8 +205,13 @@ const Women = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 animate-slide-up">
             <h2 className="text-3xl font-display font-bold text-neutral-800 mb-4">
-              {womenShoes.length} Products Available
+              {filteredProducts.length} Products Available
             </h2>
+            {selectedFilter !== 'all' && (
+              <p className="text-pink-600 font-semibold mb-2">
+                Showing {selectedFilter} products
+              </p>
+            )}
             <p className="text-neutral-600">Curated selection of premium women's sneakers</p>
           </div>
 
@@ -107,7 +219,7 @@ const Women = () => {
             <LoadingSkeleton type="product" count={8} />
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-              {womenShoes.map((shoe, index) => (
+              {displayedFilteredProducts.map((shoe, index) => (
                 <div
                   key={shoe.id}
                   className="animate-scale-in group"
@@ -129,9 +241,14 @@ const Women = () => {
 
           {/* Load More Button */}
           <div className="text-center mt-12 animate-fade-in">
-            <button className="bg-pink-500 hover:bg-pink-600 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg">
-              Load More Products
-            </button>
+            {displayedProducts < filteredProducts.length && (
+              <button 
+                onClick={handleLoadMore}
+                className="bg-pink-500 hover:bg-pink-600 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
+              >
+                Load More Products
+              </button>
+            )}
           </div>
         </div>
       </section>

@@ -1,36 +1,39 @@
-import { 
-  getAllProducts, 
-  getProductsByCategory, 
-  getProductById, 
-  getProductsByBrand, 
-  getProductsOnSale 
-} from '../data/products';
+// Este servicio ahora usa Supabase a través del hook useSupabase
+// Las funciones se manejan directamente en los componentes que usan useSupabase
 
 // Servicio para manejar productos
 export class ProductService {
+  // Nota: Estas funciones ahora se manejan directamente en los componentes
+  // usando el hook useSupabase para obtener datos de la base de datos
+  
   // Obtener todos los productos
-  static getAllProducts() {
-    return getAllProducts();
+  static async getAllProducts() {
+    // Esta función se maneja en los componentes con useSupabase
+    throw new Error('Use useSupabase hook instead');
   }
 
   // Obtener productos por categoría
-  static getProductsByCategory(category) {
-    return getProductsByCategory(category);
+  static async getProductsByCategory(category) {
+    // Esta función se maneja en los componentes con useSupabase
+    throw new Error('Use useSupabase hook instead');
   }
 
   // Obtener producto por ID
-  static getProductById(id) {
-    return getProductById(id);
+  static async getProductById(id) {
+    // Esta función se maneja en los componentes con useSupabase
+    throw new Error('Use useSupabase hook instead');
   }
 
   // Obtener productos por marca
-  static getProductsByBrand(brand) {
-    return getProductsByBrand(brand);
+  static async getProductsByBrand(brand) {
+    // Esta función se maneja en los componentes con useSupabase
+    throw new Error('Use useSupabase hook instead');
   }
 
   // Obtener productos en oferta
-  static getProductsOnSale() {
-    return getProductsOnSale();
+  static async getProductsOnSale() {
+    // Esta función se maneja en los componentes con useSupabase
+    throw new Error('Use useSupabase hook instead');
   }
 
   // Filtrar productos por precio
@@ -82,10 +85,10 @@ export class ProductService {
     return sortedProducts;
   }
 
-  // Buscar productos
-  static searchProducts(query) {
+  // Buscar productos (ahora requiere productos como parámetro)
+  static searchProducts(products, query) {
     const searchTerm = query.toLowerCase();
-    return getAllProducts().filter(product => 
+    return products.filter(product => 
       product.name.toLowerCase().includes(searchTerm) ||
       product.brand.toLowerCase().includes(searchTerm) ||
       product.description.toLowerCase().includes(searchTerm)
@@ -93,21 +96,18 @@ export class ProductService {
   }
 
   // Obtener productos recomendados (basado en rating)
-  static getRecommendedProducts(limit = 6) {
-    const allProducts = getAllProducts();
-    return this.sortProducts(allProducts, 'rating', 'desc').slice(0, limit);
+  static getRecommendedProducts(products, limit = 6) {
+    return this.sortProducts(products, 'rating', 'desc').slice(0, limit);
   }
 
   // Obtener productos más vendidos (basado en reviews)
-  static getBestSellers(limit = 6) {
-    const allProducts = getAllProducts();
-    return this.sortProducts(allProducts, 'reviews', 'desc').slice(0, limit);
+  static getBestSellers(products, limit = 6) {
+    return this.sortProducts(products, 'reviews', 'desc').slice(0, limit);
   }
 
   // Obtener productos nuevos (últimos agregados)
-  static getNewProducts(limit = 6) {
-    const allProducts = getAllProducts();
-    return allProducts.slice(-limit).reverse();
+  static getNewProducts(products, limit = 6) {
+    return products.slice(-limit).reverse();
   }
 
   // Calcular descuento
@@ -121,8 +121,8 @@ export class ProductService {
   }
 
   // Obtener productos con descuento mayor a X%
-  static getProductsWithDiscount(minDiscount = 10) {
-    return getAllProducts().filter(product => {
+  static getProductsWithDiscount(products, minDiscount = 10) {
+    return products.filter(product => {
       if (this.isOnSale(product)) {
         const discount = this.calculateDiscount(product.originalPrice, product.price);
         return discount >= minDiscount;

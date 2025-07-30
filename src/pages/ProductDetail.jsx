@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useCart } from '../hooks';
-import { getProductById } from '../data/products';
+import { useSupabase } from '../hooks/useSupabase';
 import {
   Footer,
   NewsletterSection,
@@ -13,14 +13,35 @@ const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addToCart } = useCart();
+  const { getProductById, isLoading: supabaseLoading, error } = useSupabase();
   
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [product, setProduct] = useState(null);
 
-  const product = getProductById(parseInt(id));
+  // Cargar producto desde Supabase
+  useEffect(() => {
+    const loadProduct = async () => {
+      try {
+        setIsLoading(true);
+        console.log("Cargando producto con ID:", id);
+        const productData = await getProductById(id);
+        console.log("Datos del producto:", productData);
+        setProduct(productData);
+      } catch (error) {
+        console.error("Error cargando producto:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (id) {
+      loadProduct();
+    }
+  }, [id, getProductById]);
 
   // Simular loading inicial
   useEffect(() => {
@@ -30,10 +51,27 @@ const ProductDetail = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  if (isLoading) {
+  if (isLoading || supabaseLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100 flex items-center justify-center">
-        <LoadingSpinner size="xl" text="Cargando producto..." />
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100 flex items-center justify-center">
+        <div className="text-center animate-fade-in">
+          <h1 className="text-4xl font-display font-bold text-neutral-800 mb-4">Error</h1>
+          <p className="text-neutral-600 mb-8">{error}</p>
+          <button
+            onClick={() => navigate('/all-products')}
+            className="bg-cyan-600 text-white px-6 py-3 rounded-lg hover:bg-cyan-700 transition-colors"
+          >
+            Ver Todos los Productos
+          </button>
+        </div>
       </div>
     );
   }
@@ -43,7 +81,7 @@ const ProductDetail = () => {
       <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100 flex items-center justify-center">
         <div className="text-center animate-fade-in">
           <h1 className="text-4xl font-display font-bold text-neutral-800 mb-4">Producto No Encontrado</h1>
-          <p className="text-neutral-600 mb-8">El producto que buscas no existe.</p>
+          <p className="text-neutral-600 mb-8">El producto que buscas no existe en la base de datos.</p>
           <button
             onClick={() => navigate('/all-products')}
             className="bg-cyan-600 text-white px-6 py-3 rounded-lg hover:bg-cyan-700 transition-colors"
@@ -176,24 +214,26 @@ const ProductDetail = () => {
                 </div>
 
                 {/* Size Selection */}
-                <div>
-                  <h3 className="text-lg font-semibold text-neutral-800 mb-3">Talla</h3>
-                  <div className="grid grid-cols-4 gap-2">
-                    {product.sizes.map((size) => (
-                      <button
-                        key={size}
-                        onClick={() => setSelectedSize(size)}
-                        className={`p-3 border-2 rounded-lg font-semibold transition-colors ${
-                          selectedSize === size
-                            ? 'border-cyan-600 bg-cyan-50 text-cyan-600'
-                            : 'border-neutral-300 hover:border-neutral-400'
-                        }`}
-                      >
-                        {size}
-                      </button>
-                    ))}
+                {product.sizes && product.sizes.length > 0 && (
+                  <div>
+                    <h3 className="text-lg font-semibold text-neutral-800 mb-3">Talla</h3>
+                    <div className="grid grid-cols-4 gap-2">
+                      {product.sizes.map((size) => (
+                        <button
+                          key={size}
+                          onClick={() => setSelectedSize(size)}
+                          className={`p-3 border-2 rounded-lg font-semibold transition-colors ${
+                            selectedSize === size
+                              ? 'border-cyan-600 bg-cyan-50 text-cyan-600'
+                              : 'border-neutral-300 hover:border-neutral-400'
+                          }`}
+                        >
+                          {size}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
 
                 {/* Color Selection */}
                 {product.colors && product.colors.length > 0 && (

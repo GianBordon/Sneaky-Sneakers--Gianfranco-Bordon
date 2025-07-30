@@ -12,12 +12,7 @@ import AllProducts from './pages/AllProducts';
 import NewArrivals from './pages/NewArrivals';
 import Sale from './pages/Sale';
 
-// Importar páginas de jugadores
-import GiannisAntetokounmpo from './pages/GiannisAntetokounmpo';
-import LeBronJames from './pages/LeBronJames';
-import KevinDurant from './pages/KevinDurant';
-import PaulGeorge from './pages/PaulGeorge';
-import JamesHarden from './pages/JamesHarden';
+
 
 // Importar páginas de políticas y otras
 import AboutUs from './pages/AboutUs';
@@ -27,6 +22,7 @@ import ShippingPolicy from './pages/ShippingPolicy';
 import PaymentMethods from './pages/PaymentMethods';
 import LoginPage from './pages/LoginPage';
 import ProductDetail from './pages/ProductDetail';
+import PlayerDetail from './pages/PlayerDetail';
 import Checkout from './pages/Checkout';
 import OrderConfirmation from './pages/OrderConfirmation';
 import AdminDashboard from './pages/AdminDashboard';
@@ -53,11 +49,7 @@ function App() {
             <Route path="/sale" element={<Sale />} />
             
             {/* Páginas de jugadores */}
-            <Route path="/giannis-antetokounmpo" element={<GiannisAntetokounmpo />} />
-            <Route path="/lebron-james" element={<LeBronJames />} />
-            <Route path="/kevin-durant" element={<KevinDurant />} />
-            <Route path="/paul-george" element={<PaulGeorge />} />
-            <Route path="/james-harden" element={<JamesHarden />} />
+            <Route path="/player/:id" element={<PlayerDetail />} />
             
             {/* Páginas de políticas y información */}
             <Route path="/about-us" element={<AboutUs />} />

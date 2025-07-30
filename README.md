@@ -1,12 +1,81 @@
-# React + Vite
+# Sneaky Sneakers - React + Vite + Supabase
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Una aplicación de comercio electrónico moderna para zapatillas deportivas, construida con React, Vite y Supabase.
 
-Currently, two official plugins are available:
+## 🚀 Características
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Frontend Moderno**: React 18 con Vite para desarrollo rápido
+- **Base de Datos en la Nube**: Supabase para datos de productos y usuarios
+- **Diseño Responsivo**: Tailwind CSS para un diseño moderno y adaptable
+- **Autenticación**: Sistema de usuarios integrado con Supabase Auth
+- **Carrito de Compras**: Gestión de carrito con localStorage
+- **Lista de Deseos**: Funcionalidad de wishlist
+- **Filtros y Búsqueda**: Filtrado por categoría, marca y precio
 
-## Expanding the ESLint configuration
+## 🛠️ Tecnologías
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Frontend**: React 18, Vite, Tailwind CSS
+- **Backend**: Supabase (PostgreSQL, Auth, Storage)
+- **Estado**: React Hooks, Context API
+- **Enrutamiento**: React Router DOM
+- **Iconos**: Heroicons
+
+## 📦 Instalación
+
+1. **Clonar el repositorio**
+   ```bash
+   git clone <repository-url>
+   cd Sneaky-Sneakers--Gianfranco-Bordon
+   ```
+
+2. **Instalar dependencias**
+   ```bash
+   npm install
+   ```
+
+3. **Configurar variables de entorno**
+   ```bash
+   cp .env.example .env
+   ```
+   
+   Editar `.env` con tus credenciales de Supabase:
+   ```
+   VITE_SUPABASE_URL=tu_url_de_supabase
+   VITE_SUPABASE_ANON_KEY=tu_clave_anonima_de_supabase
+   ```
+
+4. **Ejecutar en desarrollo**
+   ```bash
+   npm run dev
+   ```
+
+## 🗄️ Base de Datos
+
+La aplicación utiliza Supabase como backend:
+- **Productos**: 98 productos de zapatillas deportivas
+- **Jugadores**: 5 jugadores destacados de la NBA
+- **Usuarios**: Sistema de autenticación completo
+- **Carrito**: Gestión de carrito de compras
+
+## 📁 Estructura del Proyecto
+
+```
+src/
+├── components/     # Componentes reutilizables
+├── pages/         # Páginas de la aplicación
+├── hooks/         # Custom hooks
+├── services/      # Servicios de API
+├── data/          # Datos estáticos (categorías, marcas)
+└── assets/        # Imágenes y recursos
+```
+
+## 🚀 Despliegue
+
+La aplicación está lista para desplegar en:
+- Vercel
+- Netlify
+- Supabase Hosting
+
+## 📝 Licencia
+
+MIT License

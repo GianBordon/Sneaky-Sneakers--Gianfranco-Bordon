@@ -1,0 +1,44 @@
+[
+  {
+    "name": "Men",
+    "path": "/men",
+    "image": "/src/assets/img/banners/pexels-kaique-rocha-250356.jpg",
+    "description": "Zapatillas para hombres",
+    "featured": true
+  },
+  {
+    "name": "Women",
+    "path": "/women",
+    "image": "/src/assets/img/banners/pexels-kaique-rocha-250356.jpg",
+    "description": "Zapatillas para mujeres",
+    "featured": true
+  },
+  {
+    "name": "Kids",
+    "path": "/kids",
+    "image": "/src/assets/img/banners/pexels-kaique-rocha-250356.jpg",
+    "description": "Zapatillas para niños",
+    "featured": true
+  },
+  {
+    "name": "New Arrivals",
+    "path": "/new-arrivals",
+    "image": "/src/assets/img/banners/pexels-kaique-rocha-250356.jpg",
+    "description": "Últimas novedades",
+    "featured": true
+  },
+  {
+    "name": "Sale",
+    "path": "/sale",
+    "image": "/src/assets/img/banners/pexels-kaique-rocha-250356.jpg",
+    "description": "Ofertas especiales",
+    "featured": true
+  },
+  {
+    "name": "All Products",
+    "path": "/all-products",
+    "image": "/src/assets/img/banners/pexels-kaique-rocha-250356.jpg",
+    "description": "Todos los productos",
+    "featured": false
+  }
+]

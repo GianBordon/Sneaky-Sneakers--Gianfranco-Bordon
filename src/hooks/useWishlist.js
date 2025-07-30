@@ -22,8 +22,18 @@ export const useWishlist = () => {
       }
     };
 
+    // Escuchar eventos personalizados para actualizaciones en tiempo real
+    const handleWishlistUpdate = () => {
+      loadWishlist();
+    };
+
     window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
+    window.addEventListener('wishlist-updated', handleWishlistUpdate);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('wishlist-updated', handleWishlistUpdate);
+    };
   }, []);
 
   // Agregar a wishlist
@@ -31,6 +41,8 @@ export const useWishlist = () => {
     const updatedWishlist = WishlistService.addToWishlist(productId);
     setWishlist(updatedWishlist);
     setWishlistCount(updatedWishlist.length);
+    // Disparar evento personalizado para notificar a otros componentes
+    window.dispatchEvent(new CustomEvent('wishlist-updated'));
   };
 
   // Remover de wishlist
@@ -38,6 +50,8 @@ export const useWishlist = () => {
     const updatedWishlist = WishlistService.removeFromWishlist(productId);
     setWishlist(updatedWishlist);
     setWishlistCount(updatedWishlist.length);
+    // Disparar evento personalizado para notificar a otros componentes
+    window.dispatchEvent(new CustomEvent('wishlist-updated'));
   };
 
   // Toggle wishlist (agregar/remover)
@@ -59,6 +73,8 @@ export const useWishlist = () => {
     WishlistService.clearWishlist();
     setWishlist([]);
     setWishlistCount(0);
+    // Disparar evento personalizado para notificar a otros componentes
+    window.dispatchEvent(new CustomEvent('wishlist-updated'));
   };
 
   return {

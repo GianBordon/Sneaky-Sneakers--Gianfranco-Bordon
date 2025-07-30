@@ -1,4 +1,5 @@
-import { getProductById } from '../data/products';
+// Este servicio ahora usa Supabase a través del hook useSupabase
+// Las funciones que necesitan getProductById se manejan en los componentes
 
 // Servicio para manejar el carrito de compras
 export class CartService {
@@ -18,12 +19,7 @@ export class CartService {
   // Agregar producto al carrito
   static addToCart(productId, quantity = 1, size = null, color = null) {
     const cart = this.getCart();
-    const product = getProductById(productId);
     
-    if (!product) {
-      throw new Error('Producto no encontrado');
-    }
-
     // Verificar si el producto ya está en el carrito
     const existingItemIndex = cart.findIndex(item => 
       item.productId === productId && 
@@ -78,24 +74,10 @@ export class CartService {
     return [];
   }
 
-  // Obtener items del carrito con información completa del producto
+  // Obtener items del carrito (sin información del producto - se obtiene en los componentes)
   static getCartItems() {
     const cart = this.getCart();
-    return cart.map(item => {
-      const product = getProductById(item.productId);
-      return {
-        ...item,
-        product: product ? {
-          id: product.id,
-          name: product.name,
-          price: product.price,
-          originalPrice: product.originalPrice,
-          image: product.image,
-          brand: product.brand,
-          inStock: product.inStock
-        } : null
-      };
-    }).filter(item => item.product !== null); // Filtrar productos que ya no existen
+    return cart;
   }
 
   // Obtener cantidad total de items en el carrito
@@ -104,25 +86,23 @@ export class CartService {
     return cart.reduce((total, item) => total + item.quantity, 0);
   }
 
-  // Calcular subtotal del carrito
-  static getCartSubtotal() {
-    const items = this.getCartItems();
-    return items.reduce((total, item) => {
+  // Calcular subtotal del carrito (requiere productos como parámetro)
+  static getCartSubtotal(itemsWithProducts) {
+    return itemsWithProducts.reduce((total, item) => {
       return total + (item.product.price * item.quantity);
     }, 0);
   }
 
-  // Calcular total con impuestos y envío
-  static getCartTotal(shippingCost = 0, taxRate = 0.21) {
-    const subtotal = this.getCartSubtotal();
+  // Calcular total con impuestos y envío (requiere productos como parámetro)
+  static getCartTotal(itemsWithProducts, shippingCost = 0, taxRate = 0.21) {
+    const subtotal = this.getCartSubtotal(itemsWithProducts);
     const tax = subtotal * taxRate;
     return subtotal + tax + shippingCost;
   }
 
-  // Calcular descuento total
-  static getCartDiscount() {
-    const items = this.getCartItems();
-    return items.reduce((total, item) => {
+  // Calcular descuento total (requiere productos como parámetro)
+  static getCartDiscount(itemsWithProducts) {
+    return itemsWithProducts.reduce((total, item) => {
       const originalPrice = item.product.originalPrice;
       const currentPrice = item.product.price;
       const discount = originalPrice - currentPrice;
@@ -161,12 +141,11 @@ export class CartService {
     return coupon;
   }
 
-  // Verificar stock de productos en el carrito
-  static checkStock() {
-    const items = this.getCartItems();
+  // Verificar stock de productos en el carrito (requiere productos como parámetro)
+  static checkStock(itemsWithProducts) {
     const stockIssues = [];
 
-    items.forEach(item => {
+    itemsWithProducts.forEach(item => {
       if (!item.product.inStock) {
         stockIssues.push({
           itemId: item.id,
@@ -179,8 +158,8 @@ export class CartService {
     return stockIssues;
   }
 
-  // Procesar checkout (simulado)
-  static async processCheckout(paymentInfo, shippingInfo) {
+  // Procesar checkout (simulado) - requiere items con productos
+  static async processCheckout(itemsWithProducts, paymentInfo, shippingInfo) {
     try {
       // Simular procesamiento de pago
       await new Promise(resolve => setTimeout(resolve, 2000));
@@ -188,9 +167,9 @@ export class CartService {
       // Aquí iría la lógica real de procesamiento de pago
       const order = {
         id: Date.now(),
-        items: this.getCartItems(),
-        subtotal: this.getCartSubtotal(),
-        total: this.getCartTotal(),
+        items: itemsWithProducts,
+        subtotal: this.getCartSubtotal(itemsWithProducts),
+        total: this.getCartTotal(itemsWithProducts),
         paymentInfo,
         shippingInfo,
         status: 'pending',

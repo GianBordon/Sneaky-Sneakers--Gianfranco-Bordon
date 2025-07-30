@@ -8,21 +8,82 @@ import {
   Footer,
   LoadingSkeleton
 } from "../components";
-import { getProductsByCategory } from "../data/products";
 import { useCart } from "../hooks";
+import { useSupabase } from "../hooks/useSupabase";
 
 const Men = () => {
   const { addToCart } = useCart();
+  const { getProductsByCategory, isLoading: supabaseLoading, error } = useSupabase();
   const [isLoading, setIsLoading] = useState(true);
-  const menShoes = getProductsByCategory('men');
+  const [displayedProducts, setDisplayedProducts] = useState(8);
+  const [selectedFilter, setSelectedFilter] = useState('all');
+  const [sortBy, setSortBy] = useState('latest');
+  const [allMenShoes, setAllMenShoes] = useState([]);
+  
+  // Filtrar productos según el filtro seleccionado
+  const getFilteredProducts = () => {
+    let filtered = allMenShoes;
+    
+    // Aplicar filtros por tipo (simulado basado en el nombre del producto)
+    if (selectedFilter === 'running') {
+      filtered = filtered.filter(shoe => 
+        shoe.name.toLowerCase().includes('run') || 
+        shoe.name.toLowerCase().includes('zoom') ||
+        shoe.name.toLowerCase().includes('air max')
+      );
+    } else if (selectedFilter === 'basketball') {
+      filtered = filtered.filter(shoe => 
+        shoe.name.toLowerCase().includes('jordan') || 
+        shoe.name.toLowerCase().includes('basketball') ||
+        shoe.name.toLowerCase().includes('air force')
+      );
+    } else if (selectedFilter === 'lifestyle') {
+      filtered = filtered.filter(shoe => 
+        shoe.name.toLowerCase().includes('lifestyle') || 
+        shoe.name.toLowerCase().includes('casual') ||
+        shoe.name.toLowerCase().includes('air force 1')
+      );
+    }
+    
+    // Aplicar ordenamiento
+    switch (sortBy) {
+      case 'price-low':
+        filtered = [...filtered].sort((a, b) => a.price - b.price);
+        break;
+      case 'price-high':
+        filtered = [...filtered].sort((a, b) => b.price - a.price);
+        break;
+      case 'popular':
+        filtered = [...filtered].sort((a, b) => b.rating - a.rating);
+        break;
+      case 'latest':
+      default:
+        // Mantener orden original (asumiendo que los últimos agregados están al final)
+        break;
+    }
+    
+    return filtered;
+  };
+  
+  const filteredProducts = getFilteredProducts();
+  const displayedFilteredProducts = filteredProducts.slice(0, displayedProducts);
 
-  // Simular loading inicial
+  // Cargar productos desde Supabase
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 800);
-    return () => clearTimeout(timer);
-  }, []);
+    const loadProducts = async () => {
+      try {
+        setIsLoading(true);
+        const products = await getProductsByCategory('men');
+        setAllMenShoes(products);
+      } catch (error) {
+        console.error("Error loading products:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadProducts();
+  }, [getProductsByCategory]);
 
   const handleAddToCart = async (product) => {
     const result = await addToCart(product.id, 1);
@@ -33,9 +94,28 @@ const Men = () => {
     }
   };
 
+  // Mostrar error si hay problema con Supabase
+  if (error) {
+    console.error("Supabase error:", error);
+  }
+
   const handleNewsletterSubmit = (email) => {
     console.log("Newsletter subscription:", email);
     // Aquí iría la lógica para suscribir al newsletter
+  };
+
+  const handleLoadMore = () => {
+    setDisplayedProducts(prev => Math.min(prev + 8, filteredProducts.length));
+  };
+
+  const handleFilterChange = (filter) => {
+    setSelectedFilter(filter);
+    setDisplayedProducts(8); // Reset displayed products when filter changes
+  };
+
+  const handleSortChange = (event) => {
+    setSortBy(event.target.value);
+    setDisplayedProducts(8); // Reset displayed products when sort changes
   };
 
   return (
@@ -68,26 +148,58 @@ const Men = () => {
           <div className="flex flex-wrap items-center justify-between gap-4 animate-slide-down">
             <div className="flex items-center space-x-4">
               <span className="text-neutral-600 font-medium">Filter by:</span>
-              <button className="px-4 py-2 rounded-full bg-primary-100 text-primary-700 hover:bg-primary-200 transition-colors">
+              <button 
+                onClick={() => handleFilterChange('all')}
+                className={`px-4 py-2 rounded-full transition-colors ${
+                  selectedFilter === 'all' 
+                    ? 'bg-primary-100 text-primary-700' 
+                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                }`}
+              >
                 All
               </button>
-              <button className="px-4 py-2 rounded-full bg-neutral-100 text-neutral-600 hover:bg-neutral-200 transition-colors">
+              <button 
+                onClick={() => handleFilterChange('running')}
+                className={`px-4 py-2 rounded-full transition-colors ${
+                  selectedFilter === 'running' 
+                    ? 'bg-primary-100 text-primary-700' 
+                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                }`}
+              >
                 Running
               </button>
-              <button className="px-4 py-2 rounded-full bg-neutral-100 text-neutral-600 hover:bg-neutral-200 transition-colors">
+              <button 
+                onClick={() => handleFilterChange('basketball')}
+                className={`px-4 py-2 rounded-full transition-colors ${
+                  selectedFilter === 'basketball' 
+                    ? 'bg-primary-100 text-primary-700' 
+                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                }`}
+              >
                 Basketball
               </button>
-              <button className="px-4 py-2 rounded-full bg-neutral-100 text-neutral-600 hover:bg-neutral-200 transition-colors">
+              <button 
+                onClick={() => handleFilterChange('lifestyle')}
+                className={`px-4 py-2 rounded-full transition-colors ${
+                  selectedFilter === 'lifestyle' 
+                    ? 'bg-primary-100 text-primary-700' 
+                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                }`}
+              >
                 Lifestyle
               </button>
             </div>
             <div className="flex items-center space-x-2">
               <span className="text-neutral-600">Sort by:</span>
-              <select className="px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
-                <option>Latest</option>
-                <option>Price: Low to High</option>
-                <option>Price: High to Low</option>
-                <option>Most Popular</option>
+              <select 
+                value={sortBy}
+                onChange={handleSortChange}
+                className="px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              >
+                <option value="latest">Latest</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="popular">Most Popular</option>
               </select>
             </div>
           </div>
@@ -99,8 +211,13 @@ const Men = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 animate-slide-up">
             <h2 className="text-3xl font-display font-bold text-neutral-800 mb-4">
-              {menShoes.length} Products Available
+              {filteredProducts.length} Products Available
             </h2>
+            {selectedFilter !== 'all' && (
+              <p className="text-primary-600 font-semibold mb-2">
+                Showing {selectedFilter} products
+              </p>
+            )}
             <p className="text-neutral-600">Handpicked selection of premium men's sneakers</p>
           </div>
           
@@ -108,7 +225,7 @@ const Men = () => {
             <LoadingSkeleton type="product" count={8} />
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-              {menShoes.map((shoe, index) => (
+              {displayedFilteredProducts.map((shoe, index) => (
                 <div 
                   key={shoe.id}
                   className="animate-scale-in group"
@@ -130,9 +247,14 @@ const Men = () => {
 
           {/* Load More Button */}
           <div className="text-center mt-12 animate-fade-in">
-            <button className="bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg">
-              Load More Products
-            </button>
+            {displayedProducts < filteredProducts.length && (
+              <button 
+                onClick={handleLoadMore}
+                className="bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
+              >
+                Load More Products
+              </button>
+            )}
           </div>
         </div>
       </section>
