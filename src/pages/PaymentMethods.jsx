@@ -1,14 +1,33 @@
-import React from "react";
-import { 
-  SectionNavigation, 
-  PageBanner, 
-  Accordion, 
+import React, { useState, useEffect } from "react";
+import {
+  SectionNavigation,
+  PageBanner,
+  ContentSection,
   NewsletterSection,
-  Navbar,
-  Footer 
+  FooterLinks,
+  Footer,
+  LoadingSpinner
 } from "../components";
 
 const PaymentMethods = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Simular loading inicial muy corto
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100 flex items-center justify-center">
+        <LoadingSpinner size="xl" text="Cargando..." />
+      </div>
+    );
+  }
+
   const accordionData = [
     {
       title: "Tarjetas de crédito",
@@ -50,7 +69,6 @@ const PaymentMethods = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100">
-      <Navbar />
       <SectionNavigation />
 
       {/* Hero Section */}

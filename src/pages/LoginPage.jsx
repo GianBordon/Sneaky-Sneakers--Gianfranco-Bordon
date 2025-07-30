@@ -3,7 +3,6 @@ import {
   SectionNavigation, 
   PageBanner, 
   FormInput,
-  Navbar,
   Footer 
 } from "../components";
 import { useAuth } from "../hooks";
@@ -64,7 +63,6 @@ const LoginPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100">
-      <Navbar />
       <SectionNavigation />
 
       {/* Hero Section */}

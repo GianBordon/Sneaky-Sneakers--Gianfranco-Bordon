@@ -40,7 +40,7 @@ export const useCart = () => {
     setError(null);
     
     try {
-      const updatedCart = CartService.addToCart(productId, quantity, size, color);
+      CartService.addToCart(productId, quantity, size, color);
       const items = CartService.getCartItems();
       const count = CartService.getCartItemCount();
       const subtotal = CartService.getCartSubtotal();

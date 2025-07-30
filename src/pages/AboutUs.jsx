@@ -1,14 +1,33 @@
-import React from "react";
-import { 
-  SectionNavigation, 
-  PageBanner, 
-  ContentSection, 
+import React, { useState, useEffect } from "react";
+import {
+  SectionNavigation,
+  PageBanner,
+  ContentSection,
   NewsletterSection,
-  Navbar,
-  Footer 
+  FooterLinks,
+  Footer,
+  LoadingSpinner
 } from "../components";
 
 const AboutUs = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Simular loading inicial
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 800);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100 flex items-center justify-center">
+        <LoadingSpinner size="xl" text="Cargando..." />
+      </div>
+    );
+  }
+
   const aboutContent = (
     <div className="prose prose-lg max-w-none">
       <p className="text-neutral-700 leading-relaxed mb-6">
@@ -30,7 +49,6 @@ const AboutUs = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100">
-      <Navbar />
       <SectionNavigation />
 
       {/* Hero Section */}
@@ -56,9 +74,9 @@ const AboutUs = () => {
               <h2 className="text-4xl font-display font-bold text-neutral-800 mb-4">Our Story</h2>
               <p className="text-xl text-neutral-600">From passion to purpose</p>
             </div>
-            
+
             <div className="animate-fade-in">
-              <ContentSection 
+              <ContentSection
                 title=""
                 content={aboutContent}
               />
@@ -74,7 +92,7 @@ const AboutUs = () => {
             <h2 className="text-4xl font-display font-bold text-neutral-800 mb-4">Our Values</h2>
             <p className="text-xl text-neutral-600">What drives us forward</p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             <div className="text-center animate-slide-up">
               <div className="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -87,7 +105,7 @@ const AboutUs = () => {
                 Every product we offer is 100% authentic, sourced directly from authorized dealers and manufacturers.
               </p>
             </div>
-            
+
             <div className="text-center animate-slide-up" style={{ animationDelay: '200ms' }}>
               <div className="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-6">
                 <svg className="w-10 h-10 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -99,7 +117,7 @@ const AboutUs = () => {
                 We believe in building a community where sneaker enthusiasts can connect, share, and grow together.
               </p>
             </div>
-            
+
             <div className="text-center animate-slide-up" style={{ animationDelay: '400ms' }}>
               <div className="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-6">
                 <svg className="w-10 h-10 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -138,14 +156,14 @@ const AboutUs = () => {
           </div>
         </div>
       </section>
-      
-      <NewsletterSection 
+
+      <NewsletterSection
         title="STAY CONNECTED"
         placeholder="Enter your email address"
         buttonText="Subscribe"
         onSubmit={handleNewsletterSubmit}
       />
-      
+
       <Footer />
     </div>
   );

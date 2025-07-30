@@ -3,32 +3,35 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ErrorBoundary from './components/ErrorBoundary';
 import ScrollToTop from './components/ScrollToTop';
 
-// Importar todas las páginas
+// Importar páginas
 import Home from './pages/Home';
 import Men from './pages/Men';
-import MenSimple from './pages/MenSimple';
-import MenWithCart from './pages/MenWithCart';
 import Women from './pages/Women';
 import Kids from './pages/Kids';
+import AllProducts from './pages/AllProducts';
 import NewArrivals from './pages/NewArrivals';
 import Sale from './pages/Sale';
-import AllProducts from './pages/AllProducts';
-import AboutUs from './pages/AboutUs';
-import PaymentMethods from './pages/PaymentMethods';
-import FAQ from './pages/FAQ';
-import ShippingPolicy from './pages/ShippingPolicy';
-import ExchangePolicy from './pages/ExchangePolicy';
-import LoginPage from './pages/LoginPage';
 
 // Importar páginas de jugadores
-import PaulGeorge from './pages/PaulGeorge';
+import GiannisAntetokounmpo from './pages/GiannisAntetokounmpo';
 import LeBronJames from './pages/LeBronJames';
 import KevinDurant from './pages/KevinDurant';
-import GiannisAntetokounmpo from './pages/GiannisAntetokounmpo';
+import PaulGeorge from './pages/PaulGeorge';
 import JamesHarden from './pages/JamesHarden';
 
-// Página de prueba
-import TestPage from './pages/TestPage';
+// Importar páginas de políticas y otras
+import AboutUs from './pages/AboutUs';
+import FAQ from './pages/FAQ';
+import ExchangePolicy from './pages/ExchangePolicy';
+import ShippingPolicy from './pages/ShippingPolicy';
+import PaymentMethods from './pages/PaymentMethods';
+import LoginPage from './pages/LoginPage';
+import ProductDetail from './pages/ProductDetail';
+import Checkout from './pages/Checkout';
+import OrderConfirmation from './pages/OrderConfirmation';
+import AdminDashboard from './pages/AdminDashboard';
+
+import Navbar from './components/Navbar';
 
 function App() {
   return (
@@ -36,39 +39,41 @@ function App() {
       <Router>
         <ScrollToTop />
         <div className="App">
+          <Navbar />
           <Routes>
             {/* Página principal */}
             <Route path="/" element={<Home />} />
             
-            {/* Página de prueba */}
-            <Route path="/test" element={<TestPage />} />
-            
             {/* Páginas de categorías */}
             <Route path="/men" element={<Men />} />
-            <Route path="/men-simple" element={<MenSimple />} />
-            <Route path="/men-with-cart" element={<MenWithCart />} />
             <Route path="/women" element={<Women />} />
             <Route path="/kids" element={<Kids />} />
+            <Route path="/all-products" element={<AllProducts />} />
             <Route path="/new-arrivals" element={<NewArrivals />} />
             <Route path="/sale" element={<Sale />} />
-            <Route path="/all-products" element={<AllProducts />} />
-            
-            {/* Páginas informativas */}
-            <Route path="/about-us" element={<AboutUs />} />
-            <Route path="/payment-methods" element={<PaymentMethods />} />
-            <Route path="/faq" element={<FAQ />} />
-            <Route path="/shipping-policy" element={<ShippingPolicy />} />
-            <Route path="/exchange-policy" element={<ExchangePolicy />} />
-            
-            {/* Página de autenticación */}
-            <Route path="/login" element={<LoginPage />} />
             
             {/* Páginas de jugadores */}
-            <Route path="/paul-george" element={<PaulGeorge />} />
+            <Route path="/giannis-antetokounmpo" element={<GiannisAntetokounmpo />} />
             <Route path="/lebron-james" element={<LeBronJames />} />
             <Route path="/kevin-durant" element={<KevinDurant />} />
-            <Route path="/giannis-antetokounmpo" element={<GiannisAntetokounmpo />} />
+            <Route path="/paul-george" element={<PaulGeorge />} />
             <Route path="/james-harden" element={<JamesHarden />} />
+            
+            {/* Páginas de políticas y información */}
+            <Route path="/about-us" element={<AboutUs />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/exchange-policy" element={<ExchangePolicy />} />
+            <Route path="/shipping-policy" element={<ShippingPolicy />} />
+            <Route path="/payment-methods" element={<PaymentMethods />} />
+            
+            {/* Páginas de autenticación y compras */}
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/product/:id" element={<ProductDetail />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/order-confirmation" element={<OrderConfirmation />} />
+            
+            {/* Panel de administración */}
+            <Route path="/admin" element={<AdminDashboard />} />
             
             {/* Ruta por defecto - redirige a Home */}
             <Route path="*" element={<Home />} />

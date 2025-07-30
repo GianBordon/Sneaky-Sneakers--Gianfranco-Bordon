@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   SectionNavigation,
@@ -6,8 +6,8 @@ import {
   ProductCard,
   NewsletterSection,
   FooterLinks,
-  Navbar,
-  Footer
+  Footer,
+  LoadingSkeleton
 } from "../components";
 import { getProductsByCategory } from "../data/products";
 import { useCart } from "../hooks";
@@ -18,9 +18,19 @@ const NewArrivals = () => {
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [sortBy, setSortBy] = useState('latest');
   const [displayedProducts, setDisplayedProducts] = useState(8);
+  const [loading, setLoading] = useState(true);
   
   const newProducts = getProductsByCategory('new') || [];
   const filteredProducts = newProducts.slice(0, displayedProducts);
+
+  useEffect(() => {
+    const loadProducts = async () => {
+      setLoading(true);
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+      setLoading(false);
+    };
+    loadProducts();
+  }, []);
 
   const handleAddToCart = async (product) => {
     const result = await addToCart(product.id, 1);
@@ -57,7 +67,6 @@ const NewArrivals = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100">
-      <Navbar />
       <SectionNavigation />
 
       {/* Hero Section - Full Screen with Background Image */}
@@ -171,31 +180,35 @@ const NewArrivals = () => {
             <p className="text-neutral-600">Fresh releases and exclusive drops</p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {filteredProducts.map((product, index) => (
-              <div 
-                key={product.id}
-                className="animate-scale-in group"
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden relative">
-                  {/* New Badge */}
-                  <div className="absolute top-4 left-4 z-10">
-                    <div className="bg-indigo-500 text-white px-3 py-1 rounded-full text-sm font-bold">
-                      NEW
+          {loading ? (
+            <LoadingSkeleton />
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              {filteredProducts.map((product, index) => (
+                <div 
+                  key={product.id}
+                  className="animate-scale-in group"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden relative">
+                    {/* New Badge */}
+                    <div className="absolute top-4 left-4 z-10">
+                      <div className="bg-indigo-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+                        NEW
+                      </div>
                     </div>
+                    <ProductCard
+                      id={product.id}
+                      name={product.name}
+                      price={`$${product.price}`}
+                      image={product.image}
+                      onAddToCart={handleAddToCart}
+                    />
                   </div>
-                  <ProductCard
-                    id={product.id}
-                    name={product.name}
-                    price={`$${product.price}`}
-                    image={product.image}
-                    onAddToCart={handleAddToCart}
-                  />
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
 
           {/* Load More Button */}
           <div className="text-center mt-12 animate-fade-in">

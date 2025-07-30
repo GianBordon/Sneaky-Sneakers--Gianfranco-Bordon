@@ -5,6 +5,23 @@ export * from './brands';
 export * from './categories';
 export * from './carousel';
 
+// Importar funciones específicas para uso interno
+import { 
+  getAllProducts, 
+  getProductById 
+} from './products';
+import { 
+  getAllPlayers, 
+  getPlayerById 
+} from './players';
+import { 
+  getAllBrands, 
+  getBrandById 
+} from './brands';
+import { 
+  getCategoryById 
+} from './categories';
+
 // Exportar funciones utilitarias para datos
 export const getDataByType = (type, identifier) => {
   switch (type) {

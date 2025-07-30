@@ -1,15 +1,33 @@
-import React from "react";
-import { 
-  SectionNavigation, 
-  PageBanner, 
-  Accordion, 
+import React, { useState, useEffect } from "react";
+import {
+  SectionNavigation,
+  PageBanner,
+  Accordion,
   NewsletterSection,
   FooterLinks,
-  Navbar,
-  Footer 
+  Footer,
+  LoadingSpinner
 } from "../components";
 
 const FAQ = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Simular loading inicial
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 800);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100 flex items-center justify-center">
+        <LoadingSpinner size="xl" text="Cargando FAQ..." />
+      </div>
+    );
+  }
+
   const faqData = [
     {
       title: "COMPRAS",
@@ -97,7 +115,6 @@ const FAQ = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100">
-      <Navbar />
       <SectionNavigation />
 
       {/* Hero Section */}

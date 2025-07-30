@@ -19,7 +19,7 @@ const ImageCarousel = ({
     
     const timer = setInterval(nextSlide, interval);
     return () => clearInterval(timer);
-  }, [autoPlay, interval, images.length]);
+  }, [autoPlay, interval, images.length, nextSlide]);
 
   return (
     <section className={`py-4 md:py-8 ${className}`}>

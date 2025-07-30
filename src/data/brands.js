@@ -6,7 +6,8 @@ export const brands = [
     image: '/src/assets/img/seccion-zapas/Jordan.webp',
     description: 'Zapatillas de Michael Jordan',
     category: 'basketball',
-    featured: true
+    featured: true,
+    path: '/all-products?brand=jordan'
   },
   { 
     id: 2,
@@ -14,7 +15,8 @@ export const brands = [
     image: '/src/assets/img/seccion-zapas/nike.jpg',
     description: 'Just Do It',
     category: 'sports',
-    featured: true
+    featured: true,
+    path: '/all-products?brand=nike'
   },
   { 
     id: 3,
@@ -22,7 +24,8 @@ export const brands = [
     image: '/src/assets/img/seccion-zapas/adid.jpg',
     description: 'Impossible is Nothing',
     category: 'sports',
-    featured: true
+    featured: true,
+    path: '/all-products?brand=adidas'
   },
   { 
     id: 4,
@@ -30,7 +33,8 @@ export const brands = [
     image: '/src/assets/img/seccion-zapas/nikesb.jfif',
     description: 'Skateboarding',
     category: 'skateboarding',
-    featured: false
+    featured: false,
+    path: '/all-products?brand=nike-sb'
   }
 ];
 

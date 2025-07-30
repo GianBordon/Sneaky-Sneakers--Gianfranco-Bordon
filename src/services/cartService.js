@@ -136,13 +136,9 @@ export class CartService {
   }
 
   // Obtener productos recomendados basados en el carrito
-  static getRecommendedProducts(limit = 4) {
+  static getRecommendedProducts() {
     const items = this.getCartItems();
     if (items.length === 0) return [];
-
-    // Obtener marcas y categorías de los productos en el carrito
-    const brands = [...new Set(items.map(item => item.product.brand))];
-    const categories = [...new Set(items.map(item => item.product.category))];
 
     // Aquí podrías implementar lógica más compleja para recomendaciones
     // Por ahora, retornamos un array vacío

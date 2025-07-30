@@ -1,23 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import {
   SectionNavigation,
   PageBanner,
   ProductCard,
   NewsletterSection,
   FooterLinks,
-  Navbar,
-  Footer
+  Footer,
+  LoadingSkeleton
 } from "../components";
 import { getProductsByCategory } from "../data/products";
 import { useCart } from "../hooks";
 
 const Sale = () => {
-  const navigate = useNavigate();
   const { addToCart } = useCart();
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [sortBy, setSortBy] = useState('biggest-discount');
   const [displayedProducts, setDisplayedProducts] = useState(8);
+  const [isLoading, setIsLoading] = useState(true);
   const [timeLeft, setTimeLeft] = useState({
     hours: 24,
     minutes: 12,
@@ -26,6 +25,14 @@ const Sale = () => {
   
   const saleProducts = getProductsByCategory('sale') || [];
   const filteredProducts = saleProducts.slice(0, displayedProducts);
+
+  // Simular loading inicial
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Countdown timer effect
   useEffect(() => {
@@ -85,7 +92,6 @@ const Sale = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100">
-      <Navbar />
       <SectionNavigation />
 
       {/* Hero Section - Full Screen with Background Image */}
@@ -222,31 +228,35 @@ const Sale = () => {
             <p className="text-neutral-600">Hurry! These deals won't last long</p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {filteredProducts.map((product, index) => (
-              <div 
-                key={product.id}
-                className="animate-scale-in group"
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden relative">
-                  {/* Sale Badge */}
-                  <div className="absolute top-4 left-4 z-10">
-                    <div className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">
-                      SALE
+          {isLoading ? (
+            <LoadingSkeleton type="product" count={8} />
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              {filteredProducts.map((product, index) => (
+                <div 
+                  key={product.id}
+                  className="animate-scale-in group"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden relative">
+                    {/* Sale Badge */}
+                    <div className="absolute top-4 left-4 z-10">
+                      <div className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+                        SALE
+                      </div>
                     </div>
+                    <ProductCard
+                      id={product.id}
+                      name={product.name}
+                      price={`$${product.price}`}
+                      image={product.image}
+                      onAddToCart={handleAddToCart}
+                    />
                   </div>
-                  <ProductCard
-                    id={product.id}
-                    name={product.name}
-                    price={`$${product.price}`}
-                    image={product.image}
-                    onAddToCart={handleAddToCart}
-                  />
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
 
           {/* Load More Button */}
           <div className="text-center mt-12 animate-fade-in">

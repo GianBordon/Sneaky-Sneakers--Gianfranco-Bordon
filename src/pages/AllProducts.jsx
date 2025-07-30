@@ -1,26 +1,53 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   SectionNavigation,
   PageBanner,
   ProductCard,
   NewsletterSection,
   FooterLinks,
-  Navbar,
-  Footer
+  Footer,
+  LoadingSkeleton
 } from "../components";
-import { getProductsByCategory } from "../data/products";
+import { getProductsByCategory, getProductsByBrand } from "../data/products";
 import { useCart } from "../hooks";
 
 const AllProducts = () => {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { addToCart } = useCart();
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedBrand, setSelectedBrand] = useState('all');
   const [sortBy, setSortBy] = useState('featured');
   const [displayedProducts, setDisplayedProducts] = useState(8);
+  const [isLoading, setIsLoading] = useState(true);
+  
+  // Obtener parámetros de la URL
+  const brandFromUrl = searchParams.get('brand');
   
   const allProducts = getProductsByCategory('all') || [];
-  const filteredProducts = allProducts.slice(0, displayedProducts);
+  
+  // Filtrar productos por marca si se especifica en la URL
+  const filteredByBrand = brandFromUrl && brandFromUrl !== 'all' 
+    ? getProductsByBrand(brandFromUrl) || []
+    : allProducts;
+    
+  const filteredProducts = filteredByBrand.slice(0, displayedProducts);
+
+  // Simular loading inicial
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Actualizar filtros cuando cambia la URL
+  useEffect(() => {
+    if (brandFromUrl) {
+      setSelectedBrand(brandFromUrl);
+    }
+  }, [brandFromUrl]);
 
   const handleAddToCart = async (product) => {
     const result = await addToCart(product.id, 1);
@@ -52,12 +79,21 @@ const AllProducts = () => {
     }
   };
 
+  const handleBrandFilter = (brand) => {
+    setSelectedBrand(brand);
+    if (brand === 'all') {
+      setSearchParams({});
+    } else {
+      setSearchParams({ brand });
+    }
+  };
+
   const handleSortChange = (event) => {
     setSortBy(event.target.value);
   };
 
   const handleLoadMore = () => {
-    setDisplayedProducts(prev => Math.min(prev + 8, allProducts.length));
+    setDisplayedProducts(prev => Math.min(prev + 8, filteredByBrand.length));
   };
 
   const handleCategoryClick = (category) => {
@@ -66,7 +102,6 @@ const AllProducts = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100">
-      <Navbar />
       <SectionNavigation />
 
       {/* Hero Section - Full Screen with Background Image */}
@@ -107,7 +142,7 @@ const AllProducts = () => {
       <section className="py-8 bg-white border-b border-neutral-200">
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap items-center justify-between gap-4 animate-slide-down">
-            <div className="flex items-center space-x-4">
+            <div className="flex flex-wrap items-center space-x-4">
               <span className="text-neutral-600 font-medium">Filter by:</span>
               <button 
                 onClick={() => handleCategoryFilter('all')}
@@ -150,6 +185,62 @@ const AllProducts = () => {
                 Kids
               </button>
             </div>
+            
+            {/* Brand Filters */}
+            <div className="flex flex-wrap items-center space-x-4">
+              <span className="text-neutral-600 font-medium">Brand:</span>
+              <button 
+                onClick={() => handleBrandFilter('all')}
+                className={`px-4 py-2 rounded-full transition-colors ${
+                  selectedBrand === 'all' 
+                    ? 'bg-cyan-100 text-cyan-700' 
+                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                }`}
+              >
+                All Brands
+              </button>
+              <button 
+                onClick={() => handleBrandFilter('nike')}
+                className={`px-4 py-2 rounded-full transition-colors ${
+                  selectedBrand === 'nike' 
+                    ? 'bg-cyan-100 text-cyan-700' 
+                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                }`}
+              >
+                Nike
+              </button>
+              <button 
+                onClick={() => handleBrandFilter('jordan')}
+                className={`px-4 py-2 rounded-full transition-colors ${
+                  selectedBrand === 'jordan' 
+                    ? 'bg-cyan-100 text-cyan-700' 
+                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                }`}
+              >
+                Jordan
+              </button>
+              <button 
+                onClick={() => handleBrandFilter('adidas')}
+                className={`px-4 py-2 rounded-full transition-colors ${
+                  selectedBrand === 'adidas' 
+                    ? 'bg-cyan-100 text-cyan-700' 
+                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                }`}
+              >
+                Adidas
+              </button>
+              <button 
+                onClick={() => handleBrandFilter('nike-sb')}
+                className={`px-4 py-2 rounded-full transition-colors ${
+                  selectedBrand === 'nike-sb' 
+                    ? 'bg-cyan-100 text-cyan-700' 
+                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                }`}
+              >
+                Nike SB
+              </button>
+            </div>
+            
             <div className="flex items-center space-x-2">
               <span className="text-neutral-600">Sort by:</span>
               <select 
@@ -173,20 +264,28 @@ const AllProducts = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 animate-slide-up">
             <h2 className="text-3xl font-display font-bold text-neutral-800 mb-4">
-              {allProducts.length} Products Available
+              {filteredByBrand.length} Products Available
             </h2>
+            {brandFromUrl && brandFromUrl !== 'all' && (
+              <p className="text-cyan-600 font-semibold mb-2">
+                Showing products from {brandFromUrl.charAt(0).toUpperCase() + brandFromUrl.slice(1)}
+              </p>
+            )}
             <p className="text-neutral-600">Complete collection of premium sneakers</p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {filteredProducts.map((product, index) => (
-              <div 
-                key={product.id}
-                className="animate-scale-in group"
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden">
-                  <ProductCard
+          {isLoading ? (
+            <LoadingSkeleton type="product" count={8} />
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              {filteredProducts.map((product, index) => (
+                <div 
+                  key={product.id}
+                  className="animate-scale-in group"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden">
+                    <ProductCard
                     id={product.id}
                     name={product.name}
                     price={`$${product.price}`}
@@ -197,10 +296,11 @@ const AllProducts = () => {
               </div>
             ))}
           </div>
+        )}
 
           {/* Load More Button */}
           <div className="text-center mt-12 animate-fade-in">
-            {displayedProducts < allProducts.length && (
+            {displayedProducts < filteredByBrand.length && (
               <button 
                 onClick={handleLoadMore}
                 className="bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"

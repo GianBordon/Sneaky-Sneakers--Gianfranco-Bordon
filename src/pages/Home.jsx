@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import {
   SectionNavigation,
@@ -6,8 +6,8 @@ import {
   PlayerCard,
   ImageCarousel,
   BrandCard,
-  Navbar,
-  Footer
+  Footer,
+  LoadingSpinner
 } from "../components";
 import { 
   getCarouselImages, 
@@ -18,12 +18,29 @@ import {
 
 const Home = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
   
   // Obtener datos desde los archivos centralizados
   const carouselImages = getCarouselImages('featured');
   const carouselConfig = getCarouselConfig('featured');
   const brands = getFeaturedBrands();
   const players = getAllPlayers();
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        // Simulate data fetching
+        await new Promise(resolve => setTimeout(resolve, 1000)); 
+      } catch (error) {
+        console.error("Error loading data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, []);
 
   const handleShopNow = () => {
     navigate('/all-products');
@@ -34,22 +51,19 @@ const Home = () => {
   };
 
   const handleLearnMore = () => {
-    navigate('/about-us');
+    document.getElementById('about-section')?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const handleMenCategory = () => {
-    console.log('Men category clicked');
-    navigate('/men');
-  };
-
-  const handleWomenCategory = () => {
-    console.log('Women category clicked');
-    navigate('/women');
-  };
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-neutral-50 to-neutral-100">
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100">
-      <Navbar />
       <SectionNavigation />
 
       {/* Hero Section - Full Screen with Background Image */}

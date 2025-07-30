@@ -1,19 +1,28 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   SectionNavigation,
   PageBanner,
   ProductCard,
   NewsletterSection,
   FooterLinks,
-  Navbar,
-  Footer
+  Footer,
+  LoadingSkeleton
 } from "../components";
 import { getProductsByCategory } from "../data/products";
 import { useCart } from "../hooks";
 
 const Kids = () => {
   const { addToCart } = useCart();
+  const [isLoading, setIsLoading] = useState(true);
   const kidsShoes = getProductsByCategory('kids');
+
+  // Simular loading inicial
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 800);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleAddToCart = async (product) => {
     const result = await addToCart(product.id, 1);
@@ -30,7 +39,6 @@ const Kids = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100">
-      <Navbar />
       <SectionNavigation />
 
       {/* Hero Section - Full Screen with Background Image */}
@@ -95,25 +103,29 @@ const Kids = () => {
             <p className="text-neutral-600">Colorful and comfortable sneakers for every adventure</p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {kidsShoes.map((shoe, index) => (
-              <div 
-                key={shoe.id}
-                className="animate-scale-in group"
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden">
-                  <ProductCard
-                    id={shoe.id}
-                    name={shoe.name}
-                    price={`$${shoe.price}`}
-                    image={shoe.image}
-                    onAddToCart={handleAddToCart}
-                  />
+          {isLoading ? (
+            <LoadingSkeleton type="product" count={8} />
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              {kidsShoes.map((shoe, index) => (
+                <div 
+                  key={shoe.id}
+                  className="animate-scale-in group"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden">
+                    <ProductCard
+                      id={shoe.id}
+                      name={shoe.name}
+                      price={`$${shoe.price}`}
+                      image={shoe.image}
+                      onAddToCart={handleAddToCart}
+                    />
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
 
           {/* Load More Button */}
           <div className="text-center mt-12 animate-fade-in">
