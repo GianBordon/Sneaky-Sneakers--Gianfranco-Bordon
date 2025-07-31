@@ -12,7 +12,10 @@ import AllProducts from './pages/AllProducts';
 import NewArrivals from './pages/NewArrivals';
 import Sale from './pages/Sale';
 
-
+// Importar páginas de jugadores
+import LeBronJames from './pages/LeBronJames';
+import KevinDurant from './pages/KevinDurant';
+import GiannisAntetokounmpo from './pages/GiannisAntetokounmpo';
 
 // Importar páginas de políticas y otras
 import AboutUs from './pages/AboutUs';
@@ -50,6 +53,9 @@ function App() {
             
             {/* Páginas de jugadores */}
             <Route path="/player/:id" element={<PlayerDetail />} />
+            <Route path="/lebron-james" element={<LeBronJames />} />
+            <Route path="/kevin-durant" element={<KevinDurant />} />
+            <Route path="/giannis-antetokounmpo" element={<GiannisAntetokounmpo />} />
             
             {/* Páginas de políticas y información */}
             <Route path="/about-us" element={<AboutUs />} />

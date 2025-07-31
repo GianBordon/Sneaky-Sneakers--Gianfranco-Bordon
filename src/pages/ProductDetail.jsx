@@ -94,7 +94,8 @@ const ProductDetail = () => {
   }
 
   const handleAddToCart = async () => {
-    if (!selectedSize) {
+    // Solo verificar talla si el producto tiene tallas definidas
+    if (product.sizes && product.sizes.length > 0 && !selectedSize) {
       alert('Por favor selecciona una talla');
       return;
     }
@@ -214,26 +215,24 @@ const ProductDetail = () => {
                 </div>
 
                 {/* Size Selection */}
-                {product.sizes && product.sizes.length > 0 && (
-                  <div>
-                    <h3 className="text-lg font-semibold text-neutral-800 mb-3">Talla</h3>
-                    <div className="grid grid-cols-4 gap-2">
-                      {product.sizes.map((size) => (
-                        <button
-                          key={size}
-                          onClick={() => setSelectedSize(size)}
-                          className={`p-3 border-2 rounded-lg font-semibold transition-colors ${
-                            selectedSize === size
-                              ? 'border-cyan-600 bg-cyan-50 text-cyan-600'
-                              : 'border-neutral-300 hover:border-neutral-400'
-                          }`}
-                        >
-                          {size}
-                        </button>
-                      ))}
-                    </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-neutral-800 mb-3">Talla</h3>
+                  <div className="grid grid-cols-4 gap-2">
+                    {(product.sizes && product.sizes.length > 0 ? product.sizes : ['7', '8', '9', '10', '11', '12']).map((size) => (
+                      <button
+                        key={size}
+                        onClick={() => setSelectedSize(size)}
+                        className={`p-3 border-2 rounded-lg font-semibold transition-colors ${
+                          selectedSize === size
+                            ? 'border-cyan-600 bg-cyan-50 text-cyan-600'
+                            : 'border-neutral-300 hover:border-neutral-400'
+                        }`}
+                      >
+                        {size}
+                      </button>
+                    ))}
                   </div>
-                )}
+                </div>
 
                 {/* Color Selection */}
                 {product.colors && product.colors.length > 0 && (

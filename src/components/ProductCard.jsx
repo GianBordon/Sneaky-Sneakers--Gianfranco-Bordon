@@ -30,7 +30,7 @@ const ProductCard = ({
   return (
     <Link to={`/product/${id}`} className={`group block bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 ${className}`}>
       <div className="relative">
-        <img src={image} alt={name} className="w-full h-64 object-cover" />
+        <img src={image} alt={name} className="w-full h-48 object-cover" />
         {/* Quick Action Buttons */}
         <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex space-x-2">
           {/* Wishlist Button */}
@@ -60,9 +60,9 @@ const ProductCard = ({
           )}
         </div>
       </div>
-      <div className="p-4">
-        <h3 className="text-lg font-semibold mb-2 text-neutral-800 hover:text-cyan-600 transition-colors">{name}</h3>
-        <p className="text-cyan-600 font-bold text-lg">{price}</p>
+      <div className="p-3">
+        <h3 className="text-base font-semibold mb-1 text-neutral-800 hover:text-cyan-600 transition-colors">{name}</h3>
+        <p className="text-cyan-600 font-bold text-base">{price}</p>
       </div>
     </Link>
   );

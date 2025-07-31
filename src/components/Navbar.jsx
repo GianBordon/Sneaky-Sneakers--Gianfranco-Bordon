@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useWishlist } from "../hooks";
+import { useWishlist, useCart } from "../hooks";
 import { useAuth } from "../hooks";
-import { CartService } from "../services";
 import CartModal from "./CartModal";
 import WishlistModal from "./WishlistModal";
 import SearchBar from "./SearchBar";
@@ -13,6 +12,7 @@ const Navbar = () => {
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const { wishlistCount } = useWishlist();
+  const { cartItemsWithProducts } = useCart();
   const { user, logout } = useAuth();
 
   const toggleMenu = () => {
@@ -52,7 +52,7 @@ const Navbar = () => {
     closeMenu();
   };
 
-  const cartItemCount = CartService.getCartItemCount();
+  const cartItemCount = cartItemsWithProducts.length;
 
   return (
     <header className="bg-white shadow-lg sticky top-0 z-50">

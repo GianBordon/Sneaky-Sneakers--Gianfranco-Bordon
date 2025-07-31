@@ -47,9 +47,63 @@ export const carouselData = {
   ]
 };
 
+// Links de productos para el carrusel (IDs de productos en Supabase)
+export const carouselProductLinks = {
+  featured: [
+    "/product/1", // Nike SB 102
+    "/product/2", // Nike SB 186
+    "/product/3", // Nike SB 189
+    "/product/4", // Nike SB 22
+    "/product/5", // Nike SB 57
+  ],
+  
+  newArrivals: [
+    "/product/6", // Nike 118
+    "/product/7", // Nike 122
+    "/product/8", // Jordan 116
+    "/product/9", // Jordan 149
+    "/product/10", // LeBron XX Stocking Stuffer
+  ],
+  
+  sale: [
+    "/product/11", // Nike 10
+    "/product/12", // Nike 11
+    "/product/13", // Jordan 15
+    "/product/1", // Nike SB 102
+    "/product/14", // LeBron XX
+  ],
+  
+  men: [
+    "/product/11", // Nike 10
+    "/product/12", // Nike 11
+    "/product/13", // Jordan 15
+    "/product/1", // Nike SB 102
+    "/product/14", // LeBron XX
+    "/product/15", // KD 8
+  ],
+  
+  women: [
+    "/product/16", // Nike 18
+    "/product/17", // Nike 29
+    "/product/18", // Nike 37
+    "/product/19", // Nike 9
+  ],
+  
+  kids: [
+    "/product/20", // Jordan 26
+    "/product/18", // Nike 37
+    "/product/19", // Nike 9
+  ]
+};
+
 // Función para obtener imágenes de carrusel por categoría
 export const getCarouselImages = (category = 'featured') => {
   return carouselData[category] || carouselData.featured;
+};
+
+// Función para obtener links de productos por categoría
+export const getCarouselProductLinks = (category = 'featured') => {
+  return carouselProductLinks[category] || carouselProductLinks.featured;
 };
 
 // Función para obtener todas las imágenes de carrusel

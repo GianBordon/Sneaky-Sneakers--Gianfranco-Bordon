@@ -13,17 +13,11 @@ export const useCart = () => {
   const [error, setError] = useState(null);
   const { getProductById } = useSupabase();
 
-  // Cargar carrito inicial
-  useEffect(() => {
-    loadCart();
-  }, []);
-
   // Cargar carrito con información de productos
   const loadCart = useCallback(async () => {
     try {
       setLoading(true);
       const items = CartService.getCartItems();
-      const count = CartService.getCartItemCount();
       
       // Obtener información de productos desde Supabase
       const itemsWithProducts = await Promise.all(
@@ -49,7 +43,7 @@ export const useCart = () => {
 
       setCartItems(items);
       setCartItemsWithProducts(itemsWithProducts);
-      setCartCount(count);
+      setCartCount(itemsWithProducts.length); // Usar la longitud real de productos cargados
       setCartSubtotal(subtotal);
       setCartTotal(total);
       setError(null);
@@ -60,6 +54,20 @@ export const useCart = () => {
       setLoading(false);
     }
   }, [getProductById]);
+
+  // Cargar carrito inicial
+  useEffect(() => {
+    loadCart();
+  }, [loadCart]);
+
+  // Recargar carrito cuando cambien los datos
+  useEffect(() => {
+    const interval = setInterval(() => {
+      loadCart();
+    }, 5000); // Recargar cada 5 segundos para mantener sincronización
+
+    return () => clearInterval(interval);
+  }, [loadCart]);
 
   // Agregar producto al carrito
   const addToCart = useCallback(async (productId, quantity = 1, size = null, color = null) => {

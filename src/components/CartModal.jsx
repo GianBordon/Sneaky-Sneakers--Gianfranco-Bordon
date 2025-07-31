@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../hooks';
-import { CartService } from '../services';
+
 
 const CartModal = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ const CartModal = ({ isOpen, onClose }) => {
     navigate('/checkout');
   };
 
-  const itemCount = cartCount;
+  const itemCount = cartItemsWithProducts.length;
 
   if (!isOpen) return null;
 
@@ -38,10 +38,10 @@ const CartModal = ({ isOpen, onClose }) => {
 
       {/* Modal */}
       <div className="flex min-h-full items-center justify-center p-4">
-        <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
+        <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-xl max-h-[85vh] overflow-hidden">
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-neutral-200">
-            <h2 className="text-2xl font-bold text-neutral-800">
+            <h2 className="text-xl font-bold text-neutral-800">
               Carrito de Compras ({itemCount} items)
             </h2>
             <button
@@ -55,7 +55,7 @@ const CartModal = ({ isOpen, onClose }) => {
           </div>
 
           {/* Cart Items */}
-          <div className="flex-1 overflow-y-auto max-h-96">
+          <div className="flex-1 overflow-y-auto max-h-80">
             {cartItemsWithProducts.length === 0 ? (
               <div className="p-8 text-center">
                 <div className="w-16 h-16 bg-neutral-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -75,7 +75,7 @@ const CartModal = ({ isOpen, onClose }) => {
                       <img
                         src={item.product.image}
                         alt={item.product.name}
-                        className="w-16 h-16 object-cover rounded-lg"
+                        className="w-12 h-12 object-cover rounded-lg"
                       />
                     </div>
 

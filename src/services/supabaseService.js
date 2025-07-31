@@ -80,7 +80,25 @@ class SupabaseService {
       return [];
     }
     
-    return data || [];
+    console.log('🔍 Datos originales de productos:', data?.slice(0, 2)); // Mostrar primeros 2 productos
+    
+    // Mapear campos de la base de datos al formato esperado por el frontend
+    const mappedProducts = (data || []).map(product => {
+      const mapped = {
+        ...product,
+        inStock: product.in_stock !== undefined ? product.in_stock : true, // Mapear in_stock a inStock
+        originalPrice: product.original_price || product.price, // Mapear original_price a originalPrice
+        createdAt: product.created_at,
+        updatedAt: product.updated_at
+      };
+      
+      console.log(`📦 Producto ${product.name}: in_stock=${product.in_stock}, inStock=${mapped.inStock}`);
+      return mapped;
+    });
+    
+    console.log('✅ Productos mapeados:', mappedProducts?.slice(0, 2)); // Mostrar primeros 2 productos mapeados
+    
+    return mappedProducts;
   }
 
   async getProductById(id) {
@@ -97,7 +115,14 @@ class SupabaseService {
       return null;
     }
     
-    return data;
+    // Mapear campos de la base de datos al formato esperado por el frontend
+    return data ? {
+      ...data,
+      inStock: data.in_stock !== undefined ? data.in_stock : true, // Mapear in_stock a inStock
+      originalPrice: data.original_price || data.price, // Mapear original_price a originalPrice
+      createdAt: data.created_at,
+      updatedAt: data.updated_at
+    } : null;
   }
 
   async getProductsByCategory(category) {
