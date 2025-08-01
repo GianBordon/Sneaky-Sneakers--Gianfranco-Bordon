@@ -34,7 +34,7 @@ class SupabaseService {
       }
       
       // Verificar conexión haciendo una consulta simple
-      const { data, error } = await this.supabase
+      const { data: _data, error } = await this.supabase
         .from(SUPABASE_CONFIG.TABLES.PRODUCTS)
         .select('*')
         .limit(1);

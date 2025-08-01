@@ -25,7 +25,7 @@ async function checkComponents() {
   
   try {
     // Verificar datos en Supabase
-    const { data: products, error: productsError } = await supabase
+    const { data: _products, error: productsError } = await supabase
       .from('products')
       .select('count')
       .limit(1);
@@ -36,7 +36,7 @@ async function checkComponents() {
       console.log('✅ Productos accesibles');
     }
     
-    const { data: players, error: playersError } = await supabase
+    const { data: _players, error: playersError } = await supabase
       .from('players')
       .select('count')
       .limit(1);

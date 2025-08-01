@@ -19,9 +19,30 @@ export { default as SearchBar } from './SearchBar';
 export { default as LoadingSpinner } from './LoadingSpinner';
 export { default as LoadingSkeleton } from './LoadingSkeleton';
 export { default as ReviewSystem } from './ReviewSystem';
+export { default as ReviewSummary } from './ReviewSummary';
 export { default as CouponSystem } from './CouponSystem';
 export { default as AnalyticsDashboard } from './AnalyticsDashboard';
 export { default as WishlistModal } from './WishlistModal';
+export { default as ToastNotification } from './ToastNotification';
+export { default as NotificationContainer } from './NotificationContainer';
+export { default as PreloadManager } from './PreloadManager';
+
+// Image Optimization Components
+export { default as OptimizedImage } from './OptimizedImage';
+export { default as LazyImage } from './LazyImage';
+export { default as ImageSkeleton } from './ImageSkeleton';
+export { default as ImagePreloader } from './ImagePreloader';
+export { default as ZoomImage } from './ZoomImage';
+export { default as ImageLightbox } from './ImageLightbox';
+
+// Advanced Filtering Components
+export { default as AdvancedFilters } from './AdvancedFilters';
+export { default as FilterTags } from './FilterTags';
+export { default as AdvancedSearch } from './AdvancedSearch';
+
+// Analytics Components
+export { default as RealTimeAnalytics } from './RealTimeAnalytics';
+export { default as UserBehaviorTracker } from './UserBehaviorTracker';
 
 // Layout Components
 export { default as Navbar } from './Navbar';

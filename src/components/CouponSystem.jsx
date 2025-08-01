@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useCart } from '../hooks';
 
 const CouponSystem = ({ onCouponApplied }) => {
-  const { cartItemsWithProducts, cartSubtotal } = useCart();
+  const { cartSubtotal } = useCart();
   const [couponCode, setCouponCode] = useState('');
   const [appliedCoupon, setAppliedCoupon] = useState(null);
   const [isValidating, setIsValidating] = useState(false);

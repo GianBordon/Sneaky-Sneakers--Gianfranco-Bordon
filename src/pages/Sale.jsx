@@ -13,7 +13,7 @@ import { useSupabase } from "../hooks/useSupabase";
 
 const Sale = () => {
   const { addToCart } = useCart();
-  const { getProductsByCategory, isLoading: supabaseLoading, error } = useSupabase();
+  const { getProductsByCategory, isLoading: _supabaseLoading, error: _error } = useSupabase();
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [sortBy, setSortBy] = useState('biggest-discount');
   const [displayedProducts, setDisplayedProducts] = useState(8);

@@ -5,11 +5,11 @@ import { useSupabase } from '../hooks/useSupabase';
 
 const WishlistModal = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
-  const { wishlist, removeFromWishlist, clearWishlist } = useWishlist();
+  const { wishlist, removeFromWishlist, clearWishlist } = useWishlist(false); // Deshabilitar notificaciones automáticas
   const { addToCart } = useCart();
   const { getProductById } = useSupabase();
   const [wishlistProducts, setWishlistProducts] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [_isLoading, setIsLoading] = useState(false);
 
   // Cargar productos de la wishlist desde Supabase
   useEffect(() => {
@@ -39,8 +39,8 @@ const WishlistModal = ({ isOpen, onClose }) => {
     loadWishlistProducts();
   }, [isOpen, wishlist, getProductById]);
 
-  const handleRemoveItem = (productId) => {
-    removeFromWishlist(productId);
+  const handleRemoveItem = (productId, productName) => {
+    removeFromWishlist(productId, productName);
   };
 
   const handleViewProduct = (productId) => {
@@ -48,22 +48,52 @@ const WishlistModal = ({ isOpen, onClose }) => {
     navigate(`/product/${productId}`);
   };
 
-  const handleAddToCart = async (productId) => {
+  const handleAddToCart = async (productId, productName) => {
     try {
       const result = await addToCart(productId, 1);
       if (result.success) {
         // Remover de la wishlist después de agregar al carrito
-        removeFromWishlist(productId);
-        console.log('Producto agregado al carrito y removido de la wishlist');
+        removeFromWishlist(productId, productName);
+        
+        // Mostrar notificación personalizada
+        window.dispatchEvent(new CustomEvent('show-notification', {
+          detail: {
+            message: `"${productName}" agregado al carrito y removido de la wishlist`,
+            type: 'success',
+            duration: 4000
+          }
+        }));
       } else {
-        console.error('Error al agregar al carrito:', result.error);
+        window.dispatchEvent(new CustomEvent('show-notification', {
+          detail: {
+            message: `Error al agregar "${productName}" al carrito`,
+            type: 'error',
+            duration: 4000
+          }
+        }));
       }
     } catch (error) {
       console.error('Error al agregar al carrito:', error);
+      window.dispatchEvent(new CustomEvent('show-notification', {
+        detail: {
+          message: 'Error al agregar producto al carrito',
+          type: 'error',
+          duration: 4000
+        }
+      }));
     }
   };
 
-
+  const handleClearWishlist = () => {
+    clearWishlist();
+    window.dispatchEvent(new CustomEvent('show-notification', {
+      detail: {
+        message: 'Lista de deseos limpiada completamente',
+        type: 'info',
+        duration: 3000
+      }
+    }));
+  };
 
   if (!isOpen) return null;
 
@@ -140,13 +170,13 @@ const WishlistModal = ({ isOpen, onClose }) => {
                         Ver
                       </button>
                       <button
-                        onClick={() => handleAddToCart(product.id)}
+                        onClick={() => handleAddToCart(product.id, product.name)}
                         className="px-3 py-1 text-xs bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
                       >
                         Agregar
                       </button>
                       <button
-                        onClick={() => handleRemoveItem(product.wishlistId)}
+                        onClick={() => handleRemoveItem(product.wishlistId, product.name)}
                         className="text-red-500 hover:text-red-700 transition-colors"
                       >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -166,7 +196,7 @@ const WishlistModal = ({ isOpen, onClose }) => {
               {/* Action Buttons */}
               <div className="flex space-x-3">
                 <button
-                  onClick={clearWishlist}
+                  onClick={handleClearWishlist}
                   className="flex-1 px-4 py-3 border border-neutral-300 text-neutral-700 rounded-lg hover:bg-neutral-50 transition-colors"
                 >
                   Limpiar Lista

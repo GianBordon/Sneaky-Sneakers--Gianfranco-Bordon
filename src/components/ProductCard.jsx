@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useWishlist } from "../hooks";
+import ReviewSummary from "./ReviewSummary";
+import LazyImage from "./LazyImage";
 
 const ProductCard = ({ 
   id, 
@@ -9,7 +11,9 @@ const ProductCard = ({
   image, 
   onAddToCart, 
   showAddToCart = true,
-  className = "" 
+  className = "",
+  rating = 0,
+  reviewCount = 0
 }) => {
   const { toggleWishlist, isInWishlist } = useWishlist();
 
@@ -24,13 +28,23 @@ const ProductCard = ({
   const handleWishlistToggle = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    toggleWishlist(id);
+    toggleWishlist(id, name);
   };
 
   return (
     <Link to={`/product/${id}`} className={`group block bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 ${className}`}>
       <div className="relative">
-        <img src={image} alt={name} className="w-full h-48 object-cover" />
+        <LazyImage
+          src={image}
+          alt={name}
+          className="w-full h-48"
+          width="100%"
+          height="192px"
+          variant="card"
+          skeleton={true}
+          placeholder={true}
+        />
+        
         {/* Quick Action Buttons */}
         <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex space-x-2">
           {/* Wishlist Button */}
@@ -62,7 +76,10 @@ const ProductCard = ({
       </div>
       <div className="p-3">
         <h3 className="text-base font-semibold mb-1 text-neutral-800 hover:text-cyan-600 transition-colors">{name}</h3>
-        <p className="text-cyan-600 font-bold text-base">{price}</p>
+        <div className="flex items-center justify-between mb-2">
+          <ReviewSummary rating={rating} reviewCount={reviewCount} />
+          <p className="text-cyan-600 font-bold text-base">{price}</p>
+        </div>
       </div>
     </Link>
   );

@@ -132,7 +132,7 @@ const Checkout = () => {
       const order = {
         id: Date.now(),
         items: cartItemsWithProducts,
-        subtotal,
+        subtotal: cartSubtotal,
         shipping,
         tax,
         total,
@@ -227,7 +227,7 @@ const Checkout = () => {
                   <div className="border-t border-neutral-200 pt-4 space-y-2">
                     <div className="flex justify-between">
                       <span className="text-neutral-600">Subtotal:</span>
-                      <span className="font-semibold">${subtotal.toFixed(2)}</span>
+                      <span className="font-semibold">${cartSubtotal.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-neutral-600">Envío:</span>

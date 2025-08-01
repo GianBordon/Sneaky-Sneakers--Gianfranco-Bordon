@@ -13,19 +13,19 @@ export class ProductService {
   }
 
   // Obtener productos por categoría
-  static async getProductsByCategory(category) {
+  static async getProductsByCategory(_category) {
     // Esta función se maneja en los componentes con useSupabase
     throw new Error('Use useSupabase hook instead');
   }
 
   // Obtener producto por ID
-  static async getProductById(id) {
+  static async getProductById(_id) {
     // Esta función se maneja en los componentes con useSupabase
     throw new Error('Use useSupabase hook instead');
   }
 
   // Obtener productos por marca
-  static async getProductsByBrand(brand) {
+  static async getProductsByBrand(_brand) {
     // Esta función se maneja en los componentes con useSupabase
     throw new Error('Use useSupabase hook instead');
   }

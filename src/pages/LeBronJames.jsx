@@ -18,7 +18,7 @@ const LeBronJames = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('shoes');
   const [selectedShoeIndex, setSelectedShoeIndex] = useState(0);
-  const [player, setPlayer] = useState(null);
+  const [_player, setPlayer] = useState(null);
   const [shoes, setShoes] = useState([]);
 
   const playerName = "LeBron James";

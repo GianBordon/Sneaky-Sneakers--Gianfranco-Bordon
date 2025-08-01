@@ -380,7 +380,7 @@ export const trackError = (error, errorInfo = {}) => {
 
 // User behavior tracking
 export const trackUserBehavior = () => {
-  let sessionStart = Date.now();
+  const sessionStart = Date.now();
   let lastActivity = Date.now();
   
   const trackActivity = () => {

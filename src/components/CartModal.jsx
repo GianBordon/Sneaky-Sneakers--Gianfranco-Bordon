@@ -5,7 +5,7 @@ import { useCart } from '../hooks';
 
 const CartModal = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
-  const { cartItemsWithProducts, removeFromCart, updateQuantity, clearCart, cartSubtotal, cartCount } = useCart();
+  const { cartItemsWithProducts, removeFromCart, updateQuantity, clearCart, cartSubtotal } = useCart();
 
   const handleRemoveItem = (itemId) => {
     removeFromCart(itemId);

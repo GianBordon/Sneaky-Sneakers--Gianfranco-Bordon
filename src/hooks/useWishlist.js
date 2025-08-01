@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { WishlistService } from '../services/wishlistService';
 
-export const useWishlist = () => {
+export const useWishlist = (showNotifications = true) => {
   const [wishlist, setWishlist] = useState([]);
   const [wishlistCount, setWishlistCount] = useState(0);
 
@@ -37,29 +37,53 @@ export const useWishlist = () => {
   }, []);
 
   // Agregar a wishlist
-  const addToWishlist = (productId) => {
+  const addToWishlist = (productId, productName = 'Producto') => {
     const updatedWishlist = WishlistService.addToWishlist(productId);
     setWishlist(updatedWishlist);
     setWishlistCount(updatedWishlist.length);
+    
     // Disparar evento personalizado para notificar a otros componentes
     window.dispatchEvent(new CustomEvent('wishlist-updated'));
+    
+    // Mostrar notificación si está habilitado
+    if (showNotifications) {
+      window.dispatchEvent(new CustomEvent('show-notification', {
+        detail: {
+          message: `"${productName}" agregado a tu lista de deseos`,
+          type: 'success',
+          duration: 3000
+        }
+      }));
+    }
   };
 
   // Remover de wishlist
-  const removeFromWishlist = (productId) => {
+  const removeFromWishlist = (productId, productName = 'Producto') => {
     const updatedWishlist = WishlistService.removeFromWishlist(productId);
     setWishlist(updatedWishlist);
     setWishlistCount(updatedWishlist.length);
+    
     // Disparar evento personalizado para notificar a otros componentes
     window.dispatchEvent(new CustomEvent('wishlist-updated'));
+    
+    // Mostrar notificación si está habilitado
+    if (showNotifications) {
+      window.dispatchEvent(new CustomEvent('show-notification', {
+        detail: {
+          message: `"${productName}" removido de tu lista de deseos`,
+          type: 'info',
+          duration: 3000
+        }
+      }));
+    }
   };
 
   // Toggle wishlist (agregar/remover)
-  const toggleWishlist = (productId) => {
+  const toggleWishlist = (productId, productName = 'Producto') => {
     if (WishlistService.isInWishlist(productId)) {
-      removeFromWishlist(productId);
+      removeFromWishlist(productId, productName);
     } else {
-      addToWishlist(productId);
+      addToWishlist(productId, productName);
     }
   };
 
@@ -73,8 +97,20 @@ export const useWishlist = () => {
     WishlistService.clearWishlist();
     setWishlist([]);
     setWishlistCount(0);
+    
     // Disparar evento personalizado para notificar a otros componentes
     window.dispatchEvent(new CustomEvent('wishlist-updated'));
+    
+    // Mostrar notificación si está habilitado
+    if (showNotifications) {
+      window.dispatchEvent(new CustomEvent('show-notification', {
+        detail: {
+          message: 'Lista de deseos limpiada',
+          type: 'info',
+          duration: 3000
+        }
+      }));
+    }
   };
 
   return {

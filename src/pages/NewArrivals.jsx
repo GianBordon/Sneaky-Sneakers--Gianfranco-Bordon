@@ -15,7 +15,7 @@ import { useSupabase } from "../hooks/useSupabase";
 const NewArrivals = () => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
-  const { getProductsByCategory, isLoading: supabaseLoading, error } = useSupabase();
+  const { getProductsByCategory, isLoading: _supabaseLoading, error: _error } = useSupabase();
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [sortBy, setSortBy] = useState('latest');
   const [displayedProducts, setDisplayedProducts] = useState(8);

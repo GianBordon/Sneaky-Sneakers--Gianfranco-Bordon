@@ -2,4 +2,9 @@
 export { useCart } from './useCart';
 export { useAuth } from './useAuth';
 export { useProducts } from './useProducts';
-export { useWishlist } from './useWishlist'; 
+export { useWishlist } from './useWishlist';
+export { useNotifications } from './useNotifications';
+export { useReviews } from './useReviews';
+export { useImageOptimization } from './useImageOptimization';
+export { useAdvancedFilters } from './useAdvancedFilters';
+export { useAnalytics } from './useAnalytics'; 

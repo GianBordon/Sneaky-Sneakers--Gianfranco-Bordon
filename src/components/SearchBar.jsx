@@ -76,7 +76,7 @@ const SearchBar = ({ isOpen, onClose }) => {
     const timeoutId = setTimeout(() => {
       const searchTerm = query.toLowerCase();
       
-      let filteredResults = [];
+      const filteredResults = [];
 
       // Aplicar filtros
       if (activeFilter === 'all' || activeFilter === 'products') {
