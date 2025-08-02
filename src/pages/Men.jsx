@@ -238,6 +238,7 @@ const Men = () => {
                       price={`$${shoe.price}`}
                       image={shoe.image}
                       onAddToCart={handleAddToCart}
+                      priority={index < 10} // Prioridad para los primeros 10 productos
                     />
                   </div>
                 </div>

@@ -1,0 +1,28 @@
+<svg width="192" height="192" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0891b2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0ea5e9;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Fondo -->
+  <rect width="192" height="192" fill="url(#gradient)" rx="24"/>
+  
+  <!-- Zapatilla -->
+  <g fill="white">
+    <!-- Suela -->
+    <rect x="38" y="134" width="115" height="29" rx="4"/>
+    
+    <!-- Cuerpo de la zapatilla -->
+    <path d="M48 134 L58 77 L134 77 L144 134 Z"/>
+    
+    <!-- Agujeros -->
+    <circle cx="67" cy="96" r="6" fill="#0891b2"/>
+    <circle cx="87" cy="96" r="6" fill="#0891b2"/>
+    <circle cx="107" cy="96" r="6" fill="#0891b2"/>
+  </g>
+  
+  <!-- Texto -->
+  <text x="96" y="160" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="white">SNEAKY</text>
+</svg> 

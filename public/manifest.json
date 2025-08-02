@@ -1,0 +1,126 @@
+{
+  "name": "Sneaky Sneakers - Tu Tienda de Zapatillas",
+  "short_name": "Sneaky Sneakers",
+  "description": "Descubre las mejores zapatillas deportivas de las marcas más populares. Nike, Adidas, Jordan y más. Envío gratuito y garantía de autenticidad.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#0891b2",
+  "background_color": "#ffffff",
+  "lang": "es",
+  "dir": "ltr",
+  "categories": ["shopping", "sports", "fashion"],
+  "icons": [
+    {
+      "src": "/logo192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/logo512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Ver Todos los Productos",
+      "short_name": "Productos",
+      "description": "Explora nuestro catálogo completo",
+      "url": "/all-products",
+      "icons": [
+        {
+          "src": "/logo192.svg",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Ofertas Especiales",
+      "short_name": "Ofertas",
+      "description": "Encuentra las mejores ofertas",
+      "url": "/sale",
+      "icons": [
+        {
+          "src": "/logo192.svg",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Nuevos Lanzamientos",
+      "short_name": "Nuevos",
+      "description": "Descubre los últimos lanzamientos",
+      "url": "/new-arrivals",
+      "icons": [
+        {
+          "src": "/logo192.svg",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Mi Carrito",
+      "short_name": "Carrito",
+      "description": "Revisa tu carrito de compras",
+      "url": "/checkout",
+      "icons": [
+        {
+          "src": "/logo192.svg",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
+  "handle_links": "preferred",
+  "protocol_handlers": [
+    {
+      "protocol": "web+sneaky",
+      "url": "/product/%s"
+    }
+  ],
+  "file_handlers": [
+    {
+      "action": "/",
+      "accept": {
+        "image/*": [".jpg", ".jpeg", ".png", ".webp"]
+      }
+    }
+  ],
+  "share_target": {
+    "action": "/share",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url",
+      "files": [
+        {
+          "name": "files",
+          "accept": ["image/*"]
+        }
+      ]
+    }
+  },
+  "permissions": [
+    "notifications",
+    "background-sync"
+  ],
+  "display_override": [
+    "window-controls-overlay",
+    "standalone",
+    "minimal-ui"
+  ]
+} 

@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useWishlist } from "../hooks";
 import ReviewSummary from "./ReviewSummary";
-import LazyImage from "./LazyImage";
 
 const ProductCard = ({ 
   id, 
@@ -34,15 +33,11 @@ const ProductCard = ({
   return (
     <Link to={`/product/${id}`} className={`group block bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 ${className}`}>
       <div className="relative">
-        <LazyImage
+        <img
           src={image}
           alt={name}
-          className="w-full h-48"
-          width="100%"
-          height="192px"
-          variant="card"
-          skeleton={true}
-          placeholder={true}
+          className="w-full h-48 object-cover"
+          loading="lazy"
         />
         
         {/* Quick Action Buttons */}

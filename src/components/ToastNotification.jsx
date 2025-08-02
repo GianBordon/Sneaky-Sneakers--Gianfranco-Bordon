@@ -44,7 +44,7 @@ const ToastNotification = ({ message, type = 'success', duration = 3000, onClose
   };
 
   const getStyles = () => {
-    const baseStyles = "fixed top-4 right-4 z-50 flex items-center space-x-3 p-4 rounded-lg shadow-lg transform transition-all duration-300";
+    const baseStyles = "fixed top-4 right-4 z-50 flex items-center space-x-3 p-4 rounded-lg shadow-lg transform transition-all duration-300 min-w-80 max-w-md";
     
     switch (type) {
       case 'success':

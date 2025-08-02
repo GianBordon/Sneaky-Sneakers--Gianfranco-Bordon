@@ -6,6 +6,8 @@ import LoadingSpinner from './components/LoadingSpinner';
 import PreloadManager from './components/PreloadManager';
 import NotificationContainer from './components/NotificationContainer';
 import UserBehaviorTracker from './components/UserBehaviorTracker';
+import InstallPWA from './components/InstallPWA';
+import OfflineIndicator from './components/OfflineIndicator';
 import { useNotifications } from './hooks/useNotifications';
 
 import Navbar from './components/Navbar';
@@ -62,6 +64,13 @@ function App() {
         <UserBehaviorTracker />
         <ScrollToTop />
         <PreloadManager />
+        
+        {/* PWA Components */}
+        <OfflineIndicator />
+        <InstallPWA 
+          onInstall={() => showNotification('¡App instalada correctamente!', 'success')}
+          onDismiss={() => showNotification('Puedes instalar la app más tarde', 'info')}
+        />
         
         <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100">
           <Navbar />

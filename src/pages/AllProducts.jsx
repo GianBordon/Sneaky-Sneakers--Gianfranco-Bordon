@@ -348,17 +348,18 @@ const AllProducts = () => {
                 >
                   <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden">
                     <ProductCard
-                    id={product.id}
-                    name={product.name}
-                    price={`$${product.price}`}
-                    image={product.image}
-                    onAddToCart={handleAddToCart}
-                  />
+                      id={product.id}
+                      name={product.name}
+                      price={`$${product.price}`}
+                      image={product.image}
+                      onAddToCart={handleAddToCart}
+                      priority={index < 10} // Prioridad para los primeros 10 productos
+                    />
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        )}
+              ))}
+            </div>
+          )}
 
           {/* Load More Button */}
           <div className="text-center mt-12 animate-fade-in">

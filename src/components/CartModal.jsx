@@ -73,9 +73,12 @@ const CartModal = ({ isOpen, onClose }) => {
                     {/* Product Image */}
                     <div className="flex-shrink-0">
                       <img
-                        src={item.product.image}
+                        src={item.product.image || '/src/assets/img/default-product.webp'}
                         alt={item.product.name}
                         className="w-12 h-12 object-cover rounded-lg"
+                        onError={(e) => {
+                          e.target.src = '/src/assets/img/default-product.webp';
+                        }}
                       />
                     </div>
 

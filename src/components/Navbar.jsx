@@ -61,66 +61,66 @@ const Navbar = () => {
     <>
       <header className="bg-white shadow-lg sticky top-0 z-50">
         <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center py-4">
-            {/* Logo */}
-            <Link 
-              to="/" 
-              className="text-2xl md:text-4xl font-bold text-neutral-800 hover:text-cyan-600 transition-colors duration-300"
-              onClick={closeMenu}
-            >
-              Sneaky Sneakers
-            </Link>
+          <div className="flex justify-between items-center py-3">
+            {/* Logo - Izquierda */}
+            <div className="flex-shrink-0">
+              <Link 
+                to="/" 
+                className="text-lg md:text-xl font-bold text-neutral-800 hover:text-cyan-600 transition-colors duration-300"
+                onClick={closeMenu}
+              >
+                Sneaky Sneakers
+              </Link>
+            </div>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center space-x-8">
+            {/* Desktop Navigation - Centrado */}
+            <nav className="hidden xl:flex items-center space-x-4 lg:space-x-6 flex-1 justify-center">
               <Link 
                 to="/men" 
-                className="text-neutral-700 hover:text-cyan-600 font-semibold transition-colors duration-300"
+                className="text-xs lg:text-sm text-neutral-700 hover:text-cyan-600 font-medium transition-colors duration-300 whitespace-nowrap"
               >
                 Hombre
               </Link>
               <Link 
                 to="/women" 
-                className="text-neutral-700 hover:text-cyan-600 font-semibold transition-colors duration-300"
+                className="text-xs lg:text-sm text-neutral-700 hover:text-cyan-600 font-medium transition-colors duration-300 whitespace-nowrap"
               >
                 Mujer
               </Link>
               <Link 
                 to="/kids" 
-                className="text-neutral-700 hover:text-cyan-600 font-semibold transition-colors duration-300"
+                className="text-xs lg:text-sm text-neutral-700 hover:text-cyan-600 font-medium transition-colors duration-300 whitespace-nowrap"
               >
                 Niños
               </Link>
               <Link 
                 to="/new-arrivals" 
-                className="text-neutral-700 hover:text-cyan-600 font-semibold transition-colors duration-300"
+                className="text-xs lg:text-sm text-neutral-700 hover:text-cyan-600 font-medium transition-colors duration-300 whitespace-nowrap"
               >
-                New Arrivals
+                Nuevos
               </Link>
               <Link 
                 to="/sale" 
-                className="text-neutral-700 hover:text-cyan-600 font-semibold transition-colors duration-300"
+                className="text-xs lg:text-sm text-neutral-700 hover:text-cyan-600 font-medium transition-colors duration-300 whitespace-nowrap"
               >
                 SALE
               </Link>
               <Link 
                 to="/all-products" 
-                className="text-neutral-700 hover:text-cyan-600 font-semibold transition-colors duration-300"
+                className="text-xs lg:text-sm text-neutral-700 hover:text-cyan-600 font-medium transition-colors duration-300 whitespace-nowrap"
               >
-                Todos los Productos
+                Productos
               </Link>
-              
-               
             </nav>
 
-            {/* Desktop Cart & Auth */}
-            <div className="hidden lg:flex items-center space-x-4">
+            {/* Desktop Cart & Auth - Derecha */}
+            <div className="hidden xl:flex items-center space-x-4 lg:space-x-6 flex-shrink-0">
               {/* Search Button */}
               <button
                 onClick={openSearch}
                 className="p-2 text-neutral-700 hover:text-cyan-600 transition-colors duration-300"
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 lg:w-5 lg:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </button>
@@ -130,11 +130,11 @@ const Navbar = () => {
                 onClick={openWishlist}
                 className="relative p-2 text-neutral-700 hover:text-cyan-600 transition-colors duration-300"
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 lg:w-5 lg:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                 </svg>
                 {wishlistCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 lg:w-5 lg:h-5 flex items-center justify-center">
                     {wishlistCount}
                   </span>
                 )}
@@ -145,11 +145,11 @@ const Navbar = () => {
                 onClick={openCart}
                 className="relative p-2 text-neutral-700 hover:text-cyan-600 transition-colors duration-300"
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 lg:w-5 lg:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                 </svg>
                 {cartItemCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 lg:w-5 lg:h-5 flex items-center justify-center">
                     {cartItemCount}
                   </span>
                 )}
@@ -157,31 +157,31 @@ const Navbar = () => {
 
               {/* Auth Buttons */}
               {user ? (
-                <div className="flex items-center space-x-2">
-                  <span className="text-sm text-neutral-600">
+                <div className="flex items-center space-x-2 lg:space-x-3">
+                  <span className="text-xs lg:text-sm text-neutral-600 hidden lg:block">
                     Hola, {user.nombres}
                   </span>
                   <button
                     onClick={handleLogout}
-                    className="px-4 py-2 text-neutral-700 hover:text-cyan-600 font-semibold transition-colors duration-300"
+                    className="px-2 lg:px-3 py-1 lg:py-1.5 text-xs lg:text-sm text-neutral-700 hover:text-cyan-600 font-medium transition-colors duration-300"
                   >
-                    Cerrar Sesión
+                    Cerrar
                   </button>
                 </div>
               ) : (
                 <Link
                   to="/login"
-                  className="px-4 py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 transition-colors duration-300 font-semibold"
+                  className="px-3 lg:px-4 py-1.5 lg:py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 hover:text-white transition-all duration-300 font-medium text-xs lg:text-sm"
                 >
                   Iniciar Sesión
                 </Link>
               )}
             </div>
 
-            {/* Mobile Menu Button */}
+            {/* Mobile/Tablet Menu Button */}
             <button
               onClick={toggleMenu}
-              className="lg:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1 focus:outline-none"
+              className="xl:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1 focus:outline-none"
               aria-label="Toggle menu"
             >
               <span 
@@ -204,7 +204,7 @@ const Navbar = () => {
 
           {/* Mobile Navigation */}
           <div 
-            className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+            className={`xl:hidden overflow-hidden transition-all duration-300 ease-in-out ${
               isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
             }`}
           >
@@ -235,7 +235,7 @@ const Navbar = () => {
                 className="block text-neutral-700 hover:text-cyan-600 font-semibold transition-colors duration-300 py-2"
                 onClick={closeMenu}
               >
-                New Arrivals
+                Nuevos Lanzamientos
               </Link>
               <Link 
                 to="/sale" 
@@ -284,18 +284,18 @@ const Navbar = () => {
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                   </svg>
-                  <span>Lista de Deseos ({wishlistCount})</span>
+                  <span>Favoritos ({wishlistCount})</span>
                 </button>
 
                 {/* Auth */}
                 {user ? (
                   <div className="space-y-2">
-                    <div className="text-sm text-neutral-600">
+                    <div className="text-neutral-600 py-2">
                       Hola, {user.nombres}
                     </div>
                     <button
-                      onClick={handleLogout}
-                      className="text-neutral-700 hover:text-cyan-600 font-semibold transition-colors duration-300 py-2"
+                      onClick={() => { handleLogout(); closeMenu(); }}
+                      className="w-full text-left text-neutral-700 hover:text-cyan-600 font-semibold transition-colors duration-300 py-2"
                     >
                       Cerrar Sesión
                     </button>
@@ -303,8 +303,8 @@ const Navbar = () => {
                 ) : (
                   <Link
                     to="/login"
+                    className="block bg-cyan-600 text-white text-center py-3 rounded-lg hover:bg-cyan-700 transition-colors duration-300 font-semibold"
                     onClick={closeMenu}
-                    className="block bg-cyan-600 text-white rounded-lg px-4 py-2 text-center font-semibold hover:bg-cyan-700 transition-colors duration-300"
                   >
                     Iniciar Sesión
                   </Link>

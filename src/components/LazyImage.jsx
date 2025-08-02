@@ -13,17 +13,18 @@ const LazyImage = ({
   skeleton = true,
   onLoad,
   onError,
+  priority = false, // Nueva prop para imágenes prioritarias
   ...props
 }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
-  const [isInView, setIsInView] = useState(false);
+  const [isInView, setIsInView] = useState(priority); // Cargar inmediatamente si es prioritario
   const containerRef = useRef(null);
   const observerRef = useRef(null);
 
   // Intersection Observer para lazy loading
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!containerRef.current || priority) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -35,8 +36,8 @@ const LazyImage = ({
         });
       },
       {
-        rootMargin: '100px 0px', // Cargar 100px antes de que la imagen entre en viewport
-        threshold: 0.01
+        rootMargin: '20px 0px', // Reducido aún más para cargar más rápido
+        threshold: 0.01 // Reducido para cargar más agresivamente
       }
     );
 
@@ -48,7 +49,7 @@ const LazyImage = ({
         observerRef.current.disconnect();
       }
     };
-  }, []);
+  }, [priority]);
 
   const handleImageLoad = (img) => {
     setIsLoading(false);
@@ -87,7 +88,7 @@ const LazyImage = ({
         <OptimizedImage
           src={src}
           alt={alt}
-          className={`w-full h-full object-cover ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+          className={`w-full h-full object-cover transition-opacity duration-200 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
           onLoad={handleImageLoad}
           onError={handleImageError}
           {...props}

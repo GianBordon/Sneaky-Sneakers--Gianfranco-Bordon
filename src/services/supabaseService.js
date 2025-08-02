@@ -1,37 +1,41 @@
 // Servicio para conectar con Supabase
 import { createClient } from '@supabase/supabase-js';
-import { SUPABASE_CONFIG } from '../config/supabase.js';
 
-// Crear cliente de Supabase
-const supabase = createClient(
-  SUPABASE_CONFIG.PROJECT_URL,
-  SUPABASE_CONFIG.ANON_KEY
-);
+// Configuración de Supabase
+const SUPABASE_CONFIG = {
+  PROJECT_URL: import.meta.env.VITE_SUPABASE_URL,
+  ANON_KEY: import.meta.env.VITE_SUPABASE_ANON_KEY,
+  TABLES: {
+    PRODUCTS: 'products',
+    PLAYERS: 'players',
+    USERS: 'users',
+    CART: 'cart',
+    WISHLIST: 'wishlist'
+  },
+  get isValid() {
+    return this.PROJECT_URL && this.ANON_KEY;
+  }
+};
 
 class SupabaseService {
   constructor() {
-    this.supabase = supabase;
+    this.supabase = null;
     this.isInitialized = false;
   }
 
-  // Inicializar servicio
   async initialize() {
     try {
       if (this.isInitialized) {
-        console.log('Supabase ya está inicializado');
         return;
       }
-      
-      console.log('Inicializando Supabase...');
-      console.log('Configuración:', {
-        url: SUPABASE_CONFIG.PROJECT_URL,
-        hasKey: !!SUPABASE_CONFIG.ANON_KEY
-      });
       
       // Validar variables de entorno
       if (!SUPABASE_CONFIG.isValid) {
         throw new Error('Variables de entorno de Supabase no configuradas. Verifica tu archivo .env');
       }
+      
+      // Crear cliente de Supabase
+      this.supabase = createClient(SUPABASE_CONFIG.PROJECT_URL, SUPABASE_CONFIG.ANON_KEY);
       
       // Verificar conexión haciendo una consulta simple
       const { data: _data, error } = await this.supabase
@@ -40,12 +44,10 @@ class SupabaseService {
         .limit(1);
       
       if (error && error.code !== 'PGRST116') { // PGRST116 = tabla no existe (normal al inicio)
-        console.log('Error en consulta de prueba:', error);
         throw error;
       }
       
       this.isInitialized = true;
-      console.log('Supabase conectado exitosamente');
     } catch (error) {
       console.error('Error conectando a Supabase:', error);
       throw error;
@@ -80,23 +82,14 @@ class SupabaseService {
       return [];
     }
     
-    console.log('🔍 Datos originales de productos:', data?.slice(0, 2)); // Mostrar primeros 2 productos
-    
     // Mapear campos de la base de datos al formato esperado por el frontend
-    const mappedProducts = (data || []).map(product => {
-      const mapped = {
-        ...product,
-        inStock: product.in_stock !== undefined ? product.in_stock : true, // Mapear in_stock a inStock
-        originalPrice: product.original_price || product.price, // Mapear original_price a originalPrice
-        createdAt: product.created_at,
-        updatedAt: product.updated_at
-      };
-      
-      console.log(`📦 Producto ${product.name}: in_stock=${product.in_stock}, inStock=${mapped.inStock}`);
-      return mapped;
-    });
-    
-    console.log('✅ Productos mapeados:', mappedProducts?.slice(0, 2)); // Mostrar primeros 2 productos mapeados
+    const mappedProducts = (data || []).map(product => ({
+      ...product,
+      inStock: product.in_stock !== undefined ? product.in_stock : true, // Mapear in_stock a inStock
+      originalPrice: product.original_price || product.price, // Mapear original_price a originalPrice
+      createdAt: product.created_at,
+      updatedAt: product.updated_at
+    }));
     
     return mappedProducts;
   }
@@ -118,8 +111,8 @@ class SupabaseService {
     // Mapear campos de la base de datos al formato esperado por el frontend
     return data ? {
       ...data,
-      inStock: data.in_stock !== undefined ? data.in_stock : true, // Mapear in_stock a inStock
-      originalPrice: data.original_price || data.price, // Mapear original_price a originalPrice
+      inStock: data.in_stock !== undefined ? data.in_stock : true,
+      originalPrice: data.original_price || data.price,
       createdAt: data.created_at,
       updatedAt: data.updated_at
     } : null;
@@ -138,11 +131,7 @@ class SupabaseService {
     
     const { data, error } = await this.supabase
       .from(SUPABASE_CONFIG.TABLES.PRODUCTS)
-      .insert([{
-        ...productData,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
-      }])
+      .insert([productData])
       .select()
       .single();
     
@@ -159,10 +148,7 @@ class SupabaseService {
     
     const { data, error } = await this.supabase
       .from(SUPABASE_CONFIG.TABLES.PRODUCTS)
-      .update({
-        ...updateData,
-        updated_at: new Date().toISOString()
-      })
+      .update(updateData)
       .eq('id', id)
       .select()
       .single();
@@ -193,25 +179,19 @@ class SupabaseService {
 
   // Métodos para jugadores
   async getPlayers() {
-    try {
-      await this.initialize();
-      console.log('Supabase inicializado, consultando tabla players...');
-      
-      const { data, error } = await this.supabase
-        .from(SUPABASE_CONFIG.TABLES.PLAYERS)
-        .select('*');
-      
-      if (error) {
-        console.error('Error obteniendo jugadores:', error);
-        return [];
-      }
-      
-      console.log('Datos de jugadores obtenidos:', data);
-      return data || [];
-    } catch (error) {
-      console.error('Error en getPlayers:', error);
+    await this.initialize();
+    
+    const { data, error } = await this.supabase
+      .from(SUPABASE_CONFIG.TABLES.PLAYERS)
+      .select('*')
+      .order('name', { ascending: true });
+    
+    if (error) {
+      console.error('Error obteniendo jugadores:', error);
       return [];
     }
+    
+    return data || [];
   }
 
   async getPlayerById(id) {
@@ -231,8 +211,10 @@ class SupabaseService {
     return data;
   }
 
-  // Métodos para usuarios
+  // Métodos de autenticación
   async getCurrentUser() {
+    await this.initialize();
+    
     const { data: { user }, error } = await this.supabase.auth.getUser();
     
     if (error) {
@@ -244,6 +226,8 @@ class SupabaseService {
   }
 
   async signUp(email, password, userData = {}) {
+    await this.initialize();
+    
     const { data, error } = await this.supabase.auth.signUp({
       email,
       password,
@@ -253,7 +237,7 @@ class SupabaseService {
     });
     
     if (error) {
-      console.error('Error registrando usuario:', error);
+      console.error('Error en registro:', error);
       throw error;
     }
     
@@ -261,13 +245,15 @@ class SupabaseService {
   }
 
   async signIn(email, password) {
+    await this.initialize();
+    
     const { data, error } = await this.supabase.auth.signInWithPassword({
       email,
       password
     });
     
     if (error) {
-      console.error('Error iniciando sesión:', error);
+      console.error('Error en inicio de sesión:', error);
       throw error;
     }
     
@@ -275,175 +261,100 @@ class SupabaseService {
   }
 
   async signOut() {
+    await this.initialize();
+    
     const { error } = await this.supabase.auth.signOut();
     
     if (error) {
-      console.error('Error cerrando sesión:', error);
+      console.error('Error en cierre de sesión:', error);
       throw error;
     }
     
     return true;
   }
 
-  // Métodos para carrito (usando localStorage como fallback)
+  // Métodos para carrito (simulados por ahora)
   async getCart() {
-    // Por ahora usamos localStorage, pero se puede migrar a Supabase
-    const cart = localStorage.getItem('sneaky_sneakers_cart');
-    return cart ? JSON.parse(cart) : [];
+    // Por ahora retornamos un carrito vacío
+    return [];
   }
 
   async addToCart(productId, quantity = 1) {
-    const cart = await this.getCart();
-    const existingItem = cart.find(item => item.productId === productId);
-    
-    if (existingItem) {
-      existingItem.quantity += quantity;
-    } else {
-      cart.push({ productId, quantity });
-    }
-    
-    localStorage.setItem('sneaky_sneakers_cart', JSON.stringify(cart));
-    return { success: true };
+    // Por ahora solo simulamos la operación
+    return { success: true, productId, quantity };
   }
 
   async removeFromCart(productId) {
-    const cart = await this.getCart();
-    const updatedCart = cart.filter(item => item.productId !== productId);
-    localStorage.setItem('sneaky_sneakers_cart', JSON.stringify(updatedCart));
-    return { success: true };
+    // Por ahora solo simulamos la operación
+    return { success: true, productId };
   }
 
-  // Métodos para wishlist (usando localStorage como fallback)
+  // Métodos para wishlist (simulados por ahora)
   async getWishlist() {
-    const wishlist = localStorage.getItem('sneaky_sneakers_wishlist');
-    return wishlist ? JSON.parse(wishlist) : [];
+    // Por ahora retornamos una wishlist vacía
+    return [];
   }
 
   async addToWishlist(productId) {
-    const wishlist = await this.getWishlist();
-    
-    if (!wishlist.includes(productId)) {
-      wishlist.push(productId);
-      localStorage.setItem('sneaky_sneakers_wishlist', JSON.stringify(wishlist));
-    }
-    
-    return { success: true };
+    // Por ahora solo simulamos la operación
+    return { success: true, productId };
   }
 
   async removeFromWishlist(productId) {
-    const wishlist = await this.getWishlist();
-    const updatedWishlist = wishlist.filter(id => id !== productId);
-    localStorage.setItem('sneaky_sneakers_wishlist', JSON.stringify(updatedWishlist));
-    return { success: true };
+    // Por ahora solo simulamos la operación
+    return { success: true, productId };
   }
 
-  // Métodos para migración de datos
+  // Métodos de migración de datos
   async migrateProducts(products) {
     await this.initialize();
     
-    for (const product of products) {
-      try {
-        // Generar un ID numérico único basado en el ID original
-        const numericId = this.generateNumericId(product.id);
-        
-        // Verificar si el producto ya existe
-        const existingProduct = await this.getProductById(numericId);
-        
-        if (!existingProduct) {
-          await this.createProduct({
-            id: numericId,
-            name: product.name,
-            brand: product.brand,
-            category: product.category,
-            price: product.price,
-            original_price: product.originalPrice || product.price,
-            description: product.description,
-            image: product.image,
-            rating: product.rating,
-            in_stock: product.inStock,
-            featured: product.featured
-          });
-          console.log(`✅ Producto migrado: ${product.name} (ID: ${numericId})`);
-        } else {
-          console.log(`⏭️ Producto ya existe: ${product.name}`);
-        }
-      } catch (error) {
-        console.error(`❌ Error migrando producto ${product.name}:`, error);
-      }
+    const { data, error } = await this.supabase
+      .from(SUPABASE_CONFIG.TABLES.PRODUCTS)
+      .upsert(products, { onConflict: 'id' })
+      .select();
+    
+    if (error) {
+      console.error('Error migrando productos:', error);
+      throw error;
     }
+    
+    return data;
   }
 
-  // Generar ID numérico único basado en el ID original
   generateNumericId(originalId) {
-    // Convertir el string a un número usando hash simple
-    let hash = 0;
-    for (let i = 0; i < originalId.length; i++) {
-      const char = originalId.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
-      hash = hash & hash; // Convertir a 32-bit integer
+    // Convertir string a número para IDs
+    if (typeof originalId === 'string') {
+      return parseInt(originalId.replace(/\D/g, ''), 10) || Date.now();
     }
-    return Math.abs(hash);
+    return originalId;
   }
 
   async migratePlayers(players) {
     await this.initialize();
-    console.log(`🔄 Iniciando migración de ${players.length} jugadores...`);
     
-    for (const player of players) {
-      try {
-        console.log(`📝 Procesando jugador: ${player.name}`);
-        
-        // Verificar si el jugador ya existe
-        const { data: existingPlayer, error: checkError } = await this.supabase
-          .from(SUPABASE_CONFIG.TABLES.PLAYERS)
-          .select('*')
-          .eq('name', player.name)
-          .single();
-        
-        if (checkError && checkError.code !== 'PGRST116') {
-          console.error(`❌ Error verificando jugador ${player.name}:`, checkError);
-          continue;
-        }
-        
-        if (!existingPlayer) {
-          const playerData = {
-            name: player.name,
-            team: player.team || 'NBA',
-            position: player.position || 'Player',
-            image: player.image,
-            description: player.description || `Información sobre ${player.name}`,
-            stats: player.stats,
-            featured: player.featured
-          };
-          
-          console.log(`📤 Insertando datos:`, playerData);
-          
-          const { data: insertedPlayer, error: insertError } = await this.supabase
-            .from(SUPABASE_CONFIG.TABLES.PLAYERS)
-            .insert([playerData])
-            .select()
-            .single();
-          
-          if (insertError) {
-            console.error(`❌ Error insertando jugador ${player.name}:`, insertError);
-          } else {
-            console.log(`✅ Jugador migrado: ${player.name} (ID: ${insertedPlayer.id})`);
-          }
-        } else {
-          console.log(`⏭️ Jugador ya existe: ${player.name}`);
-        }
-      } catch (error) {
-        console.error(`❌ Error migrando jugador ${player.name}:`, error);
-      }
+    const { data, error } = await this.supabase
+      .from(SUPABASE_CONFIG.TABLES.PLAYERS)
+      .upsert(players, { onConflict: 'id' })
+      .select();
+    
+    if (error) {
+      console.error('Error migrando jugadores:', error);
+      throw error;
     }
+    
+    return data;
   }
 
-  // Cerrar conexión
   async close() {
-    this.isInitialized = false;
+    if (this.supabase) {
+      await this.supabase.auth.signOut();
+      this.supabase = null;
+      this.isInitialized = false;
+    }
   }
 }
 
-// Instancia singleton
+// Exportar instancia singleton
 const supabaseService = new SupabaseService();
 export default supabaseService; 

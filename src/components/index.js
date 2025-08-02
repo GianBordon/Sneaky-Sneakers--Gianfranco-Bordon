@@ -44,6 +44,15 @@ export { default as AdvancedSearch } from './AdvancedSearch';
 export { default as RealTimeAnalytics } from './RealTimeAnalytics';
 export { default as UserBehaviorTracker } from './UserBehaviorTracker';
 
+// Recommendations Components
+export { default as RecommendationsSection } from './RecommendationsSection';
+export { default as ProductRecommendations } from './ProductRecommendations';
+export { default as UserPreferencesModal } from './UserPreferencesModal';
+
+// PWA Components
+export { default as InstallPWA } from './InstallPWA';
+export { default as OfflineIndicator } from './OfflineIndicator';
+
 // Layout Components
 export { default as Navbar } from './Navbar';
 export { default as Footer } from './Footer'; 

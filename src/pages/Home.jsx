@@ -7,7 +7,8 @@ import {
   ImageCarousel,
   BrandCard,
   Footer,
-  LoadingSpinner
+  LoadingSpinner,
+  RecommendationsSection
 } from "../components";
 import { 
   getCarouselConfig, 
@@ -30,23 +31,19 @@ const Home = () => {
     const loadData = async () => {
       try {
         setLoading(true);
-        console.log("Iniciando carga de datos...");
         
         // Cargar jugadores desde Supabase
         const playersData = await getPlayers();
-        console.log("Jugadores cargados desde Supabase:", playersData);
         
         // Cargar productos destacados desde Supabase
         const productsData = await getProducts();
-        console.log("Productos cargados desde Supabase:", productsData);
         
         // Si no hay datos de Supabase, mostrar array vacío
         if (!playersData || playersData.length === 0) {
-          console.log("No hay datos de jugadores disponibles");
           setPlayers([]);
         } else {
           // Mapear datos de Supabase al formato esperado por PlayerCard
-          const mappedPlayers = playersData.map(player => {
+          const mappedPlayers = playersData.map((player, index) => {
             // Crear path específico para jugadores conocidos
             let path;
             if (player.name.toLowerCase().includes('lebron') || player.name.toLowerCase().includes('james')) {
@@ -60,6 +57,7 @@ const Home = () => {
             }
             
             return {
+              id: player.id || `player-${index}`, // Asegurar que siempre hay un ID único
               name: player.name,
               path: path,
               image: player.image || '/src/assets/img/jugadores/default-player.webp',
@@ -70,7 +68,6 @@ const Home = () => {
               featured: player.featured
             };
           });
-          console.log("Jugadores mapeados:", mappedPlayers);
           setPlayers(mappedPlayers);
         }
 
@@ -89,17 +86,11 @@ const Home = () => {
             images: carouselImages,
             links: carouselLinks
           });
-          
-          console.log("Productos destacados para carrusel:", featuredProducts);
-          console.log("Imágenes del carrusel:", carouselImages);
-          console.log("Links de productos:", carouselLinks);
         } else {
-          console.log("No hay productos disponibles para el carrusel");
           setCarouselData({ images: [], links: [] });
         }
       } catch (error) {
         console.error("Error loading data from Supabase:", error);
-        console.log("Error al cargar datos, mostrando array vacío...");
         setPlayers([]);
         setCarouselData({ images: [], links: [] });
       } finally {
@@ -305,13 +296,27 @@ const Home = () => {
             {players.map((player, index) => (
               <div 
                 key={player.id}
-                className="animate-bounce-in"
+                className={`animate-bounce-in ${
+                  // En tablet (md), si es el 4to o 5to jugador, centrarlos
+                  index >= 3 && index <= 4 ? 'md:col-start-2 md:col-span-1' : ''
+                }`}
                 style={{ animationDelay: `${index * 150}ms` }}
               >
                 <PlayerCard {...player} />
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Personalized Recommendations Section */}
+      <section className="py-16 bg-neutral-50">
+        <div className="container mx-auto px-4">
+          <RecommendationsSection 
+            showTypes={['personalized', 'trending', 'seasonal']}
+            title="Descubre productos para ti"
+            maxProducts={4}
+          />
         </div>
       </section>
 

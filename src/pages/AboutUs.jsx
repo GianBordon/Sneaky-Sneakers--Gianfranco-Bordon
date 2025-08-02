@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
-import {
-  SectionNavigation,
-  PageBanner,
-  ContentSection,
-  NewsletterSection,
-  FooterLinks,
-  Footer,
-  LoadingSpinner
-} from "../components";
+import SectionNavigation from "../components/SectionNavigation";
+import PageBanner from "../components/PageBanner";
+import ContentSection from "../components/ContentSection";
+import NewsletterSection from "../components/NewsletterSection";
+import FooterLinks from "../components/FooterLinks";
+import Footer from "../components/Footer";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const AboutUs = () => {
   const [isLoading, setIsLoading] = useState(true);
