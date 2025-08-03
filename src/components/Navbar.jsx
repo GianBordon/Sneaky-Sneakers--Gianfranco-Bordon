@@ -61,12 +61,12 @@ const Navbar = () => {
     <>
       <header className="bg-white shadow-lg sticky top-0 z-50">
         <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center py-3">
+          <div className="flex items-center justify-between py-3">
             {/* Logo - Izquierda */}
             <div className="flex-shrink-0">
               <Link 
                 to="/" 
-                className="text-lg md:text-xl font-bold text-neutral-800 hover:text-cyan-600 transition-colors duration-300"
+                className="text-xl font-bold text-neutral-800 hover:text-cyan-600 transition-colors duration-300"
                 onClick={closeMenu}
               >
                 Sneaky Sneakers
@@ -74,53 +74,54 @@ const Navbar = () => {
             </div>
 
             {/* Desktop Navigation - Centrado */}
-            <nav className="hidden xl:flex items-center space-x-4 lg:space-x-6 flex-1 justify-center">
+            <nav className="hidden lg:flex items-center space-x-6 flex-1 justify-center">
               <Link 
                 to="/men" 
-                className="text-xs lg:text-sm text-neutral-700 hover:text-cyan-600 font-medium transition-colors duration-300 whitespace-nowrap"
+                className="text-sm text-neutral-700 hover:text-cyan-600 font-medium transition-colors duration-300 whitespace-nowrap"
               >
                 Hombre
               </Link>
               <Link 
                 to="/women" 
-                className="text-xs lg:text-sm text-neutral-700 hover:text-cyan-600 font-medium transition-colors duration-300 whitespace-nowrap"
+                className="text-sm text-neutral-700 hover:text-cyan-600 font-medium transition-colors duration-300 whitespace-nowrap"
               >
                 Mujer
               </Link>
               <Link 
                 to="/kids" 
-                className="text-xs lg:text-sm text-neutral-700 hover:text-cyan-600 font-medium transition-colors duration-300 whitespace-nowrap"
+                className="text-sm text-neutral-700 hover:text-cyan-600 font-medium transition-colors duration-300 whitespace-nowrap"
               >
                 Niños
               </Link>
               <Link 
                 to="/new-arrivals" 
-                className="text-xs lg:text-sm text-neutral-700 hover:text-cyan-600 font-medium transition-colors duration-300 whitespace-nowrap"
+                className="text-sm text-neutral-700 hover:text-cyan-600 font-medium transition-colors duration-300 whitespace-nowrap"
               >
                 Nuevos
               </Link>
               <Link 
                 to="/sale" 
-                className="text-xs lg:text-sm text-neutral-700 hover:text-cyan-600 font-medium transition-colors duration-300 whitespace-nowrap"
+                className="text-sm text-neutral-700 hover:text-cyan-600 font-medium transition-colors duration-300 whitespace-nowrap"
               >
                 SALE
               </Link>
               <Link 
                 to="/all-products" 
-                className="text-xs lg:text-sm text-neutral-700 hover:text-cyan-600 font-medium transition-colors duration-300 whitespace-nowrap"
+                className="text-sm text-neutral-700 hover:text-cyan-600 font-medium transition-colors duration-300 whitespace-nowrap"
               >
                 Productos
               </Link>
             </nav>
 
-            {/* Desktop Cart & Auth - Derecha */}
-            <div className="hidden xl:flex items-center space-x-4 lg:space-x-6 flex-shrink-0">
+            {/* Desktop Icons & Auth - Derecha */}
+            <div className="hidden lg:flex items-center space-x-4 flex-shrink-0">
               {/* Search Button */}
               <button
                 onClick={openSearch}
                 className="p-2 text-neutral-700 hover:text-cyan-600 transition-colors duration-300"
+                aria-label="Buscar"
               >
-                <svg className="w-4 h-4 lg:w-5 lg:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </button>
@@ -129,12 +130,13 @@ const Navbar = () => {
               <button
                 onClick={openWishlist}
                 className="relative p-2 text-neutral-700 hover:text-cyan-600 transition-colors duration-300"
+                aria-label="Favoritos"
               >
-                <svg className="w-4 h-4 lg:w-5 lg:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                 </svg>
                 {wishlistCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 lg:w-5 lg:h-5 flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                     {wishlistCount}
                   </span>
                 )}
@@ -144,26 +146,27 @@ const Navbar = () => {
               <button
                 onClick={openCart}
                 className="relative p-2 text-neutral-700 hover:text-cyan-600 transition-colors duration-300"
+                aria-label="Carrito"
               >
-                <svg className="w-4 h-4 lg:w-5 lg:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                 </svg>
                 {cartItemCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 lg:w-5 lg:h-5 flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                     {cartItemCount}
                   </span>
                 )}
               </button>
 
-              {/* Auth Buttons */}
+              {/* Auth Button */}
               {user ? (
-                <div className="flex items-center space-x-2 lg:space-x-3">
-                  <span className="text-xs lg:text-sm text-neutral-600 hidden lg:block">
+                <div className="flex items-center space-x-3">
+                  <span className="text-sm text-neutral-600">
                     Hola, {user.nombres}
                   </span>
                   <button
                     onClick={handleLogout}
-                    className="px-2 lg:px-3 py-1 lg:py-1.5 text-xs lg:text-sm text-neutral-700 hover:text-cyan-600 font-medium transition-colors duration-300"
+                    className="px-3 py-1.5 text-sm text-neutral-700 hover:text-cyan-600 font-medium transition-colors duration-300"
                   >
                     Cerrar
                   </button>
@@ -171,7 +174,7 @@ const Navbar = () => {
               ) : (
                 <Link
                   to="/login"
-                  className="px-3 lg:px-4 py-1.5 lg:py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 hover:text-white transition-all duration-300 font-medium text-xs lg:text-sm"
+                  className="px-4 py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 transition-colors duration-300 font-medium text-sm"
                 >
                   Iniciar Sesión
                 </Link>
@@ -181,7 +184,7 @@ const Navbar = () => {
             {/* Mobile/Tablet Menu Button */}
             <button
               onClick={toggleMenu}
-              className="xl:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1 focus:outline-none"
+              className="lg:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1 focus:outline-none"
               aria-label="Toggle menu"
             >
               <span 
@@ -204,7 +207,7 @@ const Navbar = () => {
 
           {/* Mobile Navigation */}
           <div 
-            className={`xl:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+            className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${
               isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
             }`}
           >
@@ -235,7 +238,7 @@ const Navbar = () => {
                 className="block text-neutral-700 hover:text-cyan-600 font-semibold transition-colors duration-300 py-2"
                 onClick={closeMenu}
               >
-                Nuevos Lanzamientos
+                Nuevos 
               </Link>
               <Link 
                 to="/sale" 
@@ -249,7 +252,7 @@ const Navbar = () => {
                 className="block text-neutral-700 hover:text-cyan-600 font-semibold transition-colors duration-300 py-2"
                 onClick={closeMenu}
               >
-                Todos los Productos
+                Productos
               </Link>
 
               {/* Mobile Cart & Auth */}

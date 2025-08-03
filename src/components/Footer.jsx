@@ -47,7 +47,7 @@ const Footer = () => (
 			</div>
 			
 			<div className="border-t border-gray-700 mt-8 pt-8 text-center">
-				<p className="text-gray-300 text-sm">&copy; 2024 Sneaky Sneakers. Todos los derechos reservados.</p>
+				<a href="https://github.com/GianBordon" className="text-gray-300 text-sm">&copy; 2025 Gian Bordon.</a>
 			</div>
 		</div>
 	</footer>

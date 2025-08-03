@@ -10,7 +10,9 @@ const SUPABASE_CONFIG = {
     PLAYERS: 'players',
     USERS: 'users',
     CART: 'cart',
-    WISHLIST: 'wishlist'
+    WISHLIST: 'wishlist',
+    BRANDS: 'brands',
+    CATEGORIES: 'categories'
   },
   get isValid() {
     return this.PROJECT_URL && this.ANON_KEY;
@@ -344,6 +346,74 @@ class SupabaseService {
     }
     
     return data;
+  }
+
+  // Métodos para marcas
+  async getBrands() {
+    await this.initialize();
+    
+    const { data, error } = await this.supabase
+      .from(SUPABASE_CONFIG.TABLES.BRANDS)
+      .select('*')
+      .order('name');
+    
+    if (error) {
+      console.error('Error obteniendo marcas:', error);
+      return [];
+    }
+    
+    return data || [];
+  }
+
+  async getFeaturedBrands() {
+    await this.initialize();
+    
+    const { data, error } = await this.supabase
+      .from(SUPABASE_CONFIG.TABLES.BRANDS)
+      .select('*')
+      .eq('featured', true)
+      .order('name');
+    
+    if (error) {
+      console.error('Error obteniendo marcas destacadas:', error);
+      return [];
+    }
+    
+    return data || [];
+  }
+
+  // Métodos para categorías
+  async getCategories() {
+    await this.initialize();
+    
+    const { data, error } = await this.supabase
+      .from(SUPABASE_CONFIG.TABLES.CATEGORIES)
+      .select('*')
+      .order('name');
+    
+    if (error) {
+      console.error('Error obteniendo categorías:', error);
+      return [];
+    }
+    
+    return data || [];
+  }
+
+  async getFeaturedCategories() {
+    await this.initialize();
+    
+    const { data, error } = await this.supabase
+      .from(SUPABASE_CONFIG.TABLES.CATEGORIES)
+      .select('*')
+      .eq('featured', true)
+      .order('name');
+    
+    if (error) {
+      console.error('Error obteniendo categorías destacadas:', error);
+      return [];
+    }
+    
+    return data || [];
   }
 
   async close() {

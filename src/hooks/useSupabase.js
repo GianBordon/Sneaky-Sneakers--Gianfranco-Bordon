@@ -206,6 +206,44 @@ export const useSupabase = () => {
     }
   }, []);
 
+  // Métodos para marcas
+  const getBrands = useCallback(async () => {
+    try {
+      return await supabaseService.getBrands();
+    } catch (err) {
+      setError(err.message);
+      return [];
+    }
+  }, []);
+
+  const getFeaturedBrands = useCallback(async () => {
+    try {
+      return await supabaseService.getFeaturedBrands();
+    } catch (err) {
+      setError(err.message);
+      return [];
+    }
+  }, []);
+
+  // Métodos para categorías
+  const getCategories = useCallback(async () => {
+    try {
+      return await supabaseService.getCategories();
+    } catch (err) {
+      setError(err.message);
+      return [];
+    }
+  }, []);
+
+  const getFeaturedCategories = useCallback(async () => {
+    try {
+      return await supabaseService.getFeaturedCategories();
+    } catch (err) {
+      setError(err.message);
+      return [];
+    }
+  }, []);
+
   // Limpiar error
   const clearError = useCallback(() => {
     setError(null);
@@ -251,6 +289,14 @@ export const useSupabase = () => {
     // Métodos de migración
     migrateProducts,
     migratePlayers,
+    
+    // Métodos de marcas
+    getBrands,
+    getFeaturedBrands,
+    
+    // Métodos de categorías
+    getCategories,
+    getFeaturedCategories,
     
     // Utilidades
     clearError,

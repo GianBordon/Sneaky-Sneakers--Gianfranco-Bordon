@@ -40,5 +40,12 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      // Forzar actualización del cache
+      if (window.location.search.includes('force-refresh') || !localStorage.getItem('cache-version')) {
+        localStorage.setItem('cache-version', Date.now());
+        window.location.reload(true);
+      }
+    </script>
   </body>
 </html> 

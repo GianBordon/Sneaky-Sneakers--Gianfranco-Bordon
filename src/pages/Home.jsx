@@ -10,22 +10,15 @@ import {
   LoadingSpinner,
   RecommendationsSection
 } from "../components";
-import { 
-  getCarouselConfig, 
-  getFeaturedBrands
-} from "../data";
 import { useSupabase } from "../hooks/useSupabase";
 
 const Home = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const { getPlayers, getProducts, isLoading: supabaseLoading, error } = useSupabase();
+  const { getPlayers, getProducts, getFeaturedBrands, isLoading: supabaseLoading, error } = useSupabase();
   const [players, setPlayers] = useState([]);
   const [carouselData, setCarouselData] = useState({ images: [], links: [] });
-  
-  // Obtener datos desde los archivos centralizados
-  const carouselConfig = getCarouselConfig('featured');
-  const brands = getFeaturedBrands();
+  const [brands, setBrands] = useState([]);
 
   useEffect(() => {
     const loadData = async () => {
@@ -37,6 +30,9 @@ const Home = () => {
         
         // Cargar productos destacados desde Supabase
         const productsData = await getProducts();
+        
+        // Cargar marcas destacadas desde Supabase
+        const brandsData = await getFeaturedBrands();
         
         // Si no hay datos de Supabase, mostrar array vacío
         if (!playersData || playersData.length === 0) {
@@ -89,17 +85,34 @@ const Home = () => {
         } else {
           setCarouselData({ images: [], links: [] });
         }
+
+        // Usar marcas desde Supabase
+        if (brandsData && brandsData.length > 0) {
+          const mappedBrands = brandsData.map(brand => ({
+            id: brand.id,
+            name: brand.name,
+            image: brand.image_url || `/src/assets/img/seccion-zapas/${brand.name.toLowerCase()}.webp`,
+            description: brand.description,
+            category: brand.category,
+            featured: brand.featured,
+            path: `/all-products?brand=${brand.name.toLowerCase()}`
+          }));
+          setBrands(mappedBrands);
+        } else {
+          setBrands([]);
+        }
       } catch (error) {
         console.error("Error loading data from Supabase:", error);
         setPlayers([]);
         setCarouselData({ images: [], links: [] });
+        setBrands([]);
       } finally {
         setLoading(false);
       }
     };
 
     loadData();
-  }, [getPlayers, getProducts]);
+  }, [getPlayers, getProducts, getFeaturedBrands]);
 
   const handleShopNow = () => {
     navigate('/all-products');
@@ -229,9 +242,9 @@ const Home = () => {
           <div className="animate-slide-up">
             <ImageCarousel
               images={carouselData.images}
-              title={carouselConfig.title}
-              autoPlay={carouselConfig.autoPlay}
-              interval={carouselConfig.interval}
+              title="Featured Products"
+              autoPlay={true}
+              interval={5000}
               productLinks={carouselData.links}
             />
           </div>
