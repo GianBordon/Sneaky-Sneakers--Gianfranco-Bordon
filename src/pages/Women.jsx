@@ -184,7 +184,7 @@ const Women = () => {
               </button>
             </div>
             <div className="flex items-center space-x-2">
-              <span className="text-neutral-600">Sort by:</span>
+              <span className="text-neutral-600 whitespace-nowrap">Sort by:</span>
               <select 
                 value={sortBy}
                 onChange={handleSortChange}

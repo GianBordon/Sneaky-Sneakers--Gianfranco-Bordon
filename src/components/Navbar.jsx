@@ -174,7 +174,7 @@ const Navbar = () => {
               ) : (
                 <Link
                   to="/login"
-                  className="px-4 py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 transition-colors duration-300 font-medium text-sm"
+                  className="px-4 py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 hover:text-white transition-colors duration-300 font-medium text-sm"
                 >
                   Iniciar Sesión
                 </Link>

@@ -38,9 +38,10 @@ const AllProducts = () => {
     
     // Aplicar filtros por marca
     if (selectedBrand !== 'all') {
-      filtered = filtered.filter(product => 
-        product.brand.toLowerCase() === selectedBrand.toLowerCase()
-      );
+      filtered = filtered.filter(product => {
+        const productBrand = product.brand || product.brand_name || '';
+        return productBrand.toLowerCase() === selectedBrand.toLowerCase();
+      });
     }
     
     // Aplicar ordenamiento
@@ -277,16 +278,6 @@ const AllProducts = () => {
                 Jordan
               </button>
               <button 
-                onClick={() => handleBrandFilter('adidas')}
-                className={`px-4 py-2 rounded-full transition-colors ${
-                  selectedBrand === 'adidas' 
-                    ? 'bg-cyan-100 text-cyan-700' 
-                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
-                }`}
-              >
-                Adidas
-              </button>
-              <button 
                 onClick={() => handleBrandFilter('nike-sb')}
                 className={`px-4 py-2 rounded-full transition-colors ${
                   selectedBrand === 'nike-sb' 
@@ -299,7 +290,7 @@ const AllProducts = () => {
             </div>
             
             <div className="flex items-center space-x-2">
-              <span className="text-neutral-600">Sort by:</span>
+              <span className="text-neutral-600 whitespace-nowrap">Sort by:</span>
               <select 
                 value={sortBy}
                 onChange={handleSortChange}

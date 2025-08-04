@@ -4,48 +4,34 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
-    <!-- PWA Meta Tags -->
-    <meta name="theme-color" content="#0891b2" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="apple-mobile-web-app-title" content="Sneaky Sneakers" />
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="application-name" content="Sneaky Sneakers" />
+    <title>Sneaky Sneakers - Las Mejores Zapatillas</title>
+    <meta name="description" content="Descubre la mejor colección de zapatillas deportivas. Nike, Jordan, Adidas y más. Envío gratis en compras superiores a $50." />
     
-    <!-- Icons -->
-    <link rel="icon" type="image/svg+xml" href="/logo192.svg" />
-    <link rel="apple-touch-icon" href="/logo192.svg" />
-    <link rel="manifest" href="/manifest.json" />
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="Descubre las mejores zapatillas deportivas de Nike, Adidas, Jordan y más. Envío gratuito y garantía de autenticidad." />
-    <meta name="keywords" content="zapatillas, sneakers, nike, adidas, jordan, deportes, calzado" />
-    <meta name="author" content="Sneaky Sneakers" />
-    
-    <!-- Open Graph -->
-    <meta property="og:title" content="Sneaky Sneakers - Tu Tienda de Zapatillas" />
-    <meta property="og:description" content="Descubre las mejores zapatillas deportivas de las marcas más populares" />
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Sneaky Sneakers - Las Mejores Zapatillas" />
+    <meta property="og:description" content="Descubre la mejor colección de zapatillas deportivas. Nike, Jordan, Adidas y más." />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://sneakysneakers.com" />
-    <meta property="og:image" content="/logo512.svg" />
+    <meta property="og:url" content="https://sneaky-sneakers.com" />
+    <meta property="og:image" content="/vite.svg" />
     
-    <!-- Twitter Card -->
+    <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Sneaky Sneakers - Tu Tienda de Zapatillas" />
-    <meta name="twitter:description" content="Descubre las mejores zapatillas deportivas" />
-    <meta name="twitter:image" content="/logo512.svg" />
+    <meta name="twitter:title" content="Sneaky Sneakers - Las Mejores Zapatillas" />
+    <meta name="twitter:description" content="Descubre la mejor colección de zapatillas deportivas." />
+    <meta name="twitter:image" content="/vite.svg" />
     
-    <title>Sneaky Sneakers - Tu Tienda de Zapatillas</title>
+    <!-- Preconnect para mejorar performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
-    <script>
-      // Forzar actualización del cache
-      if (window.location.search.includes('force-refresh') || !localStorage.getItem('cache-version')) {
-        localStorage.setItem('cache-version', Date.now());
-        window.location.reload(true);
-      }
-    </script>
   </body>
 </html> 

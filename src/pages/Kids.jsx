@@ -140,51 +140,8 @@ const Kids = () => {
       <section className="py-8 bg-white border-b border-neutral-200">
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap items-center justify-between gap-4 animate-slide-down">
-            <div className="flex items-center space-x-4">
-              <span className="text-neutral-600 font-medium">Filter by:</span>
-              <button 
-                onClick={() => handleFilterChange('all')}
-                className={`px-4 py-2 rounded-full transition-colors ${
-                  selectedFilter === 'all' 
-                    ? 'bg-yellow-100 text-yellow-700' 
-                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
-                }`}
-              >
-                All
-              </button>
-              <button 
-                onClick={() => handleFilterChange('boys')}
-                className={`px-4 py-2 rounded-full transition-colors ${
-                  selectedFilter === 'boys' 
-                    ? 'bg-yellow-100 text-yellow-700' 
-                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
-                }`}
-              >
-                Boys
-              </button>
-              <button 
-                onClick={() => handleFilterChange('girls')}
-                className={`px-4 py-2 rounded-full transition-colors ${
-                  selectedFilter === 'girls' 
-                    ? 'bg-yellow-100 text-yellow-700' 
-                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
-                }`}
-              >
-                Girls
-              </button>
-              <button 
-                onClick={() => handleFilterChange('toddlers')}
-                className={`px-4 py-2 rounded-full transition-colors ${
-                  selectedFilter === 'toddlers' 
-                    ? 'bg-yellow-100 text-yellow-700' 
-                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
-                }`}
-              >
-                Toddlers
-              </button>
-            </div>
             <div className="flex items-center space-x-2">
-              <span className="text-neutral-600">Sort by:</span>
+              <span className="text-neutral-600 whitespace-nowrap">Sort by:</span>
               <select 
                 value={sortBy}
                 onChange={handleSortChange}

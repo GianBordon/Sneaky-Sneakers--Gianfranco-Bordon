@@ -85,13 +85,8 @@ const Men = () => {
     loadProducts();
   }, [getProductsByCategory]);
 
-  const handleAddToCart = async (product) => {
-    const result = await addToCart(product.id, 1);
-    if (result.success) {
-      console.log("Producto agregado al carrito:", product.name);
-    } else {
-      console.error("Error al agregar al carrito:", result.error);
-    }
+  const handleAddToCart = (product) => {
+    addToCart(product);
   };
 
   // Mostrar error si hay problema con Supabase
@@ -100,7 +95,6 @@ const Men = () => {
   }
 
   const handleNewsletterSubmit = (email) => {
-    console.log("Newsletter subscription:", email);
     // Aquí iría la lógica para suscribir al newsletter
   };
 
@@ -190,7 +184,7 @@ const Men = () => {
               </button>
             </div>
             <div className="flex items-center space-x-2">
-              <span className="text-neutral-600">Sort by:</span>
+              <span className="text-neutral-600 whitespace-nowrap">Sort by:</span>
               <select 
                 value={sortBy}
                 onChange={handleSortChange}

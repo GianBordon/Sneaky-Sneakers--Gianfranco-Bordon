@@ -1,12 +1,12 @@
-// Exportar todos los hooks personalizados
-export { useCart } from './useCart';
+// Core Hooks
+export { useSupabase } from './useSupabase';
 export { useAuth } from './useAuth';
-export { useProducts } from './useProducts';
+export { useCart } from './useCart';
 export { useWishlist } from './useWishlist';
+export { useProducts } from './useProducts';
 export { useNotifications } from './useNotifications';
 export { useReviews } from './useReviews';
 export { useImageOptimization } from './useImageOptimization';
 export { useAdvancedFilters } from './useAdvancedFilters';
 export { useAnalytics } from './useAnalytics';
-export { useRecommendations } from './useRecommendations';
-export { usePWA } from './usePWA'; 
+export { useRecommendations } from './useRecommendations'; 

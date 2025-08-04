@@ -27,15 +27,11 @@ const ProductDetail = () => {
   useEffect(() => {
     const loadProduct = async () => {
       try {
-        setIsLoading(true);
-        console.log("Cargando producto con ID:", id);
         const productData = await getProductById(id);
-        console.log("Datos del producto:", productData);
         setProduct(productData);
       } catch (error) {
         console.error("Error cargando producto:", error);
-      } finally {
-        setIsLoading(false);
+        setError("Error cargando el producto");
       }
     };
 

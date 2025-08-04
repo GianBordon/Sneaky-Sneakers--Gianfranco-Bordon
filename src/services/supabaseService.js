@@ -21,8 +21,13 @@ const SUPABASE_CONFIG = {
 
 class SupabaseService {
   constructor() {
+    if (SupabaseService.instance) {
+      return SupabaseService.instance;
+    }
+    
     this.supabase = null;
     this.isInitialized = false;
+    SupabaseService.instance = this;
   }
 
   async initialize() {
@@ -414,6 +419,93 @@ class SupabaseService {
     }
     
     return data || [];
+  }
+
+  // Métodos para poblar datos iniciales
+  async populateBrands() {
+    await this.initialize();
+    
+    const brands = [
+      {
+        id: 1,
+        name: 'Nike',
+        image_url: '/src/assets/img/seccion-zapas/nike.jpg',
+        description: 'Just Do It',
+        category: 'sports',
+        featured: true
+      },
+      {
+        id: 2,
+        name: 'Jordan',
+        image_url: '/src/assets/img/seccion-zapas/Jordan.webp',
+        description: 'Air Jordan Collection',
+        category: 'basketball',
+        featured: true
+      },
+      {
+        id: 3,
+        name: 'Nike SB',
+        image_url: '/src/assets/img/seccion-zapas/nikesb.jfif',
+        description: 'Skateboarding',
+        category: 'skateboarding',
+        featured: true
+      }
+    ];
+    
+    const { data, error } = await this.supabase
+      .from(SUPABASE_CONFIG.TABLES.BRANDS)
+      .upsert(brands, { onConflict: 'id' })
+      .select();
+    
+    if (error) {
+      console.error('Error poblando marcas:', error);
+      throw error;
+    }
+    
+    return data;
+  }
+
+  async populateCategories() {
+    await this.initialize();
+    
+    const categories = [
+      {
+        id: 1,
+        name: 'Men',
+        description: 'Men\'s sneakers',
+        featured: true
+      },
+      {
+        id: 2,
+        name: 'Women',
+        description: 'Women\'s sneakers',
+        featured: true
+      },
+      {
+        id: 3,
+        name: 'Kids',
+        description: 'Kids sneakers',
+        featured: true
+      },
+      {
+        id: 4,
+        name: 'Sale',
+        description: 'Sale items',
+        featured: true
+      }
+    ];
+    
+    const { data, error } = await this.supabase
+      .from(SUPABASE_CONFIG.TABLES.CATEGORIES)
+      .upsert(categories, { onConflict: 'id' })
+      .select();
+    
+    if (error) {
+      console.error('Error poblando categorías:', error);
+      throw error;
+    }
+    
+    return data;
   }
 
   async close() {

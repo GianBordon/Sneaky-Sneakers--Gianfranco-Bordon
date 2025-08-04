@@ -7,10 +7,10 @@ import {
   ImageCarousel,
   BrandCard,
   Footer,
-  LoadingSpinner,
-  RecommendationsSection
+  LoadingSpinner
 } from "../components";
 import { useSupabase } from "../hooks/useSupabase";
+import supabaseService from "../services/supabaseService";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -99,7 +99,28 @@ const Home = () => {
           }));
           setBrands(mappedBrands);
         } else {
-          setBrands([]);
+          // Si no hay datos, poblar la base de datos
+          try {
+            await supabaseService.populateBrands();
+            const freshBrandsData = await getFeaturedBrands();
+            if (freshBrandsData && freshBrandsData.length > 0) {
+              const mappedBrands = freshBrandsData.map(brand => ({
+                id: brand.id,
+                name: brand.name,
+                image: brand.image_url || `/src/assets/img/seccion-zapas/${brand.name.toLowerCase()}.webp`,
+                description: brand.description,
+                category: brand.category,
+                featured: brand.featured,
+                path: `/all-products?brand=${brand.name.toLowerCase()}`
+              }));
+              setBrands(mappedBrands);
+            } else {
+              setBrands([]);
+            }
+          } catch (error) {
+            console.error("Error poblando marcas:", error);
+            setBrands([]);
+          }
         }
       } catch (error) {
         console.error("Error loading data from Supabase:", error);
@@ -309,27 +330,13 @@ const Home = () => {
             {players.map((player, index) => (
               <div 
                 key={player.id}
-                className={`animate-bounce-in ${
-                  // En tablet (md), si es el 4to o 5to jugador, centrarlos
-                  index >= 3 && index <= 4 ? 'md:col-start-2 md:col-span-1' : ''
-                }`}
+                className="animate-bounce-in"
                 style={{ animationDelay: `${index * 150}ms` }}
               >
                 <PlayerCard {...player} />
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Personalized Recommendations Section */}
-      <section className="py-16 bg-neutral-50">
-        <div className="container mx-auto px-4">
-          <RecommendationsSection 
-            showTypes={['personalized', 'trending', 'seasonal']}
-            title="Descubre productos para ti"
-            maxProducts={4}
-          />
         </div>
       </section>
 

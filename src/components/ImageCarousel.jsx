@@ -46,7 +46,7 @@ const ImageCarousel = ({
           
           <div className="bg-white rounded-xl md:rounded-2xl p-3 md:p-5 shadow-xl border border-neutral-200">
             <div 
-              className={`rounded-lg md:rounded-xl w-full h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] object-cover shadow-lg cursor-pointer transition-transform duration-300 hover:scale-105 ${
+              className={`rounded-lg md:rounded-xl w-full h-[200px] sm:h-[250px] md:h-[300px] lg:h-[350px] object-cover shadow-lg cursor-pointer transition-transform duration-300 hover:scale-105 ${
                 productLinks && productLinks[current] ? 'hover:shadow-2xl' : ''
               }`}
               onClick={handleImageClick}

@@ -12,9 +12,7 @@ const PlayerDetail = () => {
   useEffect(() => {
     const loadPlayer = async () => {
       try {
-        console.log("Cargando jugador con ID:", id);
         const playerData = await getPlayerById(id);
-        console.log("Datos del jugador:", playerData);
         setPlayer(playerData);
       } catch (error) {
         console.error("Error cargando jugador:", error);
