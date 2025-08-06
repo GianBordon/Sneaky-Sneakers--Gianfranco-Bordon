@@ -24,6 +24,11 @@ const AllProducts = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [allProducts, setAllProducts] = useState([]);
   
+  // Scroll al inicio cuando se carga la página
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   // Obtener parámetros de la URL
   const brandFromUrl = searchParams.get('brand');
   

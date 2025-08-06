@@ -11,7 +11,7 @@ import {
 } from "../components";
 import { useSupabase } from "../hooks/useSupabase";
 
-const GiannisAntetokounmpo = () => {
+const JamesHarden = () => {
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
   const { getPlayerById, getProductsByBrand } = useSupabase();
@@ -20,7 +20,7 @@ const GiannisAntetokounmpo = () => {
   const [player, setPlayer] = useState(null);
   const [products, setProducts] = useState([]);
 
-  const playerName = "Giannis Antetokounmpo";
+  const playerName = "James Harden";
 
   useEffect(() => {
     const loadPlayerData = async () => {
@@ -28,19 +28,19 @@ const GiannisAntetokounmpo = () => {
         setIsLoading(true);
         
         // Cargar datos del jugador desde Supabase
-        const playerFromDB = await getPlayerById(3); // Giannis tiene ID 3
+        const playerFromDB = await getPlayerById(5); // Harden tiene ID 5
         if (playerFromDB) {
           setPlayer(playerFromDB);
         }
         
-        // Cargar zapatillas de Giannis desde Supabase
-        const productsFromDB = await getProductsByBrand("Giannis");
+        // Cargar zapatillas de Harden desde Supabase
+        const productsFromDB = await getProductsByBrand("Harden");
         if (productsFromDB && productsFromDB.length > 0) {
           setProducts(productsFromDB);
         }
         
       } catch (error) {
-        console.error("Error loading Giannis data:", error);
+        console.error("Error loading Harden data:", error);
       } finally {
         setIsLoading(false);
       }
@@ -79,8 +79,8 @@ const GiannisAntetokounmpo = () => {
 
   // Datos del banner basados en el jugador
   const bannerData = {
-    gradient: "bg-gradient-to-br from-green-600 to-blue-500",
-    image: "/src/assets/img/Giannis/fondo-de-patalla-gianis.webp"
+    gradient: "bg-gradient-to-br from-red-600 to-black",
+    image: "/src/assets/img/Harden/foto-logo-harden.jpg"
   };
 
   return (
@@ -181,18 +181,18 @@ const GiannisAntetokounmpo = () => {
                           style={{ animationDelay: `${300 + index * 50}ms` }}
                         >
                           <div className="flex items-center space-x-4">
-                            <div className="flex-shrink-0 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                            <div className="flex-shrink-0 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
                               <span className="text-white font-bold text-sm">{index + 1}</span>
                             </div>
                             <span className="text-neutral-700 font-medium capitalize">
                               {stat === 'points' ? 'Puntos' : 
-                                stat === 'rebounds' ? 'Rebotes' : 
-                                stat === 'assists' ? 'Asistencias' : 
-                                stat === 'blocks' ? 'Bloqueos' : 
-                                stat === 'steals' ? 'Robos' : stat}
+                               stat === 'rebounds' ? 'Rebotes' : 
+                               stat === 'assists' ? 'Asistencias' : 
+                               stat === 'blocks' ? 'Bloqueos' : 
+                               stat === 'steals' ? 'Robos' : stat}
                             </span>
                           </div>
-                          <span className="text-green-600 font-bold text-lg">{value}</span>
+                          <span className="text-red-600 font-bold text-lg">{value}</span>
                         </div>
                       ))}
                     </div>
@@ -226,4 +226,4 @@ const GiannisAntetokounmpo = () => {
   );
 };
 
-export default GiannisAntetokounmpo; 
+export default JamesHarden; 

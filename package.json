@@ -6,11 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "eslint src/",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "lint:fix": "eslint src/ --fix",
-    "preview": "vite preview",
-    "test:supabase": "echo 'Script eliminado - usar Supabase dashboard para configurar tablas'",
-    "dev:safe": "./dev.sh"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.53.0",

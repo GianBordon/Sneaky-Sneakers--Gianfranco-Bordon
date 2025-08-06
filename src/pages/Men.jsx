@@ -20,6 +20,11 @@ const Men = () => {
   const [sortBy, setSortBy] = useState('latest');
   const [allMenShoes, setAllMenShoes] = useState([]);
   
+  // Scroll al inicio cuando se carga la página
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   // Filtrar productos según el filtro seleccionado
   const getFilteredProducts = () => {
     let filtered = allMenShoes;

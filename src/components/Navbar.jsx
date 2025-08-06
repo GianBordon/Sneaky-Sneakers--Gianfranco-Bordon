@@ -15,7 +15,7 @@ const Navbar = () => {
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const { wishlistCount } = useWishlist();
-  const { cartItemsWithProducts } = useCart();
+  const { cartCount } = useCart();
   const { user, logout } = useAuth();
 
   const toggleMenu = () => {
@@ -55,7 +55,7 @@ const Navbar = () => {
     closeMenu();
   };
 
-  const cartItemCount = cartItemsWithProducts.length;
+  const cartItemCount = cartCount;
 
   return (
     <>
@@ -74,7 +74,7 @@ const Navbar = () => {
             </div>
 
             {/* Desktop Navigation - Centrado */}
-            <nav className="hidden lg:flex items-center space-x-6 flex-1 justify-center">
+            <nav className="hidden md:flex items-center space-x-6 flex-1 justify-center">
               <Link 
                 to="/men" 
                 className="text-sm text-neutral-700 hover:text-cyan-600 font-medium transition-colors duration-300 whitespace-nowrap"
@@ -114,7 +114,7 @@ const Navbar = () => {
             </nav>
 
             {/* Desktop Icons & Auth - Derecha */}
-            <div className="hidden lg:flex items-center space-x-4 flex-shrink-0">
+            <div className="hidden md:flex items-center space-x-4 flex-shrink-0">
               {/* Search Button */}
               <button
                 onClick={openSearch}
@@ -184,7 +184,7 @@ const Navbar = () => {
             {/* Mobile/Tablet Menu Button */}
             <button
               onClick={toggleMenu}
-              className="lg:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1 focus:outline-none"
+              className="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1 focus:outline-none"
               aria-label="Toggle menu"
             >
               <span 
@@ -207,11 +207,12 @@ const Navbar = () => {
 
           {/* Mobile Navigation */}
           <div 
-            className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-              isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+            className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+              isMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
             }`}
           >
             <nav className="py-4 space-y-4 border-t border-neutral-200">
+              {/* Navigation Links */}
               <Link 
                 to="/men" 
                 className="block text-neutral-700 hover:text-cyan-600 font-semibold transition-colors duration-300 py-2"
@@ -255,12 +256,12 @@ const Navbar = () => {
                 Productos
               </Link>
 
-              {/* Mobile Cart & Auth */}
-              <div className="pt-4 border-t border-neutral-200 space-y-4">
+              {/* Action Buttons Section */}
+              <div className="pt-4 border-t border-neutral-200 space-y-3">
                 {/* Search Button */}
                 <button
                   onClick={() => { openSearch(); closeMenu(); }}
-                  className="flex items-center space-x-2 text-neutral-700 hover:text-cyan-600 font-semibold transition-colors duration-300 py-2"
+                  className="flex items-center space-x-3 text-neutral-700 hover:text-cyan-600 font-semibold transition-colors duration-300 py-3 w-full text-left"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -268,50 +269,62 @@ const Navbar = () => {
                   <span>Buscar</span>
                 </button>
 
-                {/* Cart Button */}
-                <button
-                  onClick={() => { openCart(); closeMenu(); }}
-                  className="flex items-center space-x-2 text-neutral-700 hover:text-cyan-600 font-semibold transition-colors duration-300 py-2"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                  </svg>
-                  <span>Carrito ({cartItemCount})</span>
-                </button>
-
                 {/* Wishlist Button */}
                 <button
                   onClick={() => { openWishlist(); closeMenu(); }}
-                  className="flex items-center space-x-2 text-neutral-700 hover:text-cyan-600 font-semibold transition-colors duration-300 py-2"
+                  className="flex items-center space-x-3 text-neutral-700 hover:text-cyan-600 font-semibold transition-colors duration-300 py-3 w-full text-left"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                   </svg>
-                  <span>Favoritos ({wishlistCount})</span>
+                  <span>Favoritos</span>
+                  {wishlistCount > 0 && (
+                    <span className="bg-red-500 text-white text-xs rounded-full px-2 py-1 ml-auto">
+                      {wishlistCount}
+                    </span>
+                  )}
                 </button>
 
-                {/* Auth */}
-                {user ? (
-                  <div className="space-y-2">
-                    <div className="text-neutral-600 py-2">
-                      Hola, {user.nombres}
+                {/* Cart Button */}
+                <button
+                  onClick={() => { openCart(); closeMenu(); }}
+                  className="flex items-center space-x-3 text-neutral-700 hover:text-cyan-600 font-semibold transition-colors duration-300 py-3 w-full text-left"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                  </svg>
+                  <span>Carrito</span>
+                  {cartItemCount > 0 && (
+                    <span className="bg-red-500 text-white text-xs rounded-full px-2 py-1 ml-auto">
+                      {cartItemCount}
+                    </span>
+                  )}
+                </button>
+
+                {/* Auth Section */}
+                <div className="pt-2 border-t border-neutral-200">
+                  {user ? (
+                    <div className="space-y-3">
+                      <div className="text-neutral-600 py-2 font-medium">
+                        Hola, {user.nombres}
+                      </div>
+                      <button
+                        onClick={() => { handleLogout(); closeMenu(); }}
+                        className="w-full text-left text-neutral-700 hover:text-cyan-600 font-semibold transition-colors duration-300 py-2"
+                      >
+                        Cerrar Sesión
+                      </button>
                     </div>
-                    <button
-                      onClick={() => { handleLogout(); closeMenu(); }}
-                      className="w-full text-left text-neutral-700 hover:text-cyan-600 font-semibold transition-colors duration-300 py-2"
+                  ) : (
+                    <Link
+                      to="/login"
+                      className="block bg-cyan-600 text-white text-center py-3 rounded-lg hover:bg-cyan-700 transition-colors duration-300 font-semibold"
+                      onClick={closeMenu}
                     >
-                      Cerrar Sesión
-                    </button>
-                  </div>
-                ) : (
-                  <Link
-                    to="/login"
-                    className="block bg-cyan-600 text-white text-center py-3 rounded-lg hover:bg-cyan-700 transition-colors duration-300 font-semibold"
-                    onClick={closeMenu}
-                  >
-                    Iniciar Sesión
-                  </Link>
-                )}
+                      Iniciar Sesión
+                    </Link>
+                  )}
+                </div>
               </div>
             </nav>
           </div>

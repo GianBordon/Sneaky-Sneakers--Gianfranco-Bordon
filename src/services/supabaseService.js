@@ -1,10 +1,8 @@
 // Servicio para conectar con Supabase
-import { createClient } from '@supabase/supabase-js';
+import { getSupabase } from '../config/supabaseSecure.js';
 
 // Configuración de Supabase
 const SUPABASE_CONFIG = {
-  PROJECT_URL: import.meta.env.VITE_SUPABASE_URL,
-  ANON_KEY: import.meta.env.VITE_SUPABASE_ANON_KEY,
   TABLES: {
     PRODUCTS: 'products',
     PLAYERS: 'players',
@@ -15,7 +13,7 @@ const SUPABASE_CONFIG = {
     CATEGORIES: 'categories'
   },
   get isValid() {
-    return this.PROJECT_URL && this.ANON_KEY;
+    return import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY;
   }
 };
 
@@ -42,7 +40,7 @@ class SupabaseService {
       }
       
       // Crear cliente de Supabase
-      this.supabase = createClient(SUPABASE_CONFIG.PROJECT_URL, SUPABASE_CONFIG.ANON_KEY);
+      this.supabase = getSupabase();
       
       // Verificar conexión haciendo una consulta simple
       const { data: _data, error } = await this.supabase

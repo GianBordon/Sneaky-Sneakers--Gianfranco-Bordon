@@ -14,7 +14,7 @@ const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addToCart } = useCart();
-  const { getProductById, isLoading: supabaseLoading, error } = useSupabase();
+  const { getProductById, isLoading: supabaseLoading, error: supabaseError } = useSupabase();
   
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
@@ -22,6 +22,12 @@ const ProductDetail = () => {
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [product, setProduct] = useState(null);
+  const [error, setError] = useState(null);
+
+  // Scroll al inicio cuando se carga la página
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   // Cargar producto desde Supabase
   useEffect(() => {

@@ -10,15 +10,19 @@ import {
   LoadingSpinner
 } from "../components";
 import { useSupabase } from "../hooks/useSupabase";
-import supabaseService from "../services/supabaseService";
 
 const Home = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const { getPlayers, getProducts, getFeaturedBrands, isLoading: supabaseLoading, error } = useSupabase();
+  const { getPlayers, getProducts, getBrands, isLoading: supabaseLoading, error } = useSupabase();
   const [players, setPlayers] = useState([]);
   const [carouselData, setCarouselData] = useState({ images: [], links: [] });
   const [brands, setBrands] = useState([]);
+
+  // Scroll al inicio cuando se carga la página
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     const loadData = async () => {
@@ -31,29 +35,30 @@ const Home = () => {
         // Cargar productos destacados desde Supabase
         const productsData = await getProducts();
         
-        // Cargar marcas destacadas desde Supabase
-        const brandsData = await getFeaturedBrands();
+        // Cargar marcas desde Supabase
+        const brandsData = await getBrands();
         
-        // Si no hay datos de Supabase, mostrar array vacío
-        if (!playersData || playersData.length === 0) {
-          setPlayers([]);
-        } else {
-          // Mapear datos de Supabase al formato esperado por PlayerCard
+        // Procesar jugadores
+        if (playersData && playersData.length > 0) {
           const mappedPlayers = playersData.map((player, index) => {
             // Crear path específico para jugadores conocidos
             let path;
-            if (player.name.toLowerCase().includes('lebron') || player.name.toLowerCase().includes('james')) {
+            if (player.name.toLowerCase().includes('harden')) {
+              path = '/james-harden';
+            } else if (player.name.toLowerCase().includes('lebron') || (player.name.toLowerCase().includes('james') && !player.name.toLowerCase().includes('harden'))) {
               path = '/lebron-james';
             } else if (player.name.toLowerCase().includes('kevin') || player.name.toLowerCase().includes('durant') || player.name.toLowerCase().includes('kd')) {
               path = '/kevin-durant';
+            } else if (player.name.toLowerCase().includes('paul') || player.name.toLowerCase().includes('george')) {
+              path = '/paul-george';
             } else if (player.name.toLowerCase().includes('giannis') || player.name.toLowerCase().includes('antetokounmpo')) {
               path = '/giannis-antetokounmpo';
             } else {
-              path = `/player/${player.id}`; // Path genérico para otros jugadores
+              path = `/player/${player.id}`;
             }
             
             return {
-              id: player.id || `player-${index}`, // Asegurar que siempre hay un ID único
+              id: player.id || `player-${index}`,
               name: player.name,
               path: path,
               image: player.image || '/src/assets/img/jugadores/default-player.webp',
@@ -65,6 +70,8 @@ const Home = () => {
             };
           });
           setPlayers(mappedPlayers);
+        } else {
+          setPlayers([]);
         }
 
         // Procesar productos para el carrusel
@@ -86,41 +93,18 @@ const Home = () => {
           setCarouselData({ images: [], links: [] });
         }
 
-        // Usar marcas desde Supabase
+        // Procesar marcas desde Supabase
         if (brandsData && brandsData.length > 0) {
           const mappedBrands = brandsData.map(brand => ({
             id: brand.id,
             name: brand.name,
-            image: brand.image_url || `/src/assets/img/seccion-zapas/${brand.name.toLowerCase()}.webp`,
+            image: brand.logo_url || `/src/assets/img/seccion-zapas/${brand.name.toLowerCase()}.webp`,
             description: brand.description,
-            category: brand.category,
-            featured: brand.featured,
             path: `/all-products?brand=${brand.name.toLowerCase()}`
           }));
           setBrands(mappedBrands);
         } else {
-          // Si no hay datos, poblar la base de datos
-          try {
-            await supabaseService.populateBrands();
-            const freshBrandsData = await getFeaturedBrands();
-            if (freshBrandsData && freshBrandsData.length > 0) {
-              const mappedBrands = freshBrandsData.map(brand => ({
-                id: brand.id,
-                name: brand.name,
-                image: brand.image_url || `/src/assets/img/seccion-zapas/${brand.name.toLowerCase()}.webp`,
-                description: brand.description,
-                category: brand.category,
-                featured: brand.featured,
-                path: `/all-products?brand=${brand.name.toLowerCase()}`
-              }));
-              setBrands(mappedBrands);
-            } else {
-              setBrands([]);
-            }
-          } catch (error) {
-            console.error("Error poblando marcas:", error);
-            setBrands([]);
-          }
+          setBrands([]);
         }
       } catch (error) {
         console.error("Error loading data from Supabase:", error);
@@ -133,7 +117,7 @@ const Home = () => {
     };
 
     loadData();
-  }, [getPlayers, getProducts, getFeaturedBrands]);
+  }, [getPlayers, getProducts, getBrands]);
 
   const handleShopNow = () => {
     navigate('/all-products');

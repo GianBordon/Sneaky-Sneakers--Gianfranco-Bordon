@@ -19,6 +19,7 @@ export { default as ImageGrid } from './ImageGrid';
 export { default as BrandCard } from './BrandCard';
 export { default as PlayerCard } from './PlayerCard';
 export { default as PlayerPage } from './PlayerPage';
+export { default as PlayerProductsSection } from './PlayerProductsSection';
 
 // Modal Components
 export { default as CartModal } from './CartModal';

@@ -24,6 +24,8 @@ const ExchangePolicy = lazy(() => import('./pages/ExchangePolicy'));
 const PaymentMethods = lazy(() => import('./pages/PaymentMethods'));
 const LeBronJames = lazy(() => import('./pages/LeBronJames'));
 const KevinDurant = lazy(() => import('./pages/KevinDurant'));
+const PaulGeorge = lazy(() => import('./pages/PaulGeorge'));
+const JamesHarden = lazy(() => import('./pages/JamesHarden'));
 const GiannisAntetokounmpo = lazy(() => import('./pages/GiannisAntetokounmpo'));
 
 // Componente de carga para páginas
@@ -61,6 +63,8 @@ function App() {
               <Route path="/payment-methods" element={<PaymentMethods />} />
               <Route path="/lebron-james" element={<LeBronJames />} />
               <Route path="/kevin-durant" element={<KevinDurant />} />
+              <Route path="/paul-george" element={<PaulGeorge />} />
+              <Route path="/james-harden" element={<JamesHarden />} />
               <Route path="/giannis-antetokounmpo" element={<GiannisAntetokounmpo />} />
             </Routes>
           </Suspense>

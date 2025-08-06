@@ -1,5 +1,7 @@
+import { getSecureSupabase } from './supabaseSecure.js';
+
 // Cargar dotenv solo si estamos en Node.js (no en navegador)
-if (typeof process !== 'undefined' && process?.env && !process.env.VITE_SUPABASE_URL) {
+if (typeof process !== 'undefined' && process?.env && !process.env.VITE_SUPABASE_URL_HASHED) {
   try {
     const dotenv = await import('dotenv');
     dotenv.config();
@@ -8,15 +10,12 @@ if (typeof process !== 'undefined' && process?.env && !process.env.VITE_SUPABASE
   }
 }
 
-// Configuración de Supabase
+// Configuración de Supabase (usando cliente seguro)
 export const SUPABASE_CONFIG = {
-  // Valores desde variables de entorno
-  PROJECT_URL: typeof window === 'undefined' 
-    ? process.env.VITE_SUPABASE_URL 
-    : import.meta.env.VITE_SUPABASE_URL,
-  ANON_KEY: typeof window === 'undefined' 
-    ? process.env.VITE_SUPABASE_ANON_KEY 
-    : import.meta.env.VITE_SUPABASE_ANON_KEY,
+  // Cliente seguro de Supabase
+  getClient: async () => {
+    return await getSecureSupabase();
+  },
   
   // Configuración de tablas
   TABLES: {
@@ -32,7 +31,7 @@ export const SUPABASE_CONFIG = {
   
   // Validación de variables de entorno
   get isValid() {
-    return this.PROJECT_URL && this.ANON_KEY;
+    return import.meta.env.VITE_SUPABASE_URL_HASHED && import.meta.env.VITE_SUPABASE_ANON_KEY_HASHED;
   }
 };
 

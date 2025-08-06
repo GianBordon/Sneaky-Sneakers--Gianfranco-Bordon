@@ -44,9 +44,9 @@ const ImageCarousel = ({
             </button>
           )}
           
-          <div className="bg-white rounded-xl md:rounded-2xl p-3 md:p-5 shadow-xl border border-neutral-200">
+          <div className="bg-white rounded-xl md:rounded-2xl p-3 md:p-5 shadow-xl border border-neutral-200 w-full max-w-4xl">
             <div 
-              className={`rounded-lg md:rounded-xl w-full h-[200px] sm:h-[250px] md:h-[300px] lg:h-[350px] object-cover shadow-lg cursor-pointer transition-transform duration-300 hover:scale-105 ${
+              className={`relative w-full aspect-[16/10] rounded-lg md:rounded-xl shadow-lg cursor-pointer transition-transform duration-300 hover:scale-105 overflow-hidden ${
                 productLinks && productLinks[current] ? 'hover:shadow-2xl' : ''
               }`}
               onClick={handleImageClick}
@@ -54,7 +54,10 @@ const ImageCarousel = ({
               <img
                 src={images[current]}
                 alt={`Slide ${current + 1}`}
-                className="w-full h-full object-cover rounded-lg md:rounded-xl"
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  e.target.src = '/src/assets/img/default-product.webp';
+                }}
               />
             </div>
           </div>

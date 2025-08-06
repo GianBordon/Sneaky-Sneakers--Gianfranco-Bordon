@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { 
   SectionNavigation, 
   PageBanner, 
@@ -9,17 +9,23 @@ import { useAuth } from "../hooks";
 import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
-  const { register, loading, error, clearError } = useAuth();
   const navigate = useNavigate();
-  
+  const { login, register } = useAuth();
+  const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
-    nombres: "",
-    apellidos: "",
-    correo: "",
-    password: ""
+    email: '',
+    password: '',
+    confirmPassword: '',
+    nombres: '',
+    apellidos: '',
+    correo: ''
   });
-
   const [errors, setErrors] = useState({});
+  
+  // Scroll al inicio cuando se carga la página
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleChange = (e) => {
     setFormData({
@@ -33,31 +39,50 @@ const LoginPage = () => {
         [e.target.name]: ""
       });
     }
-    clearError();
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Basic validation
-    const newErrors = {};
-    if (!formData.nombres.trim()) newErrors.nombres = "El nombre es requerido";
-    if (!formData.apellidos.trim()) newErrors.apellidos = "El apellido es requerido";
-    if (!formData.correo.trim()) newErrors.correo = "El correo es requerido";
-    if (!formData.password.trim()) newErrors.password = "La contraseña es requerida";
-    
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
-    }
-
-    // Registrar usuario
-    const result = await register(formData);
-    if (result.success) {
-      console.log("Usuario registrado exitosamente");
-      navigate('/'); // Redirigir a home después del registro
+    if (isLogin) {
+      // Login
+      const result = await login(formData.email, formData.password);
+      if (result.success) {
+        console.log("Usuario logueado exitosamente");
+        navigate('/');
+      } else {
+        console.error("Error en el login:", result.error);
+        setErrors({ general: result.error });
+      }
     } else {
-      console.error("Error en el registro:", result.error);
+      // Register
+      // Basic validation
+      const newErrors = {};
+      if (!formData.nombres.trim()) newErrors.nombres = "El nombre es requerido";
+      if (!formData.apellidos.trim()) newErrors.apellidos = "El apellido es requerido";
+      if (!formData.correo.trim()) newErrors.correo = "El correo es requerido";
+      if (!formData.password.trim()) newErrors.password = "La contraseña es requerida";
+      if (formData.password !== formData.confirmPassword) {
+        newErrors.confirmPassword = "Las contraseñas no coinciden";
+      }
+      
+      if (Object.keys(newErrors).length > 0) {
+        setErrors(newErrors);
+        return;
+      }
+
+      // Registrar usuario
+      const result = await register(formData.correo, formData.password, {
+        nombres: formData.nombres,
+        apellidos: formData.apellidos
+      });
+      if (result.success) {
+        console.log("Usuario registrado exitosamente");
+        navigate('/');
+      } else {
+        console.error("Error en el registro:", result.error);
+        setErrors({ general: result.error });
+      }
     }
   };
 
@@ -91,41 +116,53 @@ const LoginPage = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
                 </div>
-                <h2 className="text-3xl font-display font-bold text-neutral-800 mb-2">Create Account</h2>
-                <p className="text-neutral-600">Join our community of sneaker enthusiasts</p>
+                <h2 className="text-3xl font-display font-bold text-neutral-800 mb-2">
+                  {isLogin ? 'Sign In' : 'Create Account'}
+                </h2>
+                <p className="text-neutral-600">
+                  {isLogin ? 'Welcome back to Sneaky Sneakers' : 'Join our community of sneaker enthusiasts'}
+                </p>
               </div>
               
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <FormInput
-                    type="text"
-                    name="nombres"
-                    placeholder="First Name"
-                    value={formData.nombres}
-                    onChange={handleChange}
-                    required
-                    error={errors.nombres}
-                  />
-                  
-                  <FormInput
-                    type="text"
-                    name="apellidos"
-                    placeholder="Last Name"
-                    value={formData.apellidos}
-                    onChange={handleChange}
-                    required
-                    error={errors.apellidos}
-                  />
+              {errors.general && (
+                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                  {errors.general}
                 </div>
+              )}
+              
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {!isLogin && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <FormInput
+                      type="text"
+                      name="nombres"
+                      placeholder="First Name"
+                      value={formData.nombres}
+                      onChange={handleChange}
+                      required={!isLogin}
+                      error={errors.nombres}
+                    />
+                    
+                    <FormInput
+                      type="text"
+                      name="apellidos"
+                      placeholder="Last Name"
+                      value={formData.apellidos}
+                      onChange={handleChange}
+                      required={!isLogin}
+                      error={errors.apellidos}
+                    />
+                  </div>
+                )}
                 
                 <FormInput
                   type="email"
-                  name="correo"
+                  name={isLogin ? "email" : "correo"}
                   placeholder="Email Address"
-                  value={formData.correo}
+                  value={isLogin ? formData.email : formData.correo}
                   onChange={handleChange}
                   required
-                  error={errors.correo}
+                  error={isLogin ? errors.email : errors.correo}
                 />
                 
                 <FormInput
@@ -138,49 +175,69 @@ const LoginPage = () => {
                   error={errors.password}
                 />
                 
-                <div className="flex items-start space-x-3">
-                  <input
-                    type="checkbox"
-                    id="terms"
-                    className="mt-1 w-4 h-4 text-primary-600 border-neutral-300 rounded focus:ring-primary-500"
-                    required
+                {!isLogin && (
+                  <FormInput
+                    type="password"
+                    name="confirmPassword"
+                    placeholder="Confirm Password"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    required={!isLogin}
+                    error={errors.confirmPassword}
                   />
-                  <label htmlFor="terms" className="text-sm text-neutral-600">
-                    I agree to the{" "}
-                    <a href="#" className="text-primary-600 hover:text-primary-700 font-medium">
-                      Terms of Service
-                    </a>{" "}
-                    and{" "}
-                    <a href="#" className="text-primary-600 hover:text-primary-700 font-medium">
-                      Privacy Policy
-                    </a>
-                  </label>
-                </div>
+                )}
+                
+                {!isLogin && (
+                  <div className="flex items-start space-x-3">
+                    <input
+                      type="checkbox"
+                      id="terms"
+                      className="mt-1 w-4 h-4 text-primary-600 border-neutral-300 rounded focus:ring-primary-500"
+                      required
+                    />
+                    <label htmlFor="terms" className="text-sm text-neutral-600">
+                      I agree to the{" "}
+                      <a href="#" className="text-primary-600 hover:text-primary-700 font-medium">
+                        Terms of Service
+                      </a>{" "}
+                      and{" "}
+                      <a href="#" className="text-primary-600 hover:text-primary-700 font-medium">
+                        Privacy Policy
+                      </a>
+                    </label>
+                  </div>
+                )}
                 
                 <button
                   type="submit"
-                  disabled={loading}
-                  className="w-full bg-primary-600 hover:bg-primary-700 text-white py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 disabled:bg-primary-400 disabled:transform-none shadow-lg hover:shadow-xl"
+                  className="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-6 rounded-xl transition-colors duration-300 transform hover:scale-105"
                 >
-                  {loading ? (
-                    <div className="flex items-center justify-center">
-                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                      Creating Account...
-                    </div>
-                  ) : (
-                    "Create Account"
-                  )}
+                  {isLogin ? 'Sign In' : 'Create Account'}
                 </button>
-                
-                {error && (
-                  <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg text-sm">
-                    {error}
-                  </div>
-                )}
               </form>
+              
+              <div className="mt-6 text-center">
+                <p className="text-neutral-600">
+                  {isLogin ? "Don't have an account? " : "Already have an account? "}
+                  <button
+                    onClick={() => {
+                      setIsLogin(!isLogin);
+                      setErrors({});
+                      setFormData({
+                        email: '',
+                        password: '',
+                        confirmPassword: '',
+                        nombres: '',
+                        apellidos: '',
+                        correo: ''
+                      });
+                    }}
+                    className="text-primary-600 hover:text-primary-700 font-medium"
+                  >
+                    {isLogin ? 'Sign up here' : 'Sign in here'}
+                  </button>
+                </p>
+              </div>
               
               <div className="mt-8 pt-8 border-t border-neutral-200">
                 <p className="text-center text-neutral-600 mb-6">Or continue with</p>
@@ -201,15 +258,6 @@ const LoginPage = () => {
                     <span className="text-neutral-700 font-medium">Google</span>
                   </button>
                 </div>
-              </div>
-
-              <div className="mt-8 text-center">
-                <p className="text-neutral-600">
-                  Already have an account?{" "}
-                  <a href="#" className="text-primary-600 hover:text-primary-700 font-semibold">
-                    Sign in here
-                  </a>
-                </p>
               </div>
             </div>
           </div>

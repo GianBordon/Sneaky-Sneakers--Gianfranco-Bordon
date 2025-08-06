@@ -76,7 +76,13 @@ export const useCart = () => {
     
     try {
       CartService.addToCart(productId, quantity, size, color);
-      await loadCart(); // Recargar carrito con productos
+      
+      // Actualizar inmediatamente el contador del carrito
+      const currentItems = CartService.getCartItems();
+      setCartCount(currentItems.length);
+      
+      // Recargar carrito completo con productos
+      await loadCart();
       
       return { success: true };
     } catch (err) {
@@ -91,6 +97,11 @@ export const useCart = () => {
   const removeFromCart = useCallback((itemId) => {
     try {
       CartService.removeFromCart(itemId);
+      
+      // Actualizar inmediatamente el contador del carrito
+      const currentItems = CartService.getCartItems();
+      setCartCount(currentItems.length);
+      
       loadCart();
       return { success: true };
     } catch (err) {
@@ -103,6 +114,11 @@ export const useCart = () => {
   const updateQuantity = useCallback((itemId, quantity) => {
     try {
       CartService.updateQuantity(itemId, quantity);
+      
+      // Actualizar inmediatamente el contador del carrito
+      const currentItems = CartService.getCartItems();
+      setCartCount(currentItems.length);
+      
       loadCart();
       return { success: true };
     } catch (err) {
