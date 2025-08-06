@@ -14,10 +14,10 @@ export const useAuth = () => {
   }, []);
 
   // Verificar estado de autenticación
-  const checkAuth = useCallback(() => {
+  const checkAuth = useCallback(async () => {
     try {
-      const authenticated = AuthService.isAuthenticated();
-      const currentUser = AuthService.getCurrentUser();
+      const authenticated = await AuthService.isAuthenticated();
+      const currentUser = await AuthService.getCurrentUser();
       
       setIsAuthenticated(authenticated);
       setUser(currentUser);
@@ -55,13 +55,21 @@ export const useAuth = () => {
   }, []);
 
   // Registro
-  const register = useCallback(async (userData) => {
+  const register = useCallback(async (email, password, userData = {}) => {
     setLoading(true);
     setError(null);
     
     try {
+      // Preparar datos para validación
+      const registrationData = {
+        nombres: userData.nombres,
+        apellidos: userData.apellidos,
+        correo: email,
+        password: password
+      };
+
       // Validar datos del formulario
-      const validationErrors = AuthService.validateRegistration(userData);
+      const validationErrors = AuthService.validateRegistration(registrationData);
       
       if (Object.keys(validationErrors).length > 0) {
         setError('Por favor, corrige los errores en el formulario');
@@ -72,7 +80,7 @@ export const useAuth = () => {
         };
       }
 
-      const result = await AuthService.register(userData);
+      const result = await AuthService.register(registrationData);
       
       if (result.success) {
         setUser(result.user);
@@ -91,13 +99,15 @@ export const useAuth = () => {
   }, []);
 
   // Logout
-  const logout = useCallback(() => {
+  const logout = useCallback(async () => {
     try {
-      AuthService.logout();
-      setUser(null);
-      setIsAuthenticated(false);
-      setError(null);
-      return { success: true };
+      const result = await AuthService.logout();
+      if (result.success) {
+        setUser(null);
+        setIsAuthenticated(false);
+        setError(null);
+      }
+      return result;
     } catch (err) {
       setError(err.message);
       return { success: false, error: err.message };

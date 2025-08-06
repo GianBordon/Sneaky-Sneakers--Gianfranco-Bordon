@@ -1,64 +1,76 @@
-// Servicio para manejar autenticación
+// Servicio para manejar autenticación con Supabase
+import { getSupabase } from '../config/supabaseSecure.js';
+
 export class AuthService {
-  // Simular base de datos de usuarios
-  static users = [
-    {
-      id: 1,
-      nombres: "Admin",
-      apellidos: "User",
-      correo: "admin@sneakysneakers.com",
-      password: "admin123",
-      role: "admin"
-    },
-    {
-      id: 2,
-      nombres: "Juan",
-      apellidos: "Pérez",
-      correo: "juan@example.com",
-      password: "password123",
-      role: "user"
+  static supabase = null;
+
+  // Inicializar Supabase
+  static async initialize() {
+    if (!this.supabase) {
+      this.supabase = getSupabase();
     }
-  ];
+  }
 
   // Verificar si el usuario está autenticado
-  static isAuthenticated() {
-    const token = localStorage.getItem('authToken');
-    const user = localStorage.getItem('user');
-    return !!(token && user);
+  static async isAuthenticated() {
+    try {
+      await this.initialize();
+      const { data: { session } } = await this.supabase.auth.getSession();
+      return !!session;
+    } catch (error) {
+      console.error('Error verificando autenticación:', error);
+      return false;
+    }
   }
 
   // Obtener usuario actual
-  static getCurrentUser() {
-    const user = localStorage.getItem('user');
-    return user ? JSON.parse(user) : null;
+  static async getCurrentUser() {
+    try {
+      await this.initialize();
+      const { data: { user }, error } = await this.supabase.auth.getUser();
+      
+      if (error) {
+        // AuthSessionMissingError es normal cuando no hay sesión activa
+        if (error.message.includes('Auth session missing')) {
+          return null;
+        }
+        console.error('Error obteniendo usuario actual:', error);
+        return null;
+      }
+      
+      return user;
+    } catch (error) {
+      // AuthSessionMissingError es normal cuando no hay sesión activa
+      if (error.message && error.message.includes('Auth session missing')) {
+        return null;
+      }
+      console.error('Error obteniendo usuario actual:', error);
+      return null;
+    }
   }
 
   // Login
   static async login(email, password) {
     try {
-      // Simular delay de red
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await this.initialize();
       
-      const user = this.users.find(u => 
-        u.correo === email && u.password === password
-      );
+      const { data, error } = await this.supabase.auth.signInWithPassword({
+        email,
+        password
+      });
 
-      if (user) {
-        const token = this.generateToken();
-        const userData = { ...user };
-        delete userData.password;
-
-        localStorage.setItem('authToken', token);
-        localStorage.setItem('user', JSON.stringify(userData));
-
+      if (error) {
         return {
-          success: true,
-          user: userData,
-          token
+          success: false,
+          error: error.message
         };
-      } else {
-        throw new Error('Credenciales inválidas');
       }
+
+      return {
+        success: true,
+        user: data.user,
+        session: data.session
+      };
     } catch (error) {
       return {
         success: false,
@@ -70,26 +82,56 @@ export class AuthService {
   // Registro
   static async register(userData) {
     try {
-      // Simular delay de red
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await this.initialize();
       
-      // Verificar si el email ya existe
-      const existingUser = this.users.find(u => u.correo === userData.correo);
-      if (existingUser) {
-        throw new Error('El email ya está registrado');
+      // Registrar usuario en Supabase Auth
+      const { data, error } = await this.supabase.auth.signUp({
+        email: userData.correo,
+        password: userData.password,
+        options: {
+          data: {
+            nombres: userData.nombres,
+            apellidos: userData.apellidos
+          }
+        }
+      });
+
+      if (error) {
+        return {
+          success: false,
+          error: error.message
+        };
       }
 
-      // Crear nuevo usuario
-      const newUser = {
-        id: this.users.length + 1,
-        ...userData,
-        role: 'user'
+      // Si el registro es exitoso, también crear el perfil en la tabla users
+      if (data.user) {
+        try {
+          const { error: profileError } = await this.supabase
+            .from('users')
+            .insert([
+              {
+                id: data.user.id,
+                nombres: userData.nombres,
+                apellidos: userData.apellidos,
+                correo: userData.correo,
+                created_at: new Date().toISOString()
+              }
+            ]);
+
+          if (profileError) {
+            console.warn('Error creando perfil de usuario:', profileError);
+            // No fallar el registro si hay error en el perfil
+          }
+        } catch (profileError) {
+          console.warn('Error creando perfil de usuario:', profileError);
+        }
+      }
+
+      return {
+        success: true,
+        user: data.user,
+        session: data.session
       };
-
-      this.users.push(newUser);
-
-      // Auto login después del registro
-      return await this.login(userData.correo, userData.password);
     } catch (error) {
       return {
         success: false,
@@ -99,10 +141,19 @@ export class AuthService {
   }
 
   // Logout
-  static logout() {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('user');
-    return { success: true };
+  static async logout() {
+    try {
+      await this.initialize();
+      const { error } = await this.supabase.auth.signOut();
+      if (error) {
+        console.error('Error al cerrar sesión:', error);
+        return { success: false, error: error.message };
+      }
+      return { success: true };
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+      return { success: false, error: error.message };
+    }
   }
 
   // Generar token (simulado)
@@ -122,9 +173,11 @@ export class AuthService {
       errors.apellidos = 'El apellido es requerido';
     }
 
-    if (!formData.correo?.trim()) {
+    // Manejar tanto 'email' como 'correo'
+    const email = formData.email || formData.correo;
+    if (!email?.trim()) {
       errors.correo = 'El correo es requerido';
-    } else if (!this.isValidEmail(formData.correo)) {
+    } else if (!this.isValidEmail(email)) {
       errors.correo = 'El correo no es válido';
     }
 
@@ -146,12 +199,18 @@ export class AuthService {
   // Cambiar contraseña
   static async changePassword(userId, currentPassword, newPassword) {
     try {
-      const user = this.users.find(u => u.id === userId);
-      if (!user || user.password !== currentPassword) {
-        throw new Error('Contraseña actual incorrecta');
-      }
+      await this.initialize();
+      const { error } = await this.supabase.auth.updateUser({
+        id: userId,
+        password: newPassword
+      });
 
-      user.password = newPassword;
+      if (error) {
+        return {
+          success: false,
+          error: error.message
+        };
+      }
       return { success: true };
     } catch (error) {
       return {
@@ -164,13 +223,17 @@ export class AuthService {
   // Recuperar contraseña (simulado)
   static async forgotPassword(email) {
     try {
-      const user = this.users.find(u => u.correo === email);
-      if (!user) {
-        throw new Error('Email no encontrado');
-      }
+      await this.initialize();
+      const { error } = await this.supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password` // URL de redirección para el restablecimiento de contraseña
+      });
 
-      // Aquí se enviaría un email con el link de recuperación
-      console.log(`Email de recuperación enviado a: ${email}`);
+      if (error) {
+        return {
+          success: false,
+          error: error.message
+        };
+      }
       
       return { success: true };
     } catch (error) {
@@ -182,14 +245,14 @@ export class AuthService {
   }
 
   // Verificar permisos de admin
-  static isAdmin() {
-    const user = this.getCurrentUser();
+  static async isAdmin() {
+    const user = await this.getCurrentUser();
     return user?.role === 'admin';
   }
 
   // Verificar permisos de usuario
-  static hasRole(role) {
-    const user = this.getCurrentUser();
+  static async hasRole(role) {
+    const user = await this.getCurrentUser();
     return user?.role === role;
   }
 } 
