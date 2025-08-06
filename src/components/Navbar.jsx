@@ -15,8 +15,8 @@ const Navbar = () => {
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const { wishlistCount } = useWishlist();
-  const { cartCount } = useCart();
-  const { user, logout } = useAuth();
+  const { cartCount, user, isAuthenticated } = useCart();
+  const { user: authUser, isAuthenticated: authIsAuthenticated, logout } = useAuth();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -159,10 +159,10 @@ const Navbar = () => {
               </button>
 
               {/* Auth Button */}
-              {user ? (
+              {authUser ? (
                 <div className="flex items-center space-x-3">
                   <span className="text-sm text-neutral-600">
-                    Hola, {user.nombres}
+                    Hola, {authUser.user_metadata?.nombres || authUser.email}
                   </span>
                   <button
                     onClick={handleLogout}
@@ -303,10 +303,10 @@ const Navbar = () => {
 
                 {/* Auth Section */}
                 <div className="pt-2 border-t border-neutral-200">
-                  {user ? (
+                  {authUser ? (
                     <div className="space-y-3">
                       <div className="text-neutral-600 py-2 font-medium">
-                        Hola, {user.nombres}
+                        Hola, {authUser.user_metadata?.nombres || authUser.email}
                       </div>
                       <button
                         onClick={() => { handleLogout(); closeMenu(); }}

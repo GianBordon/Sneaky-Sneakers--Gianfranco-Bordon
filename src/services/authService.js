@@ -128,11 +128,22 @@ export class AuthService {
         }
       }
 
-      return {
-        success: true,
-        user: data.user,
-        session: data.session
-      };
+      // Si hay sesión, el usuario se logueó automáticamente
+      if (data.session) {
+        return {
+          success: true,
+          user: data.user,
+          session: data.session
+        };
+      } else {
+        // Si no hay sesión, el usuario necesita confirmar email
+        return {
+          success: true,
+          user: data.user,
+          session: null,
+          needsEmailConfirmation: true
+        };
+      }
     } catch (error) {
       return {
         success: false,
