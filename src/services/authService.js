@@ -114,6 +114,7 @@ export class AuthService {
                 nombres: userData.nombres,
                 apellidos: userData.apellidos,
                 correo: userData.correo,
+                is_admin: false, // Usar is_admin en lugar de role
                 created_at: new Date().toISOString()
               }
             ]);
@@ -247,12 +248,15 @@ export class AuthService {
   // Verificar permisos de admin
   static async isAdmin() {
     const user = await this.getCurrentUser();
-    return user?.role === 'admin';
+    return user?.is_admin;
   }
 
   // Verificar permisos de usuario
   static async hasRole(role) {
     const user = await this.getCurrentUser();
-    return user?.role === role;
+    if (role === 'admin') {
+      return user?.is_admin === true;
+    }
+    return true; // Por defecto, todos los usuarios tienen rol 'user'
   }
 } 

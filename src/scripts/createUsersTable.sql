@@ -1,13 +1,31 @@
--- Crear tabla de usuarios para autenticación
-CREATE TABLE IF NOT EXISTS public.users (
-    id UUID REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
-    nombres TEXT NOT NULL,
-    apellidos TEXT NOT NULL,
-    correo TEXT UNIQUE NOT NULL,
-    role TEXT DEFAULT 'user' CHECK (role IN ('user', 'admin')),
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
+-- Actualizar tabla de usuarios existente para autenticación
+-- Agregar campos faltantes si no existen
+DO $$
+BEGIN
+    -- Agregar campo nombres si no existe
+    IF NOT EXISTS (
+        SELECT 1 FROM information_schema.columns 
+        WHERE table_name = 'users' AND column_name = 'nombres'
+    ) THEN
+        ALTER TABLE public.users ADD COLUMN nombres TEXT;
+    END IF;
+
+    -- Agregar campo apellidos si no existe
+    IF NOT EXISTS (
+        SELECT 1 FROM information_schema.columns 
+        WHERE table_name = 'users' AND column_name = 'apellidos'
+    ) THEN
+        ALTER TABLE public.users ADD COLUMN apellidos TEXT;
+    END IF;
+
+    -- Agregar campo correo si no existe
+    IF NOT EXISTS (
+        SELECT 1 FROM information_schema.columns 
+        WHERE table_name = 'users' AND column_name = 'correo'
+    ) THEN
+        ALTER TABLE public.users ADD COLUMN correo TEXT UNIQUE;
+    END IF;
+END $$;
 
 -- Habilitar RLS (Row Level Security) si no está habilitado
 ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
@@ -42,7 +60,7 @@ BEGIN
             FOR INSERT WITH CHECK (auth.uid() = id);
     END IF;
 
-    -- Admins pueden ver todos los perfiles
+    -- Admins pueden ver todos los perfiles (usando is_admin en lugar de role)
     IF NOT EXISTS (
         SELECT 1 FROM pg_policies 
         WHERE tablename = 'users' AND policyname = 'Admins can view all profiles'
@@ -51,7 +69,7 @@ BEGIN
             FOR SELECT USING (
                 EXISTS (
                     SELECT 1 FROM public.users 
-                    WHERE id = auth.uid() AND role = 'admin'
+                    WHERE id = auth.uid() AND is_admin = true
                 )
             );
     END IF;
@@ -81,11 +99,11 @@ BEGIN
 END $$;
 
 -- Insertar usuario admin por defecto (opcional)
--- INSERT INTO public.users (id, nombres, apellidos, correo, role)
+-- INSERT INTO public.users (id, nombres, apellidos, correo, is_admin)
 -- VALUES (
 --     '00000000-0000-0000-0000-000000000000', -- Reemplazar con UUID real
 --     'Admin',
 --     'User',
 --     'admin@sneakysneakers.com',
---     'admin'
+--     true
 -- ) ON CONFLICT (id) DO NOTHING; 
