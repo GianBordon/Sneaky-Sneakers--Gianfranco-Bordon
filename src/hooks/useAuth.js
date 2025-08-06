@@ -68,8 +68,12 @@ export const useAuth = () => {
         password: password
       };
 
+      console.log('Datos de registro:', registrationData);
+
       // Validar datos del formulario
       const validationErrors = AuthService.validateRegistration(registrationData);
+      
+      console.log('Errores de validación:', validationErrors);
       
       if (Object.keys(validationErrors).length > 0) {
         setError('Por favor, corrige los errores en el formulario');
@@ -80,7 +84,10 @@ export const useAuth = () => {
         };
       }
 
+      console.log('Pasando validación, registrando usuario...');
       const result = await AuthService.register(registrationData);
+      
+      console.log('Resultado del registro:', result);
       
       if (result.success) {
         setUser(result.user);
@@ -91,6 +98,7 @@ export const useAuth = () => {
         return result;
       }
     } catch (err) {
+      console.error('Error en registro:', err);
       setError(err.message);
       return { success: false, error: err.message };
     } finally {

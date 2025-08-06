@@ -164,30 +164,39 @@ export class AuthService {
 
   // Validar formulario de registro
   static validateRegistration(formData) {
+    console.log('Validando datos:', formData);
     const errors = {};
 
     if (!formData.nombres?.trim()) {
       errors.nombres = 'El nombre es requerido';
+      console.log('Error: nombres faltante');
     }
 
     if (!formData.apellidos?.trim()) {
       errors.apellidos = 'El apellido es requerido';
+      console.log('Error: apellidos faltante');
     }
 
     // Manejar tanto 'email' como 'correo'
     const email = formData.email || formData.correo;
+    console.log('Email a validar:', email);
     if (!email?.trim()) {
       errors.correo = 'El correo es requerido';
+      console.log('Error: correo faltante');
     } else if (!this.isValidEmail(email)) {
       errors.correo = 'El correo no es válido';
+      console.log('Error: correo inválido');
     }
 
     if (!formData.password?.trim()) {
       errors.password = 'La contraseña es requerida';
+      console.log('Error: password faltante');
     } else if (formData.password.length < 6) {
       errors.password = 'La contraseña debe tener al menos 6 caracteres';
+      console.log('Error: password muy corta');
     }
 
+    console.log('Errores encontrados:', errors);
     return errors;
   }
 
