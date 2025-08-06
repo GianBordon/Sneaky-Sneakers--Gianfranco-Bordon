@@ -41,6 +41,7 @@ export const useAuth = () => {
       if (result.success) {
         setUser(result.user);
         setIsAuthenticated(true);
+        console.log('Usuario logueado exitosamente:', result.user);
         return result;
       } else {
         setError(result.error);

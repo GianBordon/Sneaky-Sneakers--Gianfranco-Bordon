@@ -74,7 +74,7 @@ const Navbar = () => {
             </div>
 
             {/* Desktop Navigation - Centrado */}
-            <nav className="hidden md:flex items-center space-x-6 flex-1 justify-center">
+            <nav className="hidden lg:flex items-center space-x-6 flex-1 justify-center">
               <Link 
                 to="/men" 
                 className="text-sm text-neutral-700 hover:text-cyan-600 font-medium transition-colors duration-300 whitespace-nowrap"
@@ -114,7 +114,7 @@ const Navbar = () => {
             </nav>
 
             {/* Desktop Icons & Auth - Derecha */}
-            <div className="hidden md:flex items-center space-x-4 flex-shrink-0">
+            <div className="hidden lg:flex items-center space-x-4 flex-shrink-0">
               {/* Search Button */}
               <button
                 onClick={openSearch}
@@ -184,7 +184,7 @@ const Navbar = () => {
             {/* Mobile/Tablet Menu Button */}
             <button
               onClick={toggleMenu}
-              className="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1 focus:outline-none"
+              className="lg:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1 focus:outline-none"
               aria-label="Toggle menu"
             >
               <span 
@@ -207,7 +207,7 @@ const Navbar = () => {
 
           {/* Mobile Navigation */}
           <div 
-            className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+            className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${
               isMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
             }`}
           >
